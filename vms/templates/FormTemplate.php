@@ -32,5 +32,6 @@ class FormTemplate {
     </body>
     <script src="/assets/js/handle.js" type="text/javascript"></script>
     <script src="/assets/js/toggle-password.js" type="text/javascript"></script>
+    <script src="/assets/js/script.js"></script>
     </html>
 <?php }}

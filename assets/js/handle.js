@@ -25,9 +25,6 @@ $(function() {
 });
 
 $(document).ready(function(){
-    $('#menu-table').DataTable({
-        responsive: true
-    });
     $('#city').change(function(e){
         var cityId = $(this).val();
         $.ajax({

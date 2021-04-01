@@ -62,7 +62,7 @@ class CartPage {
                                     </div> 
                                 </div> 
                             </td> 
-                            <td data-th="Price"><?= number_format($values['item_qty'] * $values['item_price'], 0, '', ',') ?>₫</td> 
+                            <td data-th="Price"><?= number_format($values['item_price'], 0, '', ',') ?>₫</td> 
                             <td data-th="Quantity"><input class="form-control text-center" value="<?= $values['item_qty'] ?>" type="number" disabled></td> 
                             <td data-th="Subtotal" class="text-center"><?= number_format($values['item_qty'] * $values['item_price'], 0, '', ',') ?>₫</td> 
                             <td class="actions" data-th="">
@@ -75,6 +75,7 @@ class CartPage {
                     <?php endforeach; ?>
                             <input type="hidden" name="product_qty" value="<?= $this->qty ?>" />
                             <input type="hidden" name="total" value="<?= $this->total ?>" />
+                            <input type="hidden" value="<?= $_SESSION["user_id"]?>" name="user_id" />
                         </tr>  
                     <?php endif; ?>
                         <tr>

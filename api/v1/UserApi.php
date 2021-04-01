@@ -152,7 +152,15 @@ class UserAPI
         Mysqllib::mysql_get_data_from_query($conn, $query);
         $data = UserAPI::getUserByEmail($email);
         $_SESSION['user_id'] = $data->message[0]['user_id'];
-        header("Location: /dashboard");
+        $_SESSION['type'] = $data->message[0]['type'];
+        session_start();
+        if($_SESSION['type'] === 'admin'){
+            header("Location: /dashboard");
+        }elseif($_SESSION['type'] === 'customer' || $_SESSION['type'] === 'serve'){
+            header("Location: /northproduct");
+        }elseif($_SESSION['type'] === 'cashier'){
+            header("Location: /order");
+        }
     }
 
     public static function login($email,$password,$data){
@@ -270,6 +278,7 @@ class UserAPI
         $city = $conn->real_escape_string($user->city);
         $district = $conn->real_escape_string($user->district);
         $commune = $conn->real_escape_string($user->commune);
+        $email = $conn->real_escape_string($user->email);
 
         $baseUrl = substr(dirname(__FILE__),0,strpos(dirname(__FILE__),'api'));
         if(isset($user->image)){
@@ -289,7 +298,7 @@ class UserAPI
                     $new_img_name = $time.$img_name;
                     if(move_uploaded_file($tmp_name,str_replace('\\', '/', $baseUrl)."/images/user/".$new_img_name)){
                         // Query
-                        $update_query = sprintf("UPDATE `users` SET `firstname`='%s',`lastname`='%s',`phone`='%s',`city`='%s',`district`='%s',`gender`='%s',`commune`='%s',`img`='%s' WHERE `user_id` = '%s'", 
+                        $update_query = sprintf("UPDATE `users` SET `firstname`='%s',`lastname`='%s',`phone`='%s',`city`='%s',`district`='%s',`gender`='%s',`commune`='%s',`img`='%s',`email`='%s' WHERE `user_id` = '%s'", 
                             $firstname,
                             $lastname,
                             $phone,
@@ -298,6 +307,7 @@ class UserAPI
                             $gender,
                             $commune,
                             $new_img_name,
+                            $email,
                             $id
                         );
                         $res = Mysqllib::mysql_post_data_from_query($conn, $update_query);
@@ -728,9 +738,10 @@ class UserAPI
             return $conn_resp;
         }
         $conn = $conn_resp->message;
-        $query = sprintf("INSERT INTO orders (`product`,`product_qty`,`total`,`status`) VALUES ('%s','%s','%s','%s')",$conn->real_escape_string($order->product),$conn->real_escape_string($order->product_qty),$conn->real_escape_string($order->total),"complete");
+        $query = sprintf("INSERT INTO orders (`product`,`product_qty`,`total`,`status`,`user_id`) VALUES ('%s','%s','%s','%s','%s')",$conn->real_escape_string($order->product),$conn->real_escape_string($order->product_qty),$conn->real_escape_string($order->total),"complete",$conn->real_escape_string($order->user_id));
         Mysqllib::mysql_post_data_from_query($conn, $query);
         unset($_SESSION["shopping_cart"]);
+        $_SESSION['checkout-success'] = "<div class='alert alert-success'>Thanh toán thành công  <span class='close'>&times;</span></div>";
         header("Location: /previousorder");
     }
 

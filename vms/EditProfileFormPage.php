@@ -63,6 +63,7 @@ class EditProfileFormPage
         </div>
         <div class="profile-info col-md-9">
             <form action="/editprofileform" method="POST" enctype="multipart/form-data" style="margin-bottom:2rem;">
+                <input type="hidden" value="<?= $row['email'] ?>" name="email" />
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label>Tên</label>

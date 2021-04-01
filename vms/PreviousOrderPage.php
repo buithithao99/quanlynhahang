@@ -52,6 +52,11 @@ class PreviousOrderPage
     <div class="profile-info col-md-9">
         <div class="panel">
             <div class="panel-body bio-graph-info">
+                <?php
+                    if(isset($_SESSION['checkout-success'])){
+                        echo $_SESSION['checkout-success'];
+                    }
+                ?>
                 <h1>Đơn hàng của bạn</h1>
                 <div class="row">
                     <table>
