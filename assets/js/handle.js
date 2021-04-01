@@ -60,10 +60,10 @@ $(document).ready(function(){
         });
     });
     $("#category_id").on('change',function(){
-        if(this.value === 4 || this.value === 5){
+        if(this.value === "3" || this.value === "4"){
             $(".regions").css("display","none");
         }else{
-           
+            $(".regions").css("display","block");
         }
     });
 });

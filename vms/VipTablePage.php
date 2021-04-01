@@ -6,9 +6,6 @@ class VipTablePage {
     public $rows;
     public function __construct($params = null) {
         session_start();
-        if(!isset($_SESSION['user_id'])){
-            header("Location: /");
-        }
         $this->title  = "Bàn vip";
         $this->rows = UserAPI::getVipTable();
     }

@@ -7,12 +7,15 @@ use api\v1\UserAPI;
 class PreviousOrderPage
 {
     public $rows;
-    
+    public $orders;
+    public $array;
     public function __construct($params = null)
     {
         session_start();
         $this->title  = "Sửa thông tin";
         $this->rows = UserAPI::getUserById($_SESSION['user_id']);
+        $this->orders = UserAPI::getAllOrder();
+        $this->array = [];
     }
 
     // Khai báo template và truyền bản thân vào template cha
@@ -40,7 +43,7 @@ class PreviousOrderPage
 
                 <ul class="nav nav-pills nav-stacked">
                     <li><a href="/profile"> <i class="fa fa-user"></i> Thông tin cá nhân</a></li>
-                    <li><a href="/previousorder"> <i class="fa fa-calendar"></i> Thông tin đơn hàng <span class="label label-warning pull-right r-activity">9</span></a></li>
+                    <li><a href="/previousorder"> <i class="fa fa-calendar"></i> Thông tin đơn hàng <span class="label label-warning pull-right r-activity"><?= count($this->orders->message) ?></span></a></li>
                     <li><a href="/editprofileform"> <i class="fa fa-edit"></i> Sửa thông tin cá nhân</a></li>
                 </ul>
             </div>
@@ -51,6 +54,13 @@ class PreviousOrderPage
             <div class="panel-body bio-graph-info">
                 <h1>Đơn hàng của bạn</h1>
                 <div class="row">
+                    <table>
+                        <tr>
+                            <th>Tên sản phẩm</th>
+                            <th>Giá tiền</th>
+                            <th>Số lượng</th>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>

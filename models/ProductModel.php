@@ -20,7 +20,11 @@ class ProductModel {
         $this->image = $file["image"];
         $this->quantity = $product["quantity"];
         $this->active = $product["active"];
-        $this->region = $product["region"];
+        if(isset($product["region"])){
+            $this->region = $product["region"];
+        }else{
+            $this->region = null;
+        }
         $this->id = $product["id"];
     }
 }

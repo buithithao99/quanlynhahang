@@ -5,6 +5,7 @@ use api\v1\UserAPI;
 
 class ProfilePage {
     public $rows;
+    public $orders;
     public function __construct($params = null) {
         session_start();
         if(!isset($_SESSION['user_id'])){
@@ -12,6 +13,7 @@ class ProfilePage {
         }
         $this->rows = UserAPI::getUserById($_SESSION['user_id']);
         $this->title  = "Thông tin cá nhân";
+        $this->orders = UserAPI::getAllOrder();
     }
 
     // Khai báo template và truyền bản thân vào template cha
@@ -37,7 +39,7 @@ class ProfilePage {
 
             <ul class="nav nav-pills nav-stacked menu-page">
                 <li><a href="/profile"> <i class="fa fa-user"></i> Thông tin cá nhân</a></li>
-                <li><a href="/previousorder"> <i class="fa fa-calendar"></i> Thông tin đơn hàng <span class="label label-warning pull-right r-activity">9</span></a></li>
+                <li><a href="/previousorder"> <i class="fa fa-calendar"></i> Thông tin đơn hàng <span class="label label-warning pull-right r-activity"><?= count($this->rows->message) ?></span></a></li>
                 <li><a href="/editprofileform"> <i class="fa fa-edit"></i> Sửa thông tin cá nhân</a></li>
             </ul>
         </div>

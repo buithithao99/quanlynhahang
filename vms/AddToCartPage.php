@@ -25,9 +25,17 @@ class AddToCartPage
                         'item_qty' => $_POST['qty']
                     ];
                     $_SESSION["shopping_cart"][$count] = $item_array;
-                    header("Location: /".$_POST['region']."product");
+                    if(isset($_POST['region'])){
+                        header("Location: /".$_POST['region']."product");
+                    }else{
+                        header("Location: /simple");
+                    }
                 }else{  
-                    header("Location: /".$_POST['region']."product");
+                    if(isset($_POST['region'])){
+                        header("Location: /".$_POST['region']."product");
+                    }else{
+                        header("Location: /simple");
+                    }
                 }
             }else{
                 $item_array = [
@@ -39,7 +47,11 @@ class AddToCartPage
                     'item_qty' => $_POST['qty']
                 ];
                 $_SESSION["shopping_cart"][0] = $item_array;
-                header("Location: /".$_POST['region']."product");
+                if(isset($_POST['region'])){
+                    header("Location: /".$_POST['region']."product");
+                }else{
+                    header("Location: /simple");
+                }
             }
         }
     }

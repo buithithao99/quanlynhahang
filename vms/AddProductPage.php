@@ -61,8 +61,8 @@ class AddProductPage {
             </div>
             <div class="form-group regions">
                 <label>Vùng miền</label>
-                <select class="form-control" name="region" id="region" required>
-                    <option value="">Chọn vùng miền</option>
+                <select class="form-control" name="region" id="region">
+                    <option value="" selected>Chọn vùng miền</option>
                     <option value="north">Miền Bắc</option>
                     <option value="central">Miền Trung</option>
                     <option value="south">Miền Nam</option>
