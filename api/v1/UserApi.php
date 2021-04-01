@@ -178,6 +178,7 @@ class UserAPI
                     session_start();
                     $_SESSION['type'] = $res->message[0]['type'];
                     $_SESSION['user_id'] = $res->message[0]['user_id'];
+                    $_SESSION['temporary_type'] = $res->message[0]['type'];
                     return new ResponseModel(true);
                 }
             }

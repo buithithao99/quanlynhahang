@@ -2,11 +2,14 @@
 namespace vms\templates;
 
 use vms\components\HeaderComponent;
+use api\v1\UserAPI;
 
 class AdminTemplate {
     // Khai báo child và hàm render child view-model
     public $child;
     public function renderChild($child) {
+        $res = UserAPI::getUserById($_SESSION['user_id']);
+        $_SESSION['temporary_type'] = $res->message[0]['type'];
         $this->child = $child;
         $this->render();
     }
