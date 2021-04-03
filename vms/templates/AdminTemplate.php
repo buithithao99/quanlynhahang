@@ -7,10 +7,12 @@ use api\v1\UserAPI;
 class AdminTemplate {
     // Khai báo child và hàm render child view-model
     public $child;
+    public $rows;
     public function renderChild($child) {
         $res = UserAPI::getUserById($_SESSION['user_id']);
         $_SESSION['temporary_type'] = $res->message[0]['type'];
         $this->child = $child;
+        $this->rows = UserAPI::getTotalByDay();
         $this->render();
     }
 
@@ -86,18 +88,16 @@ class AdminTemplate {
 
             // Create the data table.
             var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Topping');
-            data.addColumn('number', 'Slices');
+            data.addColumn('string', 'Day');
+            data.addColumn('number', 'Total');
             data.addRows([
-                ['Mushrooms', 3],
-                ['Onions', 1],
-                ['Olives', 1],
-                ['Zucchini', 1],
-                ['Pepperoni', 2]
+                <?php foreach($this->rows->message as $row): ?>   
+                ["<?= $row["DATE(created_at)"] ?>",<?= (int)$row["sum(total)"] ?>],
+                <?php endforeach; ?>
             ]);
 
             // Set chart options
-            var options = {'title':'Doanh thu tháng này',
+            var options = {'title':'Doanh thu các ngày trong tháng',
                             'width':600,
                             'height':600};
 

@@ -2,14 +2,14 @@
 namespace vms;
 use api\v1\UserAPI;
 
-class DeleteUserPage
+class DeleteRePage
 {
-    public $userId;
+    public $reId;
     public function __construct($params = null)
     {
-        $this->userId = $params[0];
+        $this->reId = $params[0];
     }
     public function render() {
-        UserAPI::deleteUserById($this->userId);
+        UserAPI::deleteReById($this->reId);
     } 
 }

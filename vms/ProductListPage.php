@@ -56,7 +56,7 @@ class ProductListPage {
                     <td><?= $row['description'] ?></td>
                     <td><?= $row['image'] ?></td>
                     <td><?= $row['quantity'] ?></td>
-                    <td><?= $row['region'] ?></td>
+                    <td><?= $row['region_name'] ?></td>
                     <td><?= $row['active'] ?></td>
                     <td class="center"><i class="fas fa-trash"></i> <a href="/deletepro/<?= $row['id'] ?>"> Delete</a></td>
                     <td class="center"><i class="fas fa-edit"></i> <a href="/editpro/<?= $row['id'] ?>">Edit</a></td>

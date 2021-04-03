@@ -9,12 +9,14 @@ class EditUserPage
 {
     public $rows;
     public $city;
+    public $id;
     public function __construct($params = null)
     {
         session_start();
         $this->title  = "Sửa thông tin";
         $this->rows = UserAPI::getUserById($params[0]);
         $this->city = UserAPI::getAllCity();
+        $this->id = $params[0];
     }
 
     // Khai báo template và truyền bản thân vào template cha
@@ -22,16 +24,11 @@ class EditUserPage
     {
         $template = new AdminTemplate();
         if(isset($_POST['submit'])){
-          $email = $_POST["email"];
-          if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $user = new UserModel($_POST,$_FILES);
-            $res = UserAPI::update($user,$_SESSION['user_id']);
+            $res = UserAPI::update($user);
             if($res === "Invalid password"){
                 $_SESSION['error'] = "<div class='alert alert-danger'>Password must have uppercase letter, lower letter and number. <span class='close'>&times;</span></div>";
             }
-          }else{
-            $_SESSION['error'] = "<div class='alert alert-danger'>$email is not a valid email! <span class='close'>&times;</span></div>";
-          }
       }
         $template->renderChild($this);
     }
@@ -49,6 +46,7 @@ class EditUserPage
         </div>
         <div class="col-lg-7">
             <form action="/edituser" method="POST" enctype="multipart/form-data" style="margin-bottom:2rem;">
+                <input type="hidden" name="id" value="<?= $row['id'] ?>" />
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label>Tên</label>

@@ -44,6 +44,8 @@ class UserListPage {
                 <th>Active</th>
                 <th>Delete</th>
                 <th>Edit</th>
+                <th>Block</th>
+                <th>Enable</th>
             </tr>
         </thead>
         <tbody>
@@ -58,8 +60,10 @@ class UserListPage {
                     <td><?= $row['name_commune'] ?></td>
                     <td><?= $row['status'] ?></td>
                     <td><?= $row['active'] ?></td>
-                    <td class="center"><i class="fas fa-trash"></i> <a href="/deleteuser/<?= $row['user_id'] ?>"> Delete</a></td>
-                    <td class="center"><i class="fas fa-edit"></i> <a href="/edituser/<?= $row['user_id'] ?>">Edit</a></td>
+                    <td class="center"><i class="fas fa-trash"></i> <a href="/deleteuser/<?= $row['id'] ?>"> Delete</a></td>
+                    <td class="center"><i class="fas fa-edit"></i> <a href="/edituser/<?= $row['id'] ?>">Edit</a></td>
+                    <td class="center"><i class="fas fa-lock"></i> <a href="/blockuser/<?= $row['id'] ?>">Block</a></td>
+                    <td class="center"><i class="fas fa-check-circle"></i> <a href="/enableuser/<?= $row['id'] ?>">Enable</a></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

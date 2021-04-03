@@ -66,30 +66,41 @@ class SouthProductPage {
     </div>
 </div>
 <div class="row">
-    <?php  foreach($this->rows->message as $row): ?>
-        <div class="col-lg-3">
-            <form action="/addtocart" method="POST">
+    <?php if(isset($this->rows->message)): ?>
+        <?php foreach($this->rows->message as $row): ?>
+            <div class="col-lg-3">
+                <form action="/addtocart" method="POST">
+                <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>" />
                 <input type="hidden" name="image" value="<?= $row['image'] ?>" />
                 <input type="hidden" name="id" value="<?= $row['id'] ?>" />
                 <input type="hidden" name="name" value="<?= $row['name'] ?>" />
                 <input type="hidden" name="price" value="<?= $row['price'] ?>" />
-                <input type="hidden" name="region" value="<?= $row['region'] ?>" />
-                <div class="product-item-box">
-                    <div class="product-item">
-                        <div class="product-detail">
-                            <img src="/images/product/<?= $row['image'] ?>" alt="<?= $row['name'] ?>" class="product-image" width="100%" height="70%"/>
-                            <div class="product-name" name="product-name"><?= $row['name'] ?></div>
-                            <div class="price-new" name="price-new"><?= number_format($row['price'], 0, '', ',') ?>₫</div>
-                            <input type="number" name="qty" min=1 class="qty" class="qty" required/>
+                <input type="hidden" name="region_id" value="<?= $row['region_id'] ?>" />
+                <input type="hidden" name="region_name" value="<?= $row['region_name'] ?>" />
+                <input type="hidden" name="description" value="<?= $row['description'] ?>" />
+                    <div class="product-item-box">
+                        <div class="product-item">
+                            <div class="product-detail">
+                                <img src="/images/product/<?= $row['image'] ?>" alt="<?= $row['name'] ?>" class="product-image" width="100%" height="70%"/>
+                                <div class="product-name" name="product-name"><?= $row['name'] ?></div>
+                                <div class="price-new" name="price-new"><?= number_format($row['price'], 0, '', ',') ?>₫</div>
+                                <?php if($_SESSION['type'] === 'customer'): ?>
+                                    <input type="number" name="qty" min=1 class="qty" class="qty" required/>
+                                <?php endif; ?>
+                            </div>
                         </div>
+                        <?php if($_SESSION['type'] === 'customer'): ?>
+                            <div class="col text-center">
+                                <button name="submit" type="submit"><i
+                                        class="fas fa-shopping-cart mr-2"></i>Mua</button>
+                            </div>
+                        <?php endif; ?>
                     </div>
-                    <div class="col text-center">
-                        <button name="submit" type="submit"><i
-                                class="fas fa-shopping-cart mr-2"></i>Mua</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    <?php endforeach; ?>
+                </form>
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <div>Hiện tại chưa có sản phẩm nào. Quý khách vui lòng quay lại sau !</div>
+    <?php endif; ?>
 </div>
 <?php }}

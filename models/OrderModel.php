@@ -3,17 +3,19 @@ namespace models;
 
 class OrderModel {
 
-    public $product;
-    public $product_qty;
+    public $category_id;
+    public $quantity;
     public $total;
     public $status;
-    public $user_id;
+    public $price;
+    public $email;
 
     public function __construct($order) {
-        $this->product = $order["product"];
-        $this->product_qty = $order["product_qty"];
+        $this->category_id = $order["category_id"];
+        $this->quantity = $order["quantity"];
         $this->total = $order["total"];
         $this->status = $order["status"];
-        $this->user_id = $order["user_id"];
+        $this->price = $order["price"];
+        $this->email = $order["email"];
     }
 }

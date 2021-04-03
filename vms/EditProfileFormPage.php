@@ -16,7 +16,6 @@ class EditProfileFormPage
         $this->title  = "Sửa thông tin";
         $this->rows = UserAPI::getUserById($_SESSION['user_id']);
         $this->city = UserAPI::getAllCity();
-        $this->orders = UserAPI::getAllOrder();
     }
 
     // Khai báo template và truyền bản thân vào template cha
@@ -24,17 +23,9 @@ class EditProfileFormPage
     {
         $template = new AdminTemplate();
         if(isset($_POST['submit'])){
-          $email = $_POST["email"];
-          if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $user = new UserModel($_POST,$_FILES);
             $res = UserAPI::update($user,$_SESSION['user_id']);
-            if($res === "Invalid password"){
-                $_SESSION['error'] = "<div class='alert alert-danger'>Password must have uppercase letter, lower letter and number. <span class='close'>&times;</span></div>";
-            }
-          }else{
-            $_SESSION['error'] = "<div class='alert alert-danger'>$email is not a valid email! <span class='close'>&times;</span></div>";
-          }
-      }
+        }
         $template->renderChild($this);
     }
 
@@ -56,7 +47,7 @@ class EditProfileFormPage
 
                 <ul class="nav nav-pills nav-stacked">
                     <li><a href="/profile"> <i class="fa fa-user"></i> Thông tin cá nhân</a></li>
-                    <li><a href="/previousorder"> <i class="fa fa-calendar"></i> Thông tin đơn hàng <span class="label label-warning pull-right r-activity"><?= count($this->orders->message); ?></span></a></li>
+                    <li><a href="/previousorder"> <i class="fa fa-calendar"></i> Thông tin đơn hàng <span class="label label-warning pull-right r-activity"><?= isset($this->order->message)?count($this->orders->message):0; ?></span></a></li>
                     <li><a href="/editprofileform"> <i class="fa fa-edit"></i> Sửa thông tin cá nhân</a></li>
                 </ul>
             </div>

@@ -5,6 +5,7 @@ use api\v1\UserAPI;
 use models\ProductModel;
 class AddProductPage {
     public $rows;
+    public $regions;
     public function __construct($params = null) {
         session_start();
         if(!isset($_SESSION['user_id'])){
@@ -12,6 +13,7 @@ class AddProductPage {
         }
         $this->title  = "Thêm sản phẩm";
         $this->rows = UserAPI::getAllCategory();
+        $this->regions = UserAPI::getAllRegion();
     }
 
     // Khai báo template và truyền bản thân vào template cha
@@ -54,6 +56,7 @@ class AddProductPage {
             <div class="form-group">
                 <label>Danh mục</label>
                 <select class="form-control" name="category_id" id="category_id" required>
+                    <option value="">Chọn danh mục</option>
                     <?php foreach($this->rows->message as $row): ?>
                         <option value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
                     <?php endforeach; ?>
@@ -61,11 +64,11 @@ class AddProductPage {
             </div>
             <div class="form-group regions">
                 <label>Vùng miền</label>
-                <select class="form-control" name="region" id="region">
-                    <option value="" selected>Chọn vùng miền</option>
-                    <option value="north">Miền Bắc</option>
-                    <option value="central">Miền Trung</option>
-                    <option value="south">Miền Nam</option>
+                <select class="form-control" name="region_id" id="region_id">
+                    <option value="">Chọn vùng miền</option>
+                    <?php foreach($this->regions->message as $row): ?>
+                        <option value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
+                    <?php endforeach; ?>
                 </select>
             </div>
             <div class="form-group">

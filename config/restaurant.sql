@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 01, 2021 at 06:33 AM
+-- Generation Time: Apr 03, 2021 at 04:34 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.34
 
@@ -24,6 +24,17 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `booking`
+--
+
+CREATE TABLE `booking` (
+  `user_id` int(11) NOT NULL,
+  `table_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `category`
 --
 
@@ -38,10 +49,9 @@ CREATE TABLE `category` (
 --
 
 INSERT INTO `category` (`id`, `name`, `active`) VALUES
-(1, 'Thức ăn', 'enabled'),
-(2, 'Nước uống', 'enabled'),
-(3, 'Bàn thường', 'enabled'),
-(4, 'Bàn vip', 'enabled');
+(8, 'Thức ăn', 'enabled'),
+(9, 'Đồ uống', 'enabled'),
+(10, 'Đồ ăn vặt', 'enabled');
 
 -- --------------------------------------------------------
 
@@ -11422,18 +11432,25 @@ INSERT INTO `devvn_xaphuongthitran` (`xaid`, `name`, `type`, `maqh`) VALUES
 
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
-  `product` text DEFAULT NULL,
-  `product_qty` int(11) DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) DEFAULT NULL,
   `total` float DEFAULT NULL,
-  `status` varchar(10) DEFAULT NULL
+  `status` varchar(20) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `order_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `product`, `product_qty`, `total`, `status`) VALUES
-(4, 'a:6:{s:7:\"item_id\";s:1:\"3\";s:9:\"item_name\";s:16:\"Sườn nướng\";s:10:\"item_price\";s:5:\"20000\";s:10:\"item_image\";s:15:\"16172098691.jpg\";s:16:\"item_description\";s:25:\"Bánh canh ngon,bổ,rẻ\";s:8:\"item_qty\";s:1:\"1\";}', 1, 20000, 'complete');
+INSERT INTO `orders` (`id`, `user_id`, `product_id`, `quantity`, `total`, `status`, `created_at`, `updated_at`, `order_id`) VALUES
+(1, 24, 5, 1, 30000, 'complete', '2021-04-02 17:32:35', '2021-04-03 00:32:35', 1496812076),
+(2, 24, 2, 1, 20000, 'complete', '2021-04-02 17:33:09', '2021-04-03 00:33:09', 1496812076),
+(3, 24, 5, 1, 30000, 'complete', '2021-04-03 00:47:13', '2021-04-03 07:47:13', 1084117656),
+(4, 24, 2, 2, 40000, 'complete', '2021-04-03 00:47:13', '2021-04-03 07:47:13', 1084117656);
 
 -- --------------------------------------------------------
 
@@ -11443,25 +11460,46 @@ INSERT INTO `orders` (`id`, `product`, `product_qty`, `total`, `status`) VALUES
 
 CREATE TABLE `products` (
   `id` int(11) NOT NULL,
-  `category_id` int(255) NOT NULL,
+  `category_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `price` varchar(255) NOT NULL,
   `description` text NOT NULL,
   `image` text NOT NULL,
   `active` varchar(10) NOT NULL,
   `quantity` int(255) DEFAULT NULL,
-  `region` varchar(20) DEFAULT NULL
+  `region_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `category_id`, `name`, `price`, `description`, `image`, `active`, `quantity`, `region`) VALUES
-(3, 1, 'Sườn nướng', '20000', 'Bánh canh ngon,bổ,rẻ', '16172098691.jpg', 'enabled', 100, 'north'),
-(4, 1, 'Bánh canh cua', '15000', '', '16172103692.jpg', 'enabled', 100, 'north'),
-(5, 1, 'Bánh cuốn', '20000', '', '16172104443.jpg', 'enabled', 200, 'north'),
-(6, 1, 'Chả giò', '15000', '', '16172104654.jpg', 'enabled', 100, 'north');
+INSERT INTO `products` (`id`, `category_id`, `name`, `price`, `description`, `image`, `active`, `quantity`, `region_id`) VALUES
+(1, 8, 'Bánh cuốn', '20000', '', '16173595503.jpg', 'enabled', 100, 3),
+(2, 8, 'Thịt nướng', '20000', '', '16173595181.jpg', 'enabled', 100, 4),
+(3, 9, 'Bánh canh', '10000', '', '16173484603.jpg', 'enabled', 100, 3),
+(4, 8, 'Bún đậu', '20000', '', '16173806016.jpg', 'enabled', 100, 3),
+(5, 8, 'Thịt heo', '30000', '', '161738065912.jpg', 'enabled', 200, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `region`
+--
+
+CREATE TABLE `region` (
+  `id` int(11) NOT NULL,
+  `name` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `region`
+--
+
+INSERT INTO `region` (`id`, `name`) VALUES
+(2, 'north'),
+(3, 'central'),
+(4, 'south');
 
 -- --------------------------------------------------------
 
@@ -11471,12 +11509,21 @@ INSERT INTO `products` (`id`, `category_id`, `name`, `price`, `description`, `im
 
 CREATE TABLE `tables` (
   `id` int(11) NOT NULL,
-  `table_name` varchar(255) NOT NULL,
-  `capacity` varchar(255) NOT NULL,
-  `available` int(11) NOT NULL,
-  `active` int(11) NOT NULL,
-  `store_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `type` varchar(50) DEFAULT NULL,
+  `active` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tables`
+--
+
+INSERT INTO `tables` (`id`, `type`, `active`) VALUES
+(2, 'other', 'enabled'),
+(3, 'single', 'enabled'),
+(4, 'single', 'enabled'),
+(5, 'single', 'enabled'),
+(6, 'double', 'enabled'),
+(7, 'other', 'enabled');
 
 -- --------------------------------------------------------
 
@@ -11498,22 +11545,28 @@ CREATE TABLE `users` (
   `commune` varchar(255) DEFAULT NULL,
   `status` varchar(10) DEFAULT NULL,
   `active` varchar(10) DEFAULT NULL,
-  `img` varchar(255) DEFAULT NULL,
-  `user_id` int(255) DEFAULT NULL
+  `img` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `password`, `email`, `firstname`, `lastname`, `phone`, `gender`, `type`, `city`, `district`, `commune`, `status`, `active`, `img`, `user_id`) VALUES
-(18, '$2y$10$XIfaYmuTXxWkpIu9/2X81.KCar8HctL3IdxL2rC4qQVCK98wMRcjO', 'nguyenhuuluan17@gmail.com', 'Luân', 'Nguyễn', '0898103236', 'male', 'admin', '26', '249', '08935', 'verify', 'enabled', '1617127678luan.jpg', 1074984692),
-(19, '$2y$10$BoFF35M1SjyyZ2OCrvzKYu0QKNIuYAq5uaimgg9hgHfec4JBYMPvi', 'hyquynh123@gmail.com', 'Quỳnh', 'Liêu', '0813798168', 'female', 'customer', '02', '027', '00805', 'verify', 'enabled', '1617199551quynh.jpg', 834837806),
-(20, '$2y$10$r3ZTYN4Akkfc702bWjEFout4dopgchzqLM82dCVIzOUbukbu87Foq', 'luannh@magenest.com', 'Hằng', 'Thúy', '0123456789', 'male', 'cashier', '19', '168', '05632', 'verify', 'enabled', '1617205093hang.jpg', 841943425);
+INSERT INTO `users` (`id`, `password`, `email`, `firstname`, `lastname`, `phone`, `gender`, `type`, `city`, `district`, `commune`, `status`, `active`, `img`) VALUES
+(21, '$2y$10$ME2jKg8r7bj4PJGA///Z0u/rLXhzIJV98UfonOWIU/v/nInVtOQ2.', 'nguyenhuuluan17@gmail.com', 'Luân', 'Nguyễn', '0898103236', 'male', 'admin', '26', '247', '08875', 'verify', 'enabled', '1617345477luan.jpg'),
+(22, '$2y$10$6v7kdErkTlSC3qXrd8LJtuKNqxZa0AV9dVnn41TV5Ek8OWvKV1ny6', 'hyquynh123@gmail.com', 'Quỳnh', 'Liêu', '0123513131', 'male', 'cashier', '20', '182', '06166', 'verify', 'enabled', '1617351068quynh.jpg'),
+(24, '$2y$10$I9mSJ1kKH4fMETHyW0MS9uaKVOlS7LNQD5iytDM.bc80xiIAAo716', 'luannh@magenest.com', 'Hưng', 'Nguyễn', '0898103236', 'male', 'customer', '24', '221', '07738', 'verify', 'enabled', '1617380792hang.jpg');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `booking`
+--
+ALTER TABLE `booking`
+  ADD PRIMARY KEY (`user_id`,`table_id`),
+  ADD KEY `FK_TableBook` (`table_id`);
 
 --
 -- Indexes for table `category`
@@ -11543,12 +11596,22 @@ ALTER TABLE `devvn_xaphuongthitran`
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_OrderUser` (`user_id`),
+  ADD KEY `FK_OrderProduct` (`product_id`);
 
 --
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`,`category_id`,`region_id`),
+  ADD KEY `FK_Product` (`category_id`),
+  ADD KEY `FK_RegionProduct` (`region_id`);
+
+--
+-- Indexes for table `region`
+--
+ALTER TABLE `region`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -11561,7 +11624,10 @@ ALTER TABLE `tables`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_UserCity` (`city`),
+  ADD KEY `FK_UserDistrict` (`district`),
+  ADD KEY `FK_UserCommune` (`commune`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -11571,7 +11637,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -11580,22 +11646,55 @@ ALTER TABLE `orders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `products`
+-- AUTO_INCREMENT for table `region`
 --
-ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+ALTER TABLE `region`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tables`
 --
 ALTER TABLE `tables`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `booking`
+--
+ALTER TABLE `booking`
+  ADD CONSTRAINT `FK_TableBook` FOREIGN KEY (`table_id`) REFERENCES `tables` (`id`),
+  ADD CONSTRAINT `FK_UserBook` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `FK_OrderProduct` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
+  ADD CONSTRAINT `FK_OrderUser` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `FK_Product` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`),
+  ADD CONSTRAINT `FK_RegionProduct` FOREIGN KEY (`region_id`) REFERENCES `region` (`id`);
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `FK_UserCity` FOREIGN KEY (`city`) REFERENCES `devvn_tinhthanhpho` (`matp`),
+  ADD CONSTRAINT `FK_UserCommune` FOREIGN KEY (`commune`) REFERENCES `devvn_xaphuongthitran` (`xaid`),
+  ADD CONSTRAINT `FK_UserDistrict` FOREIGN KEY (`district`) REFERENCES `devvn_quanhuyen` (`maqh`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -9,8 +9,7 @@ class ProductModel {
     public $image;
     public $quantity;
     public $active;
-    public $region;
-    public $id;
+    public $region_id;
 
     public function __construct($product,$file) {
         $this->category_id = $product["category_id"];
@@ -20,11 +19,6 @@ class ProductModel {
         $this->image = $file["image"];
         $this->quantity = $product["quantity"];
         $this->active = $product["active"];
-        if(isset($product["region"])){
-            $this->region = $product["region"];
-        }else{
-            $this->region = null;
-        }
-        $this->id = $product["id"];
+        $this->region_id = $product["region_id"];
     }
 }

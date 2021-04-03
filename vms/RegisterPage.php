@@ -71,14 +71,6 @@ class RegisterPage
               <label>Email</label>
               <input type="email" name="email" placeholder="Nhập địa chỉ email" required>
             </div>
-            <div class="field">
-              <label>Chức vụ</label>
-              <select name="type" id="type" required>
-                  <option value="customer">Khách hàng</option>
-                  <option value="cashier">Thu ngân</option>
-                  <option value="serve">Phục vụ</option>
-              </select>
-            </div>
             <div class="field input">
               <label>Số điện thoại</label>
               <input type="tel" name="phone" placeholder="Nhập số điện thoại" required>

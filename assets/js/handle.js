@@ -56,12 +56,40 @@ $(document).ready(function(){
               $('#commune').html(res);
         });
     });
-    $("#category_id").on('change',function(){
-        if(this.value === "3" || this.value === "4"){
-            $(".regions").css("display","none");
-        }else{
-            $(".regions").css("display","block");
-        }
+    $('#category_id').change(function(e){
+        var cateId = $(this).val();
+        $.ajax({
+            url: "/showproduct",
+            type: 'POST',
+            data: {
+                cateId:cateId
+            },
+            beforeSend: function(xhr) {
+              xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            }
+        }).done(function(res){
+              $('#product_id').html(res);
+        });
+    });
+    $('#product_id').change(function(e){
+        var proId = $(this).val();
+        $.ajax({
+            url: "/showprice",
+            type: 'POST',
+            data: {
+                proId:proId
+            },
+            beforeSend: function(xhr) {
+              xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            }
+        }).done(function(res){
+            document.getElementById("price").setAttribute("value", res);
+        });
+    });
+    $('#quantity').change(function(e){
+        var qty = $(this).val();
+        var price = $("#price").val();
+        document.getElementById("total").setAttribute("value", qty*price);
     });
 });
 

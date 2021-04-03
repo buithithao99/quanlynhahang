@@ -13,6 +13,13 @@ class Router {
         $this->get('/register',"RegisterPage");
         $this->post('/register',"RegisterPage");
         $this->get('/dashboard',"DashBoardPage");
+        // Region
+        $this->get('/region',"RegionListPage");
+        $this->get('/addregion',"AddRegionPage");
+        $this->post('/addregion',"AddRegionPage");
+        $this->get('/deletere/{id}',"DeleteRePage");
+        $this->get('/editre/{id}',"EditRePage");
+        $this->post('/editre',"EditRePage");
         // User
         $this->get('/users',"UserListPage");
         $this->get('/adduser',"AddUserPage");
@@ -20,6 +27,8 @@ class Router {
         $this->get('/deleteuser/{id}',"DeleteUserPage");
         $this->get('/edituser/{id}',"EditUserPage");
         $this->post('/edituser',"EditUserPage");
+        $this->get('/blockuser/{id}',"BlockUserPage");
+        $this->get('/enableuser/{id}',"EnableUserPage");
         // Category
         $this->get('/category',"CategoryListPage");
         $this->get('/addcategory',"AddCategoryPage");
@@ -46,8 +55,13 @@ class Router {
         $this->get('/centralproduct',"CentralProductPage");
         $this->get('/southproduct',"SouthProductPage");
         // Table
-        $this->get('/simple',"SimpleTablePage");
-        $this->get('/vip',"VipTablePage");
+        $this->get('/table',"TableListPage");
+        $this->get('/addtable',"AddTablePage");
+        $this->post('/addtable',"AddTablePage");
+        $this->get('/deletetable/{id}',"TableDeletePage");
+        $this->get('/edittable/{id}',"TableEditPage");
+        $this->post('/edittable',"TableEditPage");
+        $this->get('/enabletable/{id}',"TableEnablePage");
         //Profile
         $this->get('/profile',"ProfilePage");
         $this->get('/editprofileform',"EditProfileFormPage");
@@ -66,6 +80,13 @@ class Router {
         $this->get('/deletecart/{id}',"DeleteCartPage");
         $this->post('/checkout',"CheckoutPage");
         $this->get('/previousorder',"PreviousOrderPage");
+        $this->post('/showproduct',"ShowProductPage");
+        $this->post('/showprice',"ShowPricePage");
+        $this->post('/booking',"BookingPage");
+        // Reserve
+        $this->get('/singletable',"SingleTablePage");
+        $this->get('/doubletable',"DoubleTablePage");
+        $this->get('/othertable',"OtherTablePage");
     }
     
     public function get(string $url, $action) {

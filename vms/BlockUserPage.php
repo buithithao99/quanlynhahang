@@ -2,7 +2,7 @@
 namespace vms;
 use api\v1\UserAPI;
 
-class DeleteUserPage
+class BlockUserPage
 {
     public $userId;
     public function __construct($params = null)
@@ -10,6 +10,6 @@ class DeleteUserPage
         $this->userId = $params[0];
     }
     public function render() {
-        UserAPI::deleteUserById($this->userId);
+        UserAPI::blockUserById($this->userId);
     } 
 }

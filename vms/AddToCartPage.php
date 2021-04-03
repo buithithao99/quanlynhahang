@@ -22,19 +22,17 @@ class AddToCartPage
                         'item_price' => $_POST['price'],
                         'item_image' => $_POST['image'],
                         'item_description' => $_POST['description'],
-                        'item_qty' => $_POST['qty']
+                        'item_qty' => $_POST['qty'],
+                        'user_id' => $_POST['user_id'],
+                        'region_id' => $_POST['region_id']
                     ];
                     $_SESSION["shopping_cart"][$count] = $item_array;
-                    if(isset($_POST['region'])){
-                        header("Location: /".$_POST['region']."product");
-                    }else{
-                        header("Location: /simple");
+                    if(isset($_POST['region_name'])){
+                        header("Location: /".$_POST['region_name']."product");
                     }
                 }else{  
-                    if(isset($_POST['region'])){
-                        header("Location: /".$_POST['region']."product");
-                    }else{
-                        header("Location: /simple");
+                    if(isset($_POST['region_name'])){
+                        header("Location: /".$_POST['region_name']."product");
                     }
                 }
             }else{
@@ -44,13 +42,13 @@ class AddToCartPage
                     'item_price' => $_POST['price'],
                     'item_image' => $_POST['image'],
                     'item_description' => $_POST['description'],
-                    'item_qty' => $_POST['qty']
+                    'item_qty' => $_POST['qty'],
+                    'user_id' => $_POST['user_id'],
+                    'region_id' => $_POST['region_id']
                 ];
                 $_SESSION["shopping_cart"][0] = $item_array;
-                if(isset($_POST['region'])){
-                    header("Location: /".$_POST['region']."product");
-                }else{
-                    header("Location: /simple");
+                if(isset($_POST['region_name'])){
+                    header("Location: /".$_POST['region_name']."product");
                 }
             }
         }

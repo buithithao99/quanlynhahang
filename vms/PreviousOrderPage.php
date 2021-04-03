@@ -43,7 +43,7 @@ class PreviousOrderPage
 
                 <ul class="nav nav-pills nav-stacked">
                     <li><a href="/profile"> <i class="fa fa-user"></i> Thông tin cá nhân</a></li>
-                    <li><a href="/previousorder"> <i class="fa fa-calendar"></i> Thông tin đơn hàng <span class="label label-warning pull-right r-activity"><?= count($this->orders->message) ?></span></a></li>
+                    <li><a href="/previousorder"> <i class="fa fa-calendar"></i> Thông tin đơn hàng <span class="label label-warning pull-right r-activity"><?= isset($this->order->message)?count($this->orders->message):0; ?></span></a></li>
                     <li><a href="/editprofileform"> <i class="fa fa-edit"></i> Sửa thông tin cá nhân</a></li>
                 </ul>
             </div>
@@ -58,14 +58,8 @@ class PreviousOrderPage
                     }
                 ?>
                 <h1>Đơn hàng của bạn</h1>
-                <div class="row">
-                    <table>
-                        <tr>
-                            <th>Tên sản phẩm</th>
-                            <th>Giá tiền</th>
-                            <th>Số lượng</th>
-                        </tr>
-                    </table>
+                <div class="order-detail">
+                    <h1>Mã hóa đơn: </h1>
                 </div>
             </div>
         </div>

@@ -16,7 +16,7 @@ class HeaderComponent {
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <?php if($_SESSION['type']==='admin' || $_SESSION['temporary_type']==='admin'): ?>
+        <?php if($_SESSION['type']==='admin' || $_SESSION['temporary_type']==='admin' || $_SESSION['type']==='cashier' || $_SESSION['temporary_type']==='cashier'): ?>
             <a class="navbar-brand" href="/dashboard"><i class="fas fa-home"></i></a>
         <?php elseif($_SESSION['type']==='customer' || $_SESSION['type']==='serve' ||  $_SESSION['temporary_type']==='customer' ||  $_SESSION['temporary_type']==='serve'): ?>
             <a class="navbar-brand" href="/northproduct"><i class="fas fa-home"></i></a>
@@ -58,11 +58,13 @@ class HeaderComponent {
 
     <div class="navbar-default sidebar" role="navigation" style="position:fixed;">
         <div class="sidebar-nav navbar-collapse">
-            <ul class="nav" id="side-menu">
-                <?php if($_SESSION['type']==='admin' ||  $_SESSION['temporary_type']==='admin'): ?>
+            <ul class="nav" id="side-menu">   
+                    <?php if($_SESSION['type']==='cashier' || $_SESSION['temporary_type']==='cashier' || $_SESSION['type']==='admin' ||  $_SESSION['temporary_type']==='admin'): ?>
                     <li>
                         <a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Bảng điều khiển</a>
                     </li>
+                    <?php endif; ?>
+                    <?php if($_SESSION['type']==='admin' ||  $_SESSION['temporary_type']==='admin'): ?>
                     <li>
                         <a href="#"><i class="fas fa-list"></i> Danh mục<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
@@ -71,6 +73,30 @@ class HeaderComponent {
                             </li>
                             <li>
                                 <a href="/addcategory">Thêm danh mục</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fas fa-mountain"></i> Vùng miền<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="/region">Quản lý vùng miền</a>
+                            </li>
+                            <li>
+                                <a href="/addregion">Thêm vùng miền</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fas fa-chair"></i> Chỗ ngồi<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="/table">Quản lý chỗ ngồi</a>
+                            </li>
+                            <li>
+                                <a href="/addtable">Thêm chỗ ngồi</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
@@ -116,7 +142,7 @@ class HeaderComponent {
                     <!-- /.nav-second-level -->
                 </li>
                 <?php endif; ?>
-                <?php if($_SESSION['type']==='customer' || $_SESSION['type']==='cashier' || $_SESSION['type']==='serve' || $_SESSION['temporary_type']==='customer' || $_SESSION['temporary_type']==='cashier' || $_SESSION['temporary_type']==='serve'): ?>
+                <?php if($_SESSION['type']==='customer'|| $_SESSION['type']==='serve' || $_SESSION['temporary_type']==='customer' || $_SESSION['temporary_type']==='serve'): ?>
                     <li>
                         <a href="#"><i class="fas fa-utensils"></i> Món ăn/Thức uống<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
@@ -132,14 +158,19 @@ class HeaderComponent {
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
+                <?php endif; ?>
+                <?php if($_SESSION['type']==='customer'|| $_SESSION['type']==='serve' || $_SESSION['temporary_type']==='customer' || $_SESSION['temporary_type']==='serve'): ?>
                     <li>
                         <a href="#"><i class="fas fa-chair"></i> Đặt bàn<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="/simple">Hạng thường</a>
+                                <a href="/singletable">Đơn</a>
                             </li>
                             <li>
-                                <a href="/vip">Hạng vip</a>
+                                <a href="/doubletable">Đôi</a>
+                            </li>
+                            <li>
+                                <a href="/othertable">Từ 2 người trở lên</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->

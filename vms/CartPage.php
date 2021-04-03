@@ -51,6 +51,7 @@ class CartPage {
             </thead> 
             <tbody>
                 <?php if(!empty($_SESSION["shopping_cart"])): ?>
+                    <input type="hidden" name="data" value='<?= serialize($_SESSION["shopping_cart"]) ?>' />
                     <?php foreach($_SESSION["shopping_cart"] as $keys => $values): ?>
                         <tr> 
                             <td data-th="Product"> 
@@ -71,11 +72,7 @@ class CartPage {
                             </td>
                             <?php $this->qty+= $values['item_qty'] ?>
                             <?php $this->total += $values['item_price']*$values['item_qty']; ?>
-                            <input type="hidden" name="product" value='<?= serialize($values) ?>'    />
                     <?php endforeach; ?>
-                            <input type="hidden" name="product_qty" value="<?= $this->qty ?>" />
-                            <input type="hidden" name="total" value="<?= $this->total ?>" />
-                            <input type="hidden" value="<?= $_SESSION["user_id"]?>" name="user_id" />
                         </tr>  
                     <?php endif; ?>
                         <tr>

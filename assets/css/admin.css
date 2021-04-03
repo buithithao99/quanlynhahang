@@ -704,6 +704,14 @@ ul.summary-list > li:last-child  {
     width:50px;
     outline: none;
 }
+/* Table */
+.booking-button{
+    margin-bottom: 1rem;
+}
+.table-item-box {
+    margin-bottom: 2rem;
+    box-shadow: 2px 2px 5px 5px rgb(107, 102, 102);
+}
 /* Cart */
 @media screen and (max-width: 600px) { 
     table#cart tbody td .form-control { 
