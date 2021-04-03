@@ -758,13 +758,20 @@ class UserAPI
         foreach($orders as $row){
             $query = sprintf("INSERT INTO orders (`user_id`,`product_id`,`quantity`,`total`,`status`,`order_id`) VALUES ('%s','%s','%s','%s','%s','%s')",$row['user_id'],$row['item_id'],$row['item_qty'],$row['item_price']*$row['item_qty'],'complete',$ran_id);
             Mysqllib::mysql_post_data_from_query($conn, $query);
+            $select_query = sprintf("SELECT `quantity`-'%s' result FROM `products` WHERE `id`='%s'",$row['item_qty'],$row['item_id']);
+            $res = Mysqllib::mysql_get_data_from_query($conn, $select_query);
+            $update_query = sprintf("UPDATE `products` SET `quantity`='%s' WHERE id='%s'",
+            $res->message[0]['result'],
+            $row['item_id']
+            );
+            Mysqllib::mysql_post_data_from_query($conn, $update_query);
         }
         unset($_SESSION["shopping_cart"]);
         $_SESSION['checkout-success'] = "<div class='alert alert-success'>Thanh toán thành công  <span class='close'>&times;</span></div>";
         header("Location: /previousorder");
     }
 
-    public static function getAllOrder()
+    public static function getAllOrderById($user_id)
     {
         // Connect db
         $conn_resp = Database::connect_db();
@@ -772,8 +779,8 @@ class UserAPI
             return $conn_resp;
         }
         $conn = $conn_resp->message;
-    
-        $query = sprintf("SELECT * FROM `orders`");
+        $query = sprintf("SELECT orders.*,DATE(orders.created_at) order_day,products.name product_name,products.price product_price 
+        FROM `orders`,`products` WHERE `user_id` = '%s' AND products.id = orders.product_id",$conn->real_escape_string($user_id));
         $res = Mysqllib::mysql_get_data_from_query($conn, $query);
         return $res;
     }
@@ -849,7 +856,7 @@ class UserAPI
             $conn->real_escape_string($region->name),
             $conn->real_escape_string($region->id)
         );
-        Mysqllib::mysql_get_data_from_query($conn, $query);
+        Mysqllib::mysql_post_data_from_query($conn, $query);
         header("Location: /region");
     }
 
@@ -995,7 +1002,7 @@ class UserAPI
     
         $query = sprintf("DELETE FROM orders WHERE `id` = '%s'", $conn->real_escape_string($id));
         Mysqllib::mysql_post_data_from_query($conn, $query);
-        header("Location: /orders");
+        header("Location: /order");
     }
 
     public static function getTotalByDay(){

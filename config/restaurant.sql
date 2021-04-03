@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 03, 2021 at 04:34 AM
+-- Generation Time: Apr 03, 2021 at 08:58 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.34
 
@@ -31,6 +31,14 @@ CREATE TABLE `booking` (
   `user_id` int(11) NOT NULL,
   `table_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `booking`
+--
+
+INSERT INTO `booking` (`user_id`, `table_id`) VALUES
+(24, 3),
+(24, 6);
 
 -- --------------------------------------------------------
 
@@ -11450,7 +11458,9 @@ INSERT INTO `orders` (`id`, `user_id`, `product_id`, `quantity`, `total`, `statu
 (1, 24, 5, 1, 30000, 'complete', '2021-04-02 17:32:35', '2021-04-03 00:32:35', 1496812076),
 (2, 24, 2, 1, 20000, 'complete', '2021-04-02 17:33:09', '2021-04-03 00:33:09', 1496812076),
 (3, 24, 5, 1, 30000, 'complete', '2021-04-03 00:47:13', '2021-04-03 07:47:13', 1084117656),
-(4, 24, 2, 2, 40000, 'complete', '2021-04-03 00:47:13', '2021-04-03 07:47:13', 1084117656);
+(4, 24, 2, 2, 40000, 'complete', '2021-04-03 00:47:13', '2021-04-03 07:47:13', 1084117656),
+(5, 24, 5, 1, 30000, 'complete', '2021-04-03 05:31:50', '2021-04-03 12:31:50', 604475800),
+(6, 24, 5, 1, 30000, 'complete', '2021-04-03 05:38:20', '2021-04-03 12:38:20', 1606229405);
 
 -- --------------------------------------------------------
 
@@ -11475,11 +11485,11 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `category_id`, `name`, `price`, `description`, `image`, `active`, `quantity`, `region_id`) VALUES
-(1, 8, 'Bánh cuốn', '20000', '', '16173595503.jpg', 'enabled', 100, 3),
+(1, 8, 'Bánh cuốn', '20000', '', '16173595503.jpg', 'enabled', 99, 3),
 (2, 8, 'Thịt nướng', '20000', '', '16173595181.jpg', 'enabled', 100, 4),
 (3, 9, 'Bánh canh', '10000', '', '16173484603.jpg', 'enabled', 100, 3),
 (4, 8, 'Bún đậu', '20000', '', '16173806016.jpg', 'enabled', 100, 3),
-(5, 8, 'Thịt heo', '30000', '', '161738065912.jpg', 'enabled', 200, 2);
+(5, 8, 'Thịt heo', '30000', '', '161738065912.jpg', 'enabled', 100, 2);
 
 -- --------------------------------------------------------
 
@@ -11519,10 +11529,10 @@ CREATE TABLE `tables` (
 
 INSERT INTO `tables` (`id`, `type`, `active`) VALUES
 (2, 'other', 'enabled'),
-(3, 'single', 'enabled'),
+(3, 'single', 'disabled'),
 (4, 'single', 'enabled'),
 (5, 'single', 'enabled'),
-(6, 'double', 'enabled'),
+(6, 'double', 'disabled'),
 (7, 'other', 'enabled');
 
 -- --------------------------------------------------------
@@ -11554,7 +11564,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `password`, `email`, `firstname`, `lastname`, `phone`, `gender`, `type`, `city`, `district`, `commune`, `status`, `active`, `img`) VALUES
 (21, '$2y$10$ME2jKg8r7bj4PJGA///Z0u/rLXhzIJV98UfonOWIU/v/nInVtOQ2.', 'nguyenhuuluan17@gmail.com', 'Luân', 'Nguyễn', '0898103236', 'male', 'admin', '26', '247', '08875', 'verify', 'enabled', '1617345477luan.jpg'),
-(22, '$2y$10$6v7kdErkTlSC3qXrd8LJtuKNqxZa0AV9dVnn41TV5Ek8OWvKV1ny6', 'hyquynh123@gmail.com', 'Quỳnh', 'Liêu', '0123513131', 'male', 'cashier', '20', '182', '06166', 'verify', 'enabled', '1617351068quynh.jpg'),
+(22, '$2y$10$6v7kdErkTlSC3qXrd8LJtuKNqxZa0AV9dVnn41TV5Ek8OWvKV1ny6', 'hyquynh123@gmail.com', 'Quỳnh', 'Liêu', '0123513131', 'male', 'serve', '20', '182', '06166', 'verify', 'enabled', '1617351068quynh.jpg'),
 (24, '$2y$10$I9mSJ1kKH4fMETHyW0MS9uaKVOlS7LNQD5iytDM.bc80xiIAAo716', 'luannh@magenest.com', 'Hưng', 'Nguyễn', '0898103236', 'male', 'customer', '24', '221', '07738', 'verify', 'enabled', '1617380792hang.jpg');
 
 --
@@ -11643,7 +11653,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `region`

@@ -58,7 +58,20 @@ class ProductListPage {
                     <td><?= $row['quantity'] ?></td>
                     <td><?= $row['region_name'] ?></td>
                     <td><?= $row['active'] ?></td>
-                    <td class="center"><i class="fas fa-trash"></i> <a href="/deletepro/<?= $row['id'] ?>"> Delete</a></td>
+                    <td class="center"><i class="fas fa-trash"></i> <a data-href="/deletepro/<?= $row['id'] ?>" data-target="#confirm-delete" data-toggle="modal"> Delete</a></td>
+                    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    Bạn có chắc chắn sẽ muốn xóa sản phẩm này ?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    <a class="btn btn-danger btn-ok">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <td class="center"><i class="fas fa-edit"></i> <a href="/editpro/<?= $row['id'] ?>">Edit</a></td>
                 </tr>
             <?php endforeach; ?>

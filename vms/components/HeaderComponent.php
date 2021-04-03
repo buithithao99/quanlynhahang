@@ -89,18 +89,24 @@ class HeaderComponent {
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
-                    <li>
-                        <a href="#"><i class="fas fa-chair"></i> Chỗ ngồi<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/table">Quản lý chỗ ngồi</a>
-                            </li>
-                            <li>
-                                <a href="/addtable">Thêm chỗ ngồi</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
+                    <?php endif; ?>
+                    <?php if($_SESSION['type']==='serve' ||  $_SESSION['temporary_type']==='serve'): ?>
+                        <li>
+                            <a href="#"><i class="fas fa-chair"></i> Chỗ ngồi<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="/table">Quản lý chỗ ngồi</a>
+                                </li>
+                            <?php if($_SESSION['type']==='admin' ||  $_SESSION['temporary_type']==='admin'): ?>
+                                <li>
+                                    <a href="/addtable">Thêm chỗ ngồi</a>
+                                </li>
+                            <?php endif; ?>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                    <?php endif; ?>
+                    <?php if($_SESSION['type']==='admin' ||  $_SESSION['temporary_type']==='admin'): ?>
                     <li>
                         <a href="#"><i class="fas fa-box-open"></i> Sản phẩm<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
@@ -125,7 +131,7 @@ class HeaderComponent {
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
-                <?php endif; ?>
+                    <?php endif; ?>
                 <?php if($_SESSION['type']==='admin' || $_SESSION['type']==='cashier' ||  $_SESSION['temporary_type']==='admin' ||  $_SESSION['temporary_type']==='cashier'): ?>
                 <li>
                     <a href="#"><i class="fas fa-receipt"></i> Đặt hàng<span class="fa arrow"></span></a>

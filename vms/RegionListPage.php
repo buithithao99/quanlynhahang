@@ -43,7 +43,20 @@ class RegionListPage {
                 <tr class="even gradeC" align="center">
                     <td><?= $row['id'] ?></td>
                     <td><?= $row['name'] ?></td>
-                    <td class="center"><i class="fas fa-trash"></i> <a href="/deletere/<?= $row['id'] ?>">Delete</a></td>
+                    <td class="center"><i class="fas fa-trash"></i> <a data-href="/deletere/<?= $row['id'] ?>" data-target="#confirm-delete" data-toggle="modal">Delete</a></td>
+                    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    Bạn có chắc chắn sẽ muốn xóa vùng miền này ?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    <a class="btn btn-danger btn-ok">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <td class="center"><i class="fas fa-edit"></i> <a href="/editre/<?= $row['id'] ?>">Edit</a></td>
                 </tr>
             <?php endforeach; ?>
