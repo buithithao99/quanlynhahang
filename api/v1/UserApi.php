@@ -1104,4 +1104,17 @@ class UserAPI
         $res = Mysqllib::mysql_get_data_from_query($conn, $query);
         return $res;
     }
+
+    public static function getAllOrder()
+    {
+        // Connect db
+        $conn_resp = Database::connect_db();
+        if (!$conn_resp->status) {
+            return $conn_resp;
+        }
+        $conn = $conn_resp->message;
+        $query = sprintf("SELECT * FROM orders");
+        $res = Mysqllib::mysql_get_data_from_query($conn, $query);
+        return $res;
+    }
 }
