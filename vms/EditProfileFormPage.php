@@ -24,7 +24,7 @@ class EditProfileFormPage
         $template = new AdminTemplate();
         if(isset($_POST['submit'])){
             $user = new UserModel($_POST,$_FILES);
-            $res = UserAPI::update($user,$_SESSION['user_id']);
+            UserAPI::updateProfile($user,$_SESSION['user_id']);
         }
         $template->renderChild($this);
     }

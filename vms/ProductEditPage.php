@@ -7,6 +7,8 @@ use models\ProductModel;
 class ProductEditPage {
     public $rows;
     public $cate;
+    public $productId;
+    public $region;
     public function __construct($params = null) {
         session_start();
         if(!isset($_SESSION['user_id'])){
@@ -15,6 +17,7 @@ class ProductEditPage {
         $this->title  = "Sửa sản phẩm";
         $this->rows = UserAPI::getProductById($params[0]);
         $this->cate = UserAPI::getAllCategory();
+        $this->region = UserAPI::getAllRegion();
     }
 
     // Khai báo template và truyền bản thân vào template cha
@@ -39,7 +42,7 @@ class ProductEditPage {
         </div>
         <div class="col-lg-7">
             <form action="/editpro" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="id" value="<?= $row['id'] ?>"/>
+                <input type="hidden" name="id" value="<?= $row['id'] ?>" />
                 <div class="form-group">
                     <label>Tên</label>
                     <input type="text" class="form-control" name="name" placeholder="Nhập tên sản phẩm" value="<?= $row['name'] ?>" required>
@@ -58,20 +61,32 @@ class ProductEditPage {
                 </div>
                 <div class="form-group">
                     <label>Vùng miền</label>
-                    <select class="form-control" name="region" id="region" required>
-                        <?php if($row['region'] === "north"): ?>
-                            <option value="north" selected>Miền Bắc</option>
-                            <option value="central">Miền Trung</option>
-                            <option value="south">Miền Nam</option>
-                        <?php elseif($row['region'] === "central"): ?>
-                            <option value="north">Miền Bắc</option>
-                            <option value="central" selected>Miền Trung</option>
-                            <option value="south">Miền Nam</option>
-                        <?php elseif($row['region'] === "south"): ?>
-                            <option value="north">Miền Bắc</option>
-                            <option value="central">Miền Trung</option>
-                            <option value="south" selected>Miền Nam</option>
-                        <?php endif; ?>
+                    <select class="form-control" name="region_id" id="region_id" required>
+                        <?php foreach($this->region->message as $region): ?>
+                            <?php if($region['id'] === $row['region_id']): ?>
+                                <?php 
+                                    if($region['name']==='north'){
+                                        $result = 'Miền Bắc';
+                                    }elseif($region['name']==='south'){
+                                        $result = 'Miền Nam';
+                                    }elseif($region['name']==='central'){
+                                        $result = 'Miền Bắc';
+                                    }
+                                ?>
+                                <option value="<?= $region['id'] ?>" selected><?= $result ?></option>
+                            <?php else: ?>
+                                <?php 
+                                    if($region['name']==='north'){
+                                        $result = 'Miền Bắc';
+                                    }elseif($region['name']==='south'){
+                                        $result = 'Miền Nam';
+                                    }elseif($region['name']==='central'){
+                                        $result = 'Miền Bắc';
+                                    }
+                                ?>
+                                <option value="<?= $region['id'] ?>"><?= $result ?></option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="form-group">

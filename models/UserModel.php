@@ -27,6 +27,8 @@ class UserModel {
         $this->commune = $user['commune'];
         $this->type = $user['type'];
         $this->image = $file['image'];
-        $this->id = $user['id'];
+        if(isset($user['id'])){
+            $this->id = $user['id'];
+        }
     }
 }

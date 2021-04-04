@@ -502,7 +502,7 @@ class UserAPI
         }
         $conn = $conn_resp->message;
     
-        $query = sprintf("SELECT * FROM `products` WHERE `id`='%s'", $conn->real_escape_string($productId));
+        $query = sprintf("SELECT p.* FROM products p WHERE p.id ='%s'", $conn->real_escape_string($productId));
         $res = Mysqllib::mysql_get_data_from_query($conn, $query);
         return $res;
     }
@@ -520,7 +520,7 @@ class UserAPI
         $price = $conn->real_escape_string($product->price);
         $description =  $conn->real_escape_string($product->description);
         $active = $conn->real_escape_string($product->active);
-        $region = $conn->real_escape_string($product->region);
+        $region = $conn->real_escape_string($product->region_id);
         $quantity = $conn->real_escape_string($product->quantity);
         $baseUrl = substr(dirname(__FILE__), 0, strpos(dirname(__FILE__), 'api'));
         if (isset($product->image)) {
@@ -541,7 +541,7 @@ class UserAPI
                         // Query
                         $update_query = sprintf(
                             "UPDATE products 
-                            SET `category_id`='%s',`name`='%s',`price`='%s',`description`='%s',`active`='%s',`region`='%s',`image`='%s',`quantity`='%s'
+                            SET `category_id`='%s',`name`='%s',`price`='%s',`description`='%s',`active`='%s',`region_id`='%s',`image`='%s',`quantity`='%s'
                             WHERE id='%s'",
                             $category_id,
                             $name,
@@ -1115,6 +1115,67 @@ class UserAPI
         $conn = $conn_resp->message;
         $query = sprintf("SELECT * FROM orders");
         $res = Mysqllib::mysql_get_data_from_query($conn, $query);
+        return $res;
+    }
+
+    public static function updateProfile($user,$id)
+    {
+        // Connect db
+        $conn_resp = Database::connect_db();
+        if (!$conn_resp->status) {
+            return $conn_resp;
+        }
+        $conn = $conn_resp->message;
+        $firstname = $conn->real_escape_string($user->firstname);
+        $lastname = $conn->real_escape_string($user->lastname);
+        $gender = $conn->real_escape_string($user->gender);
+        $phone = $conn->real_escape_string($user->phone);
+        $city = $conn->real_escape_string($user->city);
+        $district = $conn->real_escape_string($user->district);
+        $commune = $conn->real_escape_string($user->commune);
+
+        $baseUrl = substr(dirname(__FILE__), 0, strpos(dirname(__FILE__), 'api'));
+        if (isset($user->image)) {
+            $fileImg = $user->image;
+            $img_name = $fileImg['name'];
+            $img_type = $fileImg['type'];
+            $tmp_name = $fileImg['tmp_name'];
+            
+            $img_explode = explode('.', $img_name);
+            $img_ext = end($img_explode);
+
+            $extensions = ["jpeg", "png", "jpg"];
+            if (in_array($img_ext, $extensions) === true) {
+                $types = ["image/jpeg", "image/jpg", "image/png"];
+                if (in_array($img_type, $types) === true) {
+                    $time = time();
+                    $new_img_name = $time.$img_name;
+                    if (move_uploaded_file($tmp_name, str_replace('\\', '/', $baseUrl)."/images/user/".$new_img_name)) {
+                        // Query
+                        $update_query = sprintf(
+                            "UPDATE `users` SET `firstname`='%s',`lastname`='%s',`phone`='%s',`city`='%s',`district`='%s',`gender`='%s',`commune`='%s',`img`='%s' WHERE `id` = '%s'",
+                            $firstname,
+                            $lastname,
+                            $phone,
+                            $city,
+                            $district,
+                            $gender,
+                            $commune,
+                            $new_img_name,
+                            $id
+                        );
+                        $res = Mysqllib::mysql_post_data_from_query($conn, $update_query);
+                        if ($res->status) {
+                            header("Location: /profile");
+                        }
+                    }
+                } else {
+                    return "Invalid type";
+                }
+            } else {
+                return "Invalid extension";
+            }
+        }
         return $res;
     }
 }
