@@ -27,13 +27,13 @@ class AddUserPage {
                 $user = new UserModel($_POST,$_FILES);
                 $res = UserAPI::saveUserByAdmin($user);
                 if($res === "Invalid password"){
-                  $_SESSION['error'] = "<div class='error-text'>Password must have uppercase letter, lower letter and number. <span class='close'>&times;</span></div>";
+                  $_SESSION['error_add'] = "<div class='alert alert-danger'>Password must have uppercase letter, lower letter and number. <span class='close'>&times;</span></div>";
                 }
             }else{
-                $_SESSION['error'] = "<div class='error-text'>$email - This email already exist! <span class='close'>&times;</span></div>";
+                $_SESSION['error_add'] = "<div class='alert alert-danger'>$email - This email already exist! <span class='close'>&times;</span></div>";
             }  
           }else{
-            $_SESSION['error'] = "<div class='error-text'>$email is not a valid email! <span class='close'>&times;</span></div>";
+            $_SESSION['error_add'] = "<div class='alert alert-danger'>$email is not a valid email! <span class='close'>&times;</span></div>";
           }
         }
         $template->renderChild($this);
@@ -50,6 +50,7 @@ class AddUserPage {
     </div>
     <div class="col-lg-7">
         <form action="/adduser" method="POST" enctype="multipart/form-data">
+            <?= isset($_SESSION['error_add']) ? $_SESSION['error_add']:"" ?>
             <div class="row">
                 <div class="form-group col-md-6">
                     <label>Tên</label>

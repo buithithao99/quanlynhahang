@@ -53,7 +53,7 @@ class AddOrderPage {
             </div>
             <div class="form-group">
                 <label>Giá cả</label>
-                <input type="text" class="form-control" name="price" id="price" value=0 disabled>
+                <input type="text" class="form-control" name="price" id="price" disabled>
             </div>
             <div class="form-group">
                 <label>Số lượng</label>
@@ -61,7 +61,7 @@ class AddOrderPage {
             </div>
             <div class="form-group">
                 <label>Tổng tiền</label>
-                <input type="text" class="form-control" name="total" id="total" value=0 disabled>
+                <input type="text" class="form-control" name="total" id="total" disabled>
             </div>
             <div class="form-group">
                 <label>Trạng thái</label>

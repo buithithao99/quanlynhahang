@@ -13,8 +13,10 @@ class ShowProductPage
     // Khai báo template và truyền bản thân vào template cha
     public function render()
     {
-        foreach ($this->rows->message as $row) {
-            echo "<option value='".$row['id']."'>".$row['name']."</option>";
+        if(isset($this->rows->message)){
+            foreach ($this->rows->message as $row) {
+                echo "<option value='".$row['id']."'>".$row['name']."</option>";
+            }
         }
     }
 }
