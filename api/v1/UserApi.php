@@ -986,7 +986,8 @@ class UserAPI
         $conn = $conn_resp->message;
         $res = UserAPI::getUserByEmail($conn->real_escape_string($order->email));
         $user_id = $res->message[0]['id'];
-        $query = sprintf("INSERT INTO orders (`user_id`,`product_id`,`quantity`,`total`,`status`) VALUES ('%s','%s','%s','%s','%s')",$user_id,$conn->real_escape_string($order->product_id),$conn->real_escape_string($order->quantity),$conn->real_escape_string($order->total),$conn->real_escape_string($order->status));
+        $ran_id = rand(time(), 100000000);
+        $query = sprintf("INSERT INTO orders (`user_id`,`product_id`,`quantity`,`total`,`status`,`order_id`) VALUES ('%s','%s','%s','%s','%s','%s')",$user_id,$conn->real_escape_string($order->product_id),$conn->real_escape_string($order->quantity),$conn->real_escape_string($order->total),$conn->real_escape_string($order->status),$ran_id);
         Mysqllib::mysql_post_data_from_query($conn, $query);
         header("Location: /order");
     }
@@ -1177,5 +1178,41 @@ class UserAPI
             }
         }
         return $res;
+    }
+
+    public static function getOrderById($orderId)
+    {
+        // Connect db
+        $conn_resp = Database::connect_db();
+        if (!$conn_resp->status) {
+            return $conn_resp;
+        }
+        $conn = $conn_resp->message;
+    
+        $query = sprintf("SELECT o.*,p.category_id cate_id FROM orders o,products p WHERE o.id= '%s' AND o.product_id=p.id", $conn->real_escape_string($orderId));
+        $res = Mysqllib::mysql_get_data_from_query($conn, $query);
+        return $res;
+    }
+
+    public static function updateOrderById($order)
+    {
+        // Connect db
+        $conn_resp = Database::connect_db();
+        if (!$conn_resp->status) {
+            return $conn_resp;
+        }
+        $conn = $conn_resp->message;
+        $query = sprintf(
+            "UPDATE orders 
+            SET `product_id`='%s',`quantity`='%s',`total`='%s',`status`='%s'
+            WHERE id='%s'",
+            $conn->real_escape_string($order->product_id),
+            $conn->real_escape_string($order->quantity),
+            $conn->real_escape_string($order->total),
+            $conn->real_escape_string($order->status),
+            $conn->real_escape_string($order->id)
+        );
+        Mysqllib::mysql_get_data_from_query($conn, $query);
+        header("Location: /order");
     }
 }
