@@ -90,7 +90,7 @@ class HeaderComponent {
                         <!-- /.nav-second-level -->
                     </li>
                     <?php endif; ?>
-                    <?php if($_SESSION['type']==='serve' ||  $_SESSION['temporary_type']==='serve'): ?>
+                    <?php if($_SESSION['type']==='serve' ||  $_SESSION['temporary_type']==='serve' || $_SESSION['type']==='admin' ||  $_SESSION['temporary_type']==='admin'): ?>
                         <li>
                             <a href="#"><i class="fas fa-chair"></i> Chỗ ngồi<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">

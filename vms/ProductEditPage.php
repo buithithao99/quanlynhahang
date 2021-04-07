@@ -70,7 +70,7 @@ class ProductEditPage {
                                     }elseif($region['name']==='south'){
                                         $result = 'Miền Nam';
                                     }elseif($region['name']==='central'){
-                                        $result = 'Miền Bắc';
+                                        $result = 'Miền Trung';
                                     }
                                 ?>
                                 <option value="<?= $region['id'] ?>" selected><?= $result ?></option>

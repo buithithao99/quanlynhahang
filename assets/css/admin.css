@@ -5,11 +5,12 @@
  */
 
 body {
-    background-color: #f8f8f8;
+    background-color: 	#E0FFFF;
 }
 
 #wrapper {
     width: 100%;
+    background: #97be4b;
 }
 
 #page-wrapper {
@@ -24,6 +25,11 @@ body {
         padding: 0 30px;
         border-left: 1px solid #e7e7e7;
     }
+}
+
+.navbar-default {
+    background-color: #82CAFA;
+    border-color: #e7e7e7;
 }
 
 .navbar-top-links {
