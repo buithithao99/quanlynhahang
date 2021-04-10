@@ -77,6 +77,7 @@ class Router {
         $this->get('/logout',"LogoutPage");
         $this->post('/addtocart',"AddToCartPage");
         $this->get('/cart',"CartPage");
+        $this->get('/cartonline',"CartOnlinePage");
         $this->get('/deletecart/{id}',"DeleteCartPage");
         $this->post('/checkout',"CheckoutPage");
         $this->get('/previousorder',"PreviousOrderPage");
@@ -94,6 +95,9 @@ class Router {
         $this->get('/refersouth',"ReferSouthProduct");
         $this->get('/refernorth',"ReferNorthProduct");
         $this->get('/refercentral',"ReferCentralProduct");
+        // Payment
+        $this->get('/payment',"PaymentPage");
+        $this->post('/payment',"PaymentPage");
     }
     
     public function get(string $url, $action) {

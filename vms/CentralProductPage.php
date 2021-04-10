@@ -10,7 +10,7 @@ class CentralProductPage {
         if(!isset($_SESSION['user_id'])){
             header("Location: /");
         }
-        $this->title  = "Món ăn miền Trung";
+        $this->title  = "Ẩm thực miền Trung";
         $this->rows = UserAPI::getProductCentral();
     }
 
@@ -25,7 +25,7 @@ class CentralProductPage {
 ?>
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Món ăn
+        <h1 class="page-header">Ẩm thực
             <small>Miền Trung</small>
         </h1>
     </div>

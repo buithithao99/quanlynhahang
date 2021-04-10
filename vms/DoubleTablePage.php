@@ -24,7 +24,6 @@ class DoubleTablePage {
     </div>
 </div>
 <div class="row">
-    <?= isset($_SESSION['booking']) ? $_SESSION['booking']:'' ?>
     <?php  foreach($this->rows->message as $row): ?>
         <?php
             $res = UserAPI::getStatusFromTable($row['id']);

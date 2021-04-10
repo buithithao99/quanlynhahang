@@ -20,17 +20,6 @@ class HeaderHomeComponent {
     <!-- /.navbar-header -->
     <ul class="nav navbar-top-links navbar-right">
         <!-- /.dropdown -->
-
-        <li class="nav-item">
-            <a class="nav-link" href="/cart">
-                <?php if($_SESSION["type"] === "customer" ||  $_SESSION['temporary_type']==='customer'): ?>
-                    <i class="fas fa-shopping-cart"></i>
-                <?php endif; ?>
-                <?php if(!empty($_SESSION["shopping_cart"])): ?>
-                    <span class="quantity"><?= count($_SESSION["shopping_cart"]) ?></span>
-                <?php endif; ?>
-            </a>
-        </li>
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>

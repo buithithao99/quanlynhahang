@@ -9,7 +9,7 @@ class NorthProductPage {
         if(!isset($_SESSION['user_id'])){
             header("Location: /");
         }
-        $this->title  = "Món ăn miền Bắc";
+        $this->title  = "Ẩm thực miền Bắc";
         $this->rows = UserAPI::getProductNorth();
     }
 
@@ -24,7 +24,7 @@ class NorthProductPage {
 ?>
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Món ăn
+        <h1 class="page-header">Ẩm thực
             <small>Miền Bắc</small>
         </h1>
     </div>

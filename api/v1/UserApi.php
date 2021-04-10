@@ -1056,7 +1056,6 @@ class UserAPI
             $conn->real_escape_string($booking->table_id)
         );
          Mysqllib::mysql_post_data_from_query($conn, $update_query);
-         $_SESSION['booking'] = "<div class='alert alert-success'>Đặt bàn thành công  <span class='close'>&times;</span></div>";
          header("Location: /northproduct");
     }
 
@@ -1296,5 +1295,20 @@ class UserAPI
             Mysqllib::mysql_post_data_from_query($conn, $update_query);
         }
         header("Location: /homepage");
+    }
+
+    public static function payment($detail){
+        // Connect db
+        $conn_resp = Database::connect_db();
+        if (!$conn_resp->status) {
+            return $conn_resp;
+        }
+        $conn = $conn_resp->message;
+        
+        $insert_query = sprintf("INSERT INTO `payment` (`email`, amount, `currency_code`, `txn_id`, `payment_status`, `payment_response`) values ('%s', '%s', '%s', '%s', '%s', '%s')", $detail[0], $detail[1], $detail[2], $detail[3], $detail[4], $detail[5]);
+        $res = Mysqllib::mysql_get_data_from_query($conn, $insert_query);
+        if ($res->status) {
+            return $res;
+        }
     }
 }

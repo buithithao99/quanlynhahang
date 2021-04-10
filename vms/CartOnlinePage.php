@@ -2,7 +2,7 @@
 namespace vms;
 use vms\templates\AdminTemplate;
 
-class CartPage {
+class CartOnlinePage {
 
     public $total;
     public $qty;
@@ -35,7 +35,7 @@ class CartPage {
     </div>
     <!-- /.col-lg-12 -->
 </div>
-    <form action="/checkout" method="POST" enctype="multipart/form-data">
+    <form action="/payment" method="POST" enctype="multipart/form-data">
         <div class="col-lg-12"> 
             <table id="cart" class="table table-hover table-condensed"> 
                 <thead> 
@@ -76,9 +76,9 @@ class CartPage {
                         <tr>
                             <td><a href="/northproduct" class="btn btn-warning"><i class="fa fa-angle-left"></i> Tiếp tục mua hàng</a></td> 
                             <td colspan="2" class="hidden-xs"></td> 
-                            <td class="hidden-xs text-center"><strong>Tổng tiền <?= number_format( $this->total, 0, '', ',') ?></strong></td>
+                            <td class="hidden-xs text-center"><strong>Tổng tiền <?= number_format( $this->total, 0, '', ',') ?></strong></td> 
                             <?php if(!empty($_SESSION["shopping_cart"])): ?>
-                                <td><button type="submit" name="submit" class="btn btn-success btn-block">Xác nhận đơn hàng <i class="fa fa-angle-right"></i></button></td> 
+                                <td><button type="submit" name="submit" class="btn btn-success btn-block">Thanh toán điện tử <i class="fa fa-angle-right"></i></button></td> 
                             <?php endif; ?>
                         </tr>
                 </tbody> 

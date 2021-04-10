@@ -19,7 +19,11 @@ class HeaderComponent {
         <?php if($_SESSION['type']==='admin' || $_SESSION['temporary_type']==='admin' || $_SESSION['type']==='cashier' || $_SESSION['temporary_type']==='cashier'): ?>
             <a class="navbar-brand" href="/dashboard"><i class="fas fa-home"></i></a>
         <?php elseif($_SESSION['type']==='customer' || $_SESSION['temporary_type']==='customer'): ?>
-            <a class="navbar-brand" href="/return/<?= $_SESSION['user_id'] ?>"><i class="fas fa-home"></i></a>
+            <?php if(!empty($_SESSION['checkout-success'])): ?>
+                <a class="navbar-brand" href="/homepage"><i class="fas fa-home"></i></a>
+            <?php else: ?>
+                <a class="navbar-brand" href="/return/<?= $_SESSION['user_id'] ?>"><i class="fas fa-home"></i></a>
+            <?php endif; ?>
         <?php else: ?>
             <a class="navbar-brand" href="/order"><i class="fas fa-home"></i></a>
         <?php endif; ?>
@@ -28,17 +32,24 @@ class HeaderComponent {
 
     <ul class="nav navbar-top-links navbar-right">
         <!-- /.dropdown -->
-
-        <li class="nav-item">
-            <a class="nav-link" href="/cart">
-                <?php if($_SESSION["type"] === "customer" ||  $_SESSION['temporary_type']==='customer'): ?>
-                    <i class="fas fa-shopping-cart"></i>
-                <?php endif; ?>
-                <?php if(!empty($_SESSION["shopping_cart"])): ?>
-                    <span class="quantity"><?= count($_SESSION["shopping_cart"]) ?></span>
-                <?php endif; ?>
-            </a>
-        </li>
+        <?php if($_SESSION["type"] === "customer" ||  $_SESSION['temporary_type']==='customer'): ?>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fas fa-shopping-cart"></i>  
+                    <?php if(!empty($_SESSION["shopping_cart"])): ?>
+                        <span class="quantity"><?= count($_SESSION["shopping_cart"]) ?></span>
+                    <?php endif; ?>
+                    <i class="fa fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li><a href="/cart">Thanh toán tiền mặt</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href="/cartonline">Thanh toán online</a>
+                    </li>
+                </ul>
+            </li>
+        <?php endif; ?>
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>

@@ -20,7 +20,9 @@ class AdminTemplate {
         $this->render();
     }
 
-    public function __construct($params = null) {}
+    public function __construct($params = null) {
+        require_once 'config\config.php';
+    }
 
     public function render() {
 ?>
@@ -187,6 +189,78 @@ class AdminTemplate {
         $('#confirm-paid').on('show.bs.modal', function(e) {
             $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
         });
+    </script>
+    <!-- Handle payment -->
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script>
+        function cardValidation() {
+            var valid = true;
+            var name = $('#name').val();
+            var email = $('#email').val();
+            var cardNumber = $('#card-number').val();
+            var month = $('#month').val();
+            var year = $('#year').val();
+            var cvc = $('#cvc').val();
+
+            $("#error-message").html("").hide();
+
+            if (name.trim() == "") {
+                valid = false;
+            }
+            if (email.trim() == "") {
+                valid = false;
+            }
+            if (cardNumber.trim() == "") {
+                valid = false;
+            }
+
+            if (month.trim() == "") {
+                valid = false;
+            }
+            if (year.trim() == "") {
+                valid = false;
+            }
+            if (cvc.trim() == "") {
+                valid = false;
+            }
+
+            if (valid == false) {
+                $("#error-message")
+                .html("<div class='alert alert-danger alert-dismissible' style='margin-bottom:1rem;'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>All fields are required</strong></div>").show();
+            }
+
+            return valid;
+        }
+
+        Stripe.setPublishableKey("<?php echo STRIPE_PUBLISHABLE_KEY; ?>");
+
+        function stripeResponseHandler(status, response) {
+            if (response.error) {
+                $("#submit-btn").show();
+                $("#error-message").html(response.error.message).show();
+            } else {
+                var token = response['id'];
+                $("#frmStripePayment").append("<input type='hidden' name='token' value='" + token + "' />");
+                $("#frmStripePayment").submit();
+            }
+        }
+
+        function stripePay(e) {
+            e.preventDefault();
+            var valid = cardValidation();
+
+            if (valid == true) {
+                $("#submit-btn").hide();
+                Stripe.createToken({
+                    number: $('#card-number').val(),
+                    cvc: $('#cvc').val(),
+                    exp_month: $('#month').val(),
+                    exp_year: $('#year').val()
+                }, stripeResponseHandler);
+
+                return false;
+            }
+        }
     </script>
     </html>
 <?php }}

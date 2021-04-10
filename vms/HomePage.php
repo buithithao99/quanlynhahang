@@ -4,6 +4,9 @@ use vms\templates\HomeTemplate;
 class HomePage {
     public function __construct($params = null) {
         $this->title  = "Trang chủ";
+        if(isset($_SESSION['booking'])){
+            unset($_SESSION['booking']);
+        }
     }
 
     // Khai báo template và truyền bản thân vào template cha
