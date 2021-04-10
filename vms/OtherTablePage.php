@@ -5,10 +5,6 @@ use api\v1\UserAPI;
 class OtherTablePage {
     public $rows;
     public function __construct($params = null) {
-        session_start();
-        if(!isset($_SESSION['user_id'])){
-            header("Location: /");
-        }
         $this->title  = "Danh sách bàn nhiều người";
         $this->rows = UserAPI::getOtherTable();
     }

@@ -75,8 +75,7 @@ class AddUserPage {
             <div class="form-group">
                 <label>Chức vụ</label>
                 <select class="form-control" name="type" id="type" required>
-                    <option value="cashier" selected>Thu ngân</option>
-                    <option value="serve">Phục vụ</option>
+                    <option value="cashier">Thu ngân</option>
                 </select>
             </div>
             <div class="form-group">

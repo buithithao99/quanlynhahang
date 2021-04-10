@@ -24,5 +24,7 @@ class DashBoardPage {
     // Đổi lại tên __render nếu dùng template cha
     public function __render() {
 ?>
-<div id="chart_div"></div>
+<div id="chart_day"></div>
+<div id="chart_month"></div>
+<div id="chart_year"></div>
 <?php }}

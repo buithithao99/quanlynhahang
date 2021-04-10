@@ -42,6 +42,7 @@ class EditRePage {
                     <input type="text" class="form-control" name="name" placeholder="Nhập tên vùng miền" value="<?= $row['name'] ?>" required>
                 </div>
                 <button type="submit" name="submit" class="btn btn-primary">Sửa</button>
+                <a type="button" href="/region" class="btn btn-danger">Quay lại</a>
             </form>
         </div>
     </div>

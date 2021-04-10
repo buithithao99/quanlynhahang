@@ -34,21 +34,25 @@ class OrderListPage {
         <thead>
             <tr align="center">
                 <th>Id</th>
-                <th>User Id</th>
-                <th>Product Id</th>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Product</th>
                 <th>Quantity</th>
                 <th>Total</th>
                 <th>Status</th>
                 <th>Delete</th>
                 <th>Edit</th>
+                <th>Cancel</th>
+                <th>Paid</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach($this->rows->message as $row): ?>
                 <tr class="even gradeC" align="center">
-                    <td><?= $row['id'] ?></td>
-                    <td><?= $row['user_id'] ?></td>
-                    <td><?= $row['product_id'] ?></td>
+                    <td><?= $row['order_id'] ?></td>
+                    <td><?= $row['email'] ?></td>
+                    <td><?= $row['firstname']." ".$row['lastname'] ?></td>
+                    <td><?= $row['product_name'] ?></td>
                     <td><?= $row['quantity'] ?></td>
                     <td><?= $row['total'] ?></td>
                     <td><?= $row['status'] ?></td>
@@ -67,6 +71,34 @@ class OrderListPage {
                         </div>
                     </div>
                     <td class="center"><i class="fas fa-edit"></i> <a href="/editorder/<?= $row['id'] ?>">Edit</a></td>
+                    <td class="center"><i class="fas fa-ban"></i> <a data-href="/cancelorder/<?= $row['order_id'] ?>" data-target="#confirm-cancel" data-toggle="modal"> Cancel</a></td>
+                    <div class="modal fade" id="confirm-cancel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    Bạn có chắc chắn sẽ muốn hủy đơn đặt hàng này ?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    <a class="btn btn-danger btn-ok">OK</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <td class="center"><i class="fas fa-shopping-bag"></i> <a data-href="/paid/<?= $row['order_id'] ?> " data-target="#confirm-paid" data-toggle="modal">Paid</a></td>
+                    <div class="modal fade" id="confirm-paid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    Bạn có chắc chắn muốn xác nhận đơn hàng này đã thanh toán
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    <a class="btn btn-danger btn-ok">OK</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </tr>
             <?php endforeach; ?>
         </tbody>

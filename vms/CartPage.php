@@ -79,7 +79,7 @@ class CartPage {
                             <td><a href="/northproduct" class="btn btn-warning"><i class="fa fa-angle-left"></i> Tiếp tục mua hàng</a></td> 
                             <td colspan="2" class="hidden-xs"></td> 
                             <td class="hidden-xs text-center"><strong>Tổng tiền <?= number_format( $this->total, 0, '', ',') ?></strong></td> 
-                            <td><button type="submit" name="submit" class="btn btn-success btn-block">Thanh toán <i class="fa fa-angle-right"></i></button></td> 
+                            <td><button type="submit" name="submit" class="btn btn-success btn-block">Thanh toán điện tử <i class="fa fa-angle-right"></i></button></td> 
                         </tr>
             </tbody> 
         </table>

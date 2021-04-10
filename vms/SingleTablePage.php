@@ -1,21 +1,17 @@
 <?php
 namespace vms;
-use vms\templates\AdminTemplate;
+use vms\templates\HomeTemplate;
 use api\v1\UserAPI;
 class SingleTablePage {
     public $rows;
     public function __construct($params = null) {
-        session_start();
-        if(!isset($_SESSION['user_id'])){
-            header("Location: /");
-        }
         $this->title  = "Danh sách bàn đơn";
         $this->rows = UserAPI::getSingleTable();
     }
 
     // Khai báo template và truyền bản thân vào template cha
     public function render() {
-        $template = new AdminTemplate();
+        $template = new HomeTemplate();
         $template->renderChild($this);
     }
 

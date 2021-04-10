@@ -23,7 +23,7 @@ class LoginPage {
               }elseif($_SESSION['type'] === "cashier"){
                   header("Location: /order");
               }else{
-                  header("Location: /northproduct");
+                  header("Location: /homepage");
               }
           }else{
               header("Location: /");

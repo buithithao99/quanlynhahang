@@ -68,6 +68,7 @@ class TableEditPage {
                     </select>
                 </div>
                 <button type="submit" name="submit" class="btn btn-primary">Sửa</button>
+                <a type="button" href="/table" class="btn btn-danger">Quay lại</a>
             </form>
         </div>
     </div>

@@ -99,6 +99,7 @@ class EditUserPage
                     <input type="file" name="image" class="form-control-file" accept="image/x-png,image/gif,image/jpeg,image/jpg" required>
                 </div>
                 <button type="submit" name="submit" class="btn btn-primary">Cập nhật</button>
+                <a type="button" href="/users" class="btn btn-danger">Quay lại</a>
             </form>
         </div>
     </div>

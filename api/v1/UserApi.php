@@ -977,21 +977,6 @@ class UserAPI
          return $res;
     }
 
-    public static function addOrder($order){
-        // Connect db
-        $conn_resp = Database::connect_db();
-        if (!$conn_resp->status) {
-            return $conn_resp;
-        }
-        $conn = $conn_resp->message;
-        $res = UserAPI::getUserByEmail($conn->real_escape_string($order->email));
-        $user_id = $res->message[0]['id'];
-        $ran_id = rand(time(), 100000000);
-        $query = sprintf("INSERT INTO orders (`user_id`,`product_id`,`quantity`,`total`,`status`,`order_id`) VALUES ('%s','%s','%s','%s','%s','%s')",$user_id,$conn->real_escape_string($order->product_id),$conn->real_escape_string($order->quantity),$conn->real_escape_string($order->total),$conn->real_escape_string($order->status),$ran_id);
-        Mysqllib::mysql_post_data_from_query($conn, $query);
-        header("Location: /order");
-    }
-
     public static function deleteOrderById($id)
     {
         // Connect db
@@ -1072,7 +1057,7 @@ class UserAPI
         );
          Mysqllib::mysql_post_data_from_query($conn, $update_query);
          $_SESSION['booking'] = "<div class='alert alert-success'>Đặt bàn thành công  <span class='close'>&times;</span></div>";
-         header("Location: /singletable");
+         header("Location: /northproduct");
     }
 
     public static function enableTableById($id)
@@ -1114,7 +1099,7 @@ class UserAPI
             return $conn_resp;
         }
         $conn = $conn_resp->message;
-        $query = sprintf("SELECT * FROM orders");
+        $query = sprintf("SELECT o.*,p.name product_name,u.firstname,u.lastname,u.email FROM orders o,products p,users u WHERE o.product_id = p.id AND o.user_id = u.id");
         $res = Mysqllib::mysql_get_data_from_query($conn, $query);
         return $res;
     }
@@ -1204,15 +1189,112 @@ class UserAPI
         $conn = $conn_resp->message;
         $query = sprintf(
             "UPDATE orders 
-            SET `product_id`='%s',`quantity`='%s',`total`='%s',`status`='%s'
+            SET `product_id`='%s',`quantity`='%s',`total`='%s'
             WHERE id='%s'",
             $conn->real_escape_string($order->product_id),
             $conn->real_escape_string($order->quantity),
             $conn->real_escape_string($order->total),
-            $conn->real_escape_string($order->status),
             $conn->real_escape_string($order->id)
         );
         Mysqllib::mysql_get_data_from_query($conn, $query);
         header("Location: /order");
+    }
+
+    public static function cancelOrderById($id)
+    {
+        // Connect db
+        $conn_resp = Database::connect_db();
+        if (!$conn_resp->status) {
+            return $conn_resp;
+        }
+        $conn = $conn_resp->message;
+    
+        $query = sprintf("UPDATE orders SET status='%s' WHERE order_id='%s'", 'cancel', $id);
+        Mysqllib::mysql_post_data_from_query($conn, $query);
+        header("Location: /order");
+    }
+
+    public static function paidOrderById($id)
+    {
+        // Connect db
+        $conn_resp = Database::connect_db();
+        if (!$conn_resp->status) {
+            return $conn_resp;
+        }
+        $conn = $conn_resp->message;
+    
+        $query = sprintf("UPDATE orders SET status='%s' WHERE order_id='%s'", 'paid',$id);
+        Mysqllib::mysql_post_data_from_query($conn, $query);
+        $select_query = sprintf("SELECT u.email FROM orders o,users u WHERE o.user_id = u.id");
+        $res = Mysqllib::mysql_get_data_from_query($conn, $select_query);
+        $mail = new \mail\PHPMailer();
+        $mail->isSMTP();
+        $mail->Mailer = "smtp";
+        $mail->SMTPDebug  = 1;
+        $mail->SMTPAuth   = true;
+        $mail->SMTPSecure = "STARTTLS";
+        $mail->Port       = 587;
+        $mail->Host       = "smtp.gmail.com";
+        $mail->Username   = "restaurantsystem99@gmail.com";
+        $mail->Password   = "Buithithao99";
+        $mail ->CharSet = "UTF-8";
+        $mail->isHTML(true);
+        $mail->addAddress($res->message[0]['email']);
+        $mail->setFrom("restaurantsystem99@gmail.com", "Hệ thống quản lý nhà hàng");
+        $mail->Subject = "Thư cảm ơn";
+        $content = '<html>
+            <body>
+                <center>
+                    <p>
+                    Cảm ơn quý khách đã mua hàng của chúng tôi. Hẹn gặp lại quý khách trong các lần mua hàng tiếp theo
+                    </p>
+                </center>
+            </body>
+        </html>';
+        $mail->MsgHTML($content);
+        $mail->send();
+        header("Location: /order");
+    }
+
+    public static function getTotalByMonth(){
+        // Connect db
+       $conn_resp = Database::connect_db();
+       if (!$conn_resp->status) {
+           return $conn_resp;
+       }
+       $conn = $conn_resp->message;
+
+       $query = sprintf("SELECT sum(total),MONTH(created_at) FROM `orders` GROUP BY MONTH(created_at)");
+       $res = Mysqllib::mysql_get_data_from_query($conn, $query);
+       return $res;
+   }
+
+   public static function getTotalByYear(){
+        // Connect db
+        $conn_resp = Database::connect_db();
+        if (!$conn_resp->status) {
+            return $conn_resp;
+        }
+        $conn = $conn_resp->message;
+
+        $query = sprintf("SELECT sum(total),YEAR(created_at) FROM `orders` GROUP BY YEAR(created_at)");
+        $res = Mysqllib::mysql_get_data_from_query($conn, $query);
+        return $res;
+    }
+
+    public static function undoStatusTable($id){
+        // Connect db
+        $conn_resp = Database::connect_db();
+        if (!$conn_resp->status) {
+            return $conn_resp;
+        }
+        $conn = $conn_resp->message;
+        $select_query = sprintf("SELECT table_id FROM `booking` WHERE `user_id`='%s'",$id);
+        $res = Mysqllib::mysql_get_data_from_query($conn, $select_query);
+        foreach($res->message as $row){
+            $update_query = sprintf("UPDATE tables SET active='enabled' WHERE id='%s'",$row['table_id']);
+            Mysqllib::mysql_post_data_from_query($conn, $update_query);
+        }
+        header("Location: /homepage");
     }
 }

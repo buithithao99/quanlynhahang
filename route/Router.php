@@ -45,11 +45,11 @@ class Router {
         $this->post('/editpro',"ProductEditPage");
         // Order
         $this->get('/order',"OrderListPage");
-        $this->get('/addorder',"AddOrderPage");
-        $this->post('/addorder',"AddOrderPage");
         $this->get('/deleteorder/{id}',"OrderDeletePage");
         $this->get('/editorder/{id}',"OrderEditPage");
         $this->post('/editorder',"OrderEditPage");
+        $this->get('/cancelorder/{id}',"OrderCancelPage");
+        $this->get('/paid/{id}',"OrderPaidPage");
         // Food
         $this->get('/northproduct',"NorthProductPage");
         $this->get('/centralproduct',"CentralProductPage");
@@ -83,10 +83,17 @@ class Router {
         $this->post('/showproduct',"ShowProductPage");
         $this->post('/showprice',"ShowPricePage");
         $this->post('/booking',"BookingPage");
+        $this->get('/return/{id}',"ReturnPage");
         // Reserve
         $this->get('/singletable',"SingleTablePage");
         $this->get('/doubletable',"DoubleTablePage");
         $this->get('/othertable',"OtherTablePage");
+        // Home
+        $this->get('/homepage',"HomePage");
+        // Refer
+        $this->get('/refersouth',"ReferSouthProduct");
+        $this->get('/refernorth',"ReferNorthProduct");
+        $this->get('/refercentral',"ReferCentralProduct");
     }
     
     public function get(string $url, $action) {

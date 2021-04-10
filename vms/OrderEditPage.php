@@ -7,6 +7,7 @@ class OrderEditPage {
     public $rows;
     public $user;
     public $category;
+    public $product;
     public function __construct($params = null) {
         session_start();
         if(!isset($_SESSION['user_id'])){
@@ -16,6 +17,7 @@ class OrderEditPage {
         $this->user = UserAPI::getUserById($this->rows->message[0]['user_id']);
         $this->title  = "Sửa đơn hàng";
         $this->category = UserAPI::getAllCategory();
+        $this->product = UserAPI::getAllProduct();
     }
 
     // Khai báo template và truyền bản thân vào template cha
@@ -59,8 +61,17 @@ class OrderEditPage {
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Đồ ăn/Thức uống</label>
-                    <select class="form-control" name="product_id" id="product_id" required></select>
+                <label>Đồ ăn/thức uống</label>
+                    <select class="form-control" name="product_id" id="product_id" required>
+                        <option>Chọn đồ ăn/thức uống</option>
+                        <?php foreach($this->product->message as $product): ?>
+                            <?php if($product['id'] === $row['product_id']): ?>
+                                <option value="<?= $product['id'] ?>" selected><?= $product['name'] ?></option>
+                            <?php else: ?>
+                                <option value="<?= $product['id'] ?>"><?= $product['name'] ?></option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label>Giá cả</label>
@@ -72,21 +83,10 @@ class OrderEditPage {
                 </div>
                 <div class="form-group">
                     <label>Tổng tiền</label>
-                    <input type="text" class="form-control" name="total" id="total" disabled>
-                </div>
-                <div class="form-group">
-                    <label>Trạng thái</label>
-                    <select class="form-control" name="status" id="status" required>
-                        <?php if($row['status']==="complete"): ?>
-                            <option value="complete" selected>Hoàn thành</option>
-                            <option value="cancle">Hủy</option>
-                        <?php elseif($row['status']==="cancle"): ?>
-                            <option value="complete">Hoàn thành</option>
-                            <option value="cancle" selected>Hủy</option>
-                        <?php endif; ?>
-                    </select>
+                    <input type="text" class="form-control" name="total" id="total"disabled>
                 </div>
                 <button type="submit" name="submit" class="btn btn-primary">Sửa</button>
+                <a type="button" href="/order" class="btn btn-danger">Quay lại</a>
             </form>
         </div>
     </div>

@@ -7,12 +7,16 @@ use api\v1\UserAPI;
 class AdminTemplate {
     // Khai báo child và hàm render child view-model
     public $child;
-    public $rows;
+    public $days;
+    public $months;
+    public $years;
     public function renderChild($child) {
         $res = UserAPI::getUserById($_SESSION['user_id']);
         $_SESSION['temporary_type'] = $res->message[0]['type'];
         $this->child = $child;
-        $this->rows = UserAPI::getTotalByDay();
+        $this->days = UserAPI::getTotalByDay();
+        $this->months = UserAPI::getTotalByMonth();
+        $this->years = UserAPI::getTotalByYear();
         $this->render();
     }
 
@@ -74,24 +78,25 @@ class AdminTemplate {
     <script src="/assets/bower_components/DataTables/media/js/jquery.dataTables.min.js"></script>
     <script src="/assets/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <!-- day -->
     <script type="text/javascript">
         // Load the Visualization API and the corechart package.
         google.charts.load('current', {'packages':['corechart']});
 
         // Set a callback to run when the Google Visualization API is loaded.
-        google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(drawChartDay);
 
         // Callback that creates and populates a data table,
         // instantiates the pie chart, passes in the data and
         // draws it.
-        function drawChart() {
+        function drawChartDay() {
 
             // Create the data table.
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Day');
             data.addColumn('number', 'Total');
             data.addRows([
-                <?php foreach($this->rows->message as $row): ?>   
+                <?php foreach($this->days->message as $row): ?>   
                 ["<?= $row["DATE(created_at)"] ?>",<?= (int)$row["sum(total)"] ?>],
                 <?php endforeach; ?>
             ]);
@@ -102,12 +107,84 @@ class AdminTemplate {
                             'height':600};
 
             // Instantiate and draw our chart, passing in some options.
-            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            var chart = new google.visualization.PieChart(document.getElementById('chart_day'));
+            chart.draw(data, options);
+        }
+    </script>
+    <!-- month -->
+    <script type="text/javascript">
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', {'packages':['corechart']});
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChartMonth);
+
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        function drawChartMonth() {
+
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Month');
+            data.addColumn('number', 'Total');
+            data.addRows([
+                <?php foreach($this->months->message as $row): ?>   
+                ["Tháng <?= $row["MONTH(created_at)"] ?>",<?= (int)$row["sum(total)"] ?>],
+                <?php endforeach; ?>
+            ]);
+
+            // Set chart options
+            var options = {'title':'Doanh thu tháng',
+                            'width':600,
+                            'height':600};
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_month'));
+            chart.draw(data, options);
+        }
+    </script>
+    <!-- year -->
+    <script type="text/javascript">
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', {'packages':['corechart']});
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChartYear);
+
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        function drawChartYear() {
+
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Year');
+            data.addColumn('number', 'Total');
+            data.addRows([
+                <?php foreach($this->years->message as $row): ?>   
+                ["Năm <?= $row["YEAR(created_at)"] ?>",<?= (int)$row["sum(total)"] ?>],
+                <?php endforeach; ?>
+            ]);
+
+            // Set chart options
+            var options = {'title':'Doanh thu năm',
+                            'width':600,
+                            'height':600};
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_year'));
             chart.draw(data, options);
         }
     </script>
     <script>
         $('#confirm-delete').on('show.bs.modal', function(e) {
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+        });
+        $('#confirm-cancel').on('show.bs.modal', function(e) {
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+        });
+        $('#confirm-paid').on('show.bs.modal', function(e) {
             $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
         });
     </script>

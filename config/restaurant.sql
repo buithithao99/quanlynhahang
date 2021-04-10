@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 03, 2021 at 08:58 AM
+-- Generation Time: Apr 10, 2021 at 05:59 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.34
 
@@ -37,8 +37,7 @@ CREATE TABLE `booking` (
 --
 
 INSERT INTO `booking` (`user_id`, `table_id`) VALUES
-(24, 3),
-(24, 6);
+(22, 3);
 
 -- --------------------------------------------------------
 
@@ -11532,7 +11531,7 @@ INSERT INTO `tables` (`id`, `type`, `active`) VALUES
 (3, 'single', 'disabled'),
 (4, 'single', 'enabled'),
 (5, 'single', 'enabled'),
-(6, 'double', 'disabled'),
+(6, 'double', 'enabled'),
 (7, 'other', 'enabled');
 
 -- --------------------------------------------------------
@@ -11563,8 +11562,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `password`, `email`, `firstname`, `lastname`, `phone`, `gender`, `type`, `city`, `district`, `commune`, `status`, `active`, `img`) VALUES
-(21, '$2y$10$ME2jKg8r7bj4PJGA///Z0u/rLXhzIJV98UfonOWIU/v/nInVtOQ2.', 'nguyenhuuluan17@gmail.com', 'Luân', 'Nguyễn', '0898103236', 'male', 'admin', '26', '247', '08875', 'verify', 'enabled', '1617345477luan.jpg'),
-(22, '$2y$10$6v7kdErkTlSC3qXrd8LJtuKNqxZa0AV9dVnn41TV5Ek8OWvKV1ny6', 'hyquynh123@gmail.com', 'Quỳnh', 'Liêu', '0123513131', 'male', 'serve', '20', '182', '06166', 'verify', 'enabled', '1617351068quynh.jpg'),
+(21, '$2y$10$l06cNufFLnb2AYKDkfhPIO1X/lTuEw0kOzQ6hS8IaPy7DpdBt0r1y', 'nguyenhuuluan17@gmail.com', 'Luân', 'Nguyễn', '0898103236', 'male', 'admin', '26', '247', '08875', 'verify', 'enabled', '1617345477luan.jpg'),
+(22, '$2y$10$GyHyQg9ZV97Xmb4.sGTGaOjSGrGv/V1wGdI7ZzyM147mjhn3D/a2q', 'hyquynh123@gmail.com', 'Quỳnh', 'Liêu', '0123513131', 'male', 'customer', '20', '182', '06166', 'verify', 'enabled', '1617351068quynh.jpg'),
 (24, '$2y$10$I9mSJ1kKH4fMETHyW0MS9uaKVOlS7LNQD5iytDM.bc80xiIAAo716', 'luannh@magenest.com', 'Hưng', 'Nguyễn', '0898103236', 'male', 'customer', '24', '221', '07738', 'verify', 'enabled', '1617380792hang.jpg');
 
 --
