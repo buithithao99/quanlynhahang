@@ -4,14 +4,14 @@ use vms\templates\AdminTemplate;
 use api\v1\UserAPI;
 
 class SouthProductPage {
-    public $rows;
+    public $categories;
     public function __construct($params = null) {
         session_start();
         if(!isset($_SESSION['user_id'])){
             header("Location: /");
         }
         $this->title  = "Ẩm thực miền Nam";
-        $this->rows = UserAPI::getProductSouth();
+        $this->categories = UserAPI::getAllCategory();
     }
 
     // Khai báo template và truyền bản thân vào template cha
@@ -65,10 +65,16 @@ class SouthProductPage {
         </div>
     </div>
 </div>
+<ul class="nav nav-tabs" style="margin-top:2rem;">
+    <?php foreach($this->categories->message as $row): ?>
+        <li><a data-toggle="tab" href="#<?= $row['id'] ?>"><?= $row['name'] ?></a></li>
+    <?php endforeach; ?>
+</ul>
 <div class="row">
-    <?php if(isset($this->rows->message)): ?>
-        <?php foreach($this->rows->message as $row): ?>
-            <div class="col-lg-3">
+    <?php foreach($this->categories->message as $category): ?>
+       <?php $rows = UserAPI::getProductSouthById($category['id']); ?>
+       <?php  foreach($rows->message as $row): ?>
+            <div class="col-lg-3" id="<?= $category['id'] ?>">
                 <form action="/addtocart" method="POST">
                 <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>" />
                 <input type="hidden" name="image" value="<?= $row['image'] ?>" />
@@ -99,8 +105,6 @@ class SouthProductPage {
                 </form>
             </div>
         <?php endforeach; ?>
-    <?php else: ?>
-        <div>Hiện tại chưa có sản phẩm nào. Quý khách vui lòng quay lại sau !</div>
-    <?php endif; ?>
+    <?php endforeach; ?>
 </div>
 <?php }}

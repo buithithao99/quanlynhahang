@@ -3,14 +3,15 @@ namespace vms;
 use vms\templates\AdminTemplate;
 use api\v1\UserAPI;
 class NorthProductPage {
-    public $rows;
+
+    public $categories;
     public function __construct($params = null) {
         session_start();
         if(!isset($_SESSION['user_id'])){
             header("Location: /");
         }
         $this->title  = "Ẩm thực miền Bắc";
-        $this->rows = UserAPI::getProductNorth();
+        $this->categories = UserAPI::getAllCategory();
     }
 
     // Khai báo template và truyền bản thân vào template cha
@@ -64,38 +65,46 @@ class NorthProductPage {
         </div>
     </div>
 </div>
+<ul class="nav nav-tabs" style="margin-top:2rem;">
+    <?php foreach($this->categories->message as $row): ?>
+        <li><a data-toggle="tab" href="#<?= $row['id'] ?>"><?= $row['name'] ?></a></li>
+    <?php endforeach; ?>
+</ul>
 <div class="row">
-    <?php  foreach($this->rows->message as $row): ?>
-        <div class="col-lg-3">
-            <form action="/addtocart" method="POST">
-                <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>" />
-                <input type="hidden" name="image" value="<?= $row['image'] ?>" />
-                <input type="hidden" name="id" value="<?= $row['id'] ?>" />
-                <input type="hidden" name="name" value="<?= $row['name'] ?>" />
-                <input type="hidden" name="price" value="<?= $row['price'] ?>" />
-                <input type="hidden" name="region_id" value="<?= $row['region_id'] ?>" />
-                <input type="hidden" name="region_name" value="<?= $row['region_name'] ?>" />
-                <input type="hidden" name="description" value="<?= $row['description'] ?>" />
-                <div class="product-item-box">
-                    <div class="product-item">
-                        <div class="product-detail">
-                            <img src="/images/product/<?= $row['image'] ?>" alt="<?= $row['name'] ?>" class="product-image" width="100%" height="70%"/>
-                            <div class="product-name" name="product-name"><?= $row['name'] ?></div>
-                            <div class="price-new" name="price-new"><?= number_format($row['price'], 0, '', ',') ?>₫</div>
-                            <?php if($_SESSION['type'] === 'customer'): ?>
-                                <input type="number" name="qty" min=1 class="qty" class="qty" required/>
-                            <?php endif; ?>
+    <?php foreach($this->categories->message as $category): ?>
+        <?php $rows = UserAPI::getProductNorthById($category['id']); ?>
+        <?php  foreach($rows->message as $row): ?>
+            <div class="col-lg-3" id="<?= $category['id'] ?>">
+                <form action="/addtocart" method="POST">
+                    <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>" />
+                    <input type="hidden" name="image" value="<?= $row['image'] ?>" />
+                    <input type="hidden" name="id" value="<?= $row['id'] ?>" />
+                    <input type="hidden" name="name" value="<?= $row['name'] ?>" />
+                    <input type="hidden" name="price" value="<?= $row['price'] ?>" />
+                    <input type="hidden" name="region_id" value="<?= $row['region_id'] ?>" />
+                    <input type="hidden" name="region_name" value="<?= $row['region_name'] ?>" />
+                    <input type="hidden" name="description" value="<?= $row['description'] ?>" />
+                    <div class="product-item-box">
+                        <div class="product-item">
+                            <div class="product-detail">
+                                <img src="/images/product/<?= $row['image'] ?>" alt="<?= $row['name'] ?>" class="product-image" width="100%" height="70%"/>
+                                <div class="product-name" name="product-name"><?= $row['name'] ?></div>
+                                <div class="price-new" name="price-new"><?= number_format($row['price'], 0, '', ',') ?>₫</div>
+                                <?php if($_SESSION['type'] === 'customer'): ?>
+                                    <input type="number" name="qty" min=1 class="qty" class="qty" required/>
+                                <?php endif; ?>
+                            </div>
                         </div>
+                        <?php if($_SESSION['type'] === 'customer'): ?>
+                            <div class="col text-center">
+                                <button name="submit" type="submit"><i
+                                        class="fas fa-shopping-cart mr-2"></i>Mua</button>
+                            </div>
+                        <?php endif; ?>
                     </div>
-                    <?php if($_SESSION['type'] === 'customer'): ?>
-                        <div class="col text-center">
-                            <button name="submit" type="submit"><i
-                                    class="fas fa-shopping-cart mr-2"></i>Mua</button>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
+        <?php endforeach; ?>
     <?php endforeach; ?>
 </div>
 <?php }}

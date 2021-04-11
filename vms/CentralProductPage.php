@@ -4,14 +4,15 @@ use vms\templates\AdminTemplate;
 use api\v1\UserAPI;
 
 class CentralProductPage {
-    public $rows;
+
+    public $categories;
     public function __construct($params = null) {
         session_start();
         if(!isset($_SESSION['user_id'])){
             header("Location: /");
         }
         $this->title  = "Ẩm thực miền Trung";
-        $this->rows = UserAPI::getProductCentral();
+        $this->categories = UserAPI::getAllCategory();
     }
 
     // Khai báo template và truyền bản thân vào template cha
@@ -65,9 +66,16 @@ class CentralProductPage {
         </div>
     </div>
 </div>
-<div class="row">
-    <?php  foreach($this->rows->message as $row): ?>
-        <div class="col-lg-3">
+<ul class="nav nav-tabs" style="margin-top:2rem;">
+    <?php foreach($this->categories->message as $row): ?>
+        <li><a data-toggle="tab" href="#<?= $row['id'] ?>"><?= $row['name'] ?></a></li>
+    <?php endforeach; ?>
+</ul>
+<div class="row tab-content">
+    <?php foreach($this->categories->message as $category): ?>
+       <?php $rows = UserAPI::getProductCentralById($category['id']); ?>
+       <?php  foreach($rows->message as $row): ?>
+        <div class="col-lg-3" id="<?= $category['id'] ?>">
             <form action="/addtocart" method="POST">
             <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>" />
                 <input type="hidden" name="image" value="<?= $row['image'] ?>" />
@@ -97,6 +105,7 @@ class CentralProductPage {
                 </div>
             </form>
         </div>
+    <?php endforeach; ?>
     <?php endforeach; ?>
 </div>
 <?php }}

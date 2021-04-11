@@ -1,6 +1,6 @@
 <?php
 namespace vms;
-use vms\templates\AdminTemplate;
+use vms\templates\HomeTemplate;
 use api\v1\UserAPI;
 class OtherTablePage {
     public $rows;
@@ -11,7 +11,7 @@ class OtherTablePage {
 
     // Khai báo template và truyền bản thân vào template cha
     public function render() {
-        $template = new AdminTemplate();
+        $template = new HomeTemplate();
         $template->renderChild($this);
     }
 

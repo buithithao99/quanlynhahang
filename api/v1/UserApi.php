@@ -1311,4 +1311,88 @@ class UserAPI
             return $res;
         }
     }
+
+    public static function getProductSouthLimit()
+    {
+        // Connect db
+        $conn_resp = Database::connect_db();
+        if (!$conn_resp->status) {
+            return $conn_resp;
+        }
+        $conn = $conn_resp->message;
+    
+        $query = sprintf("SELECT p.*,r.name region_name FROM products p,region r WHERE p.region_id = r.id AND r.name='south' LIMIT 4");
+        $res = Mysqllib::mysql_get_data_from_query($conn, $query);
+        return $res;
+    }
+
+    public static function getProductNorthLimit()
+    {
+        // Connect db
+        $conn_resp = Database::connect_db();
+        if (!$conn_resp->status) {
+            return $conn_resp;
+        }
+        $conn = $conn_resp->message;
+    
+        $query = sprintf("SELECT p.*,r.name region_name FROM products p,region r WHERE p.region_id = r.id AND r.name='north' LIMIT 4");
+        $res = Mysqllib::mysql_get_data_from_query($conn, $query);
+        return $res;
+    }
+
+    public static function getProductCentralLimit()
+    {
+        // Connect db
+        $conn_resp = Database::connect_db();
+        if (!$conn_resp->status) {
+            return $conn_resp;
+        }
+        $conn = $conn_resp->message;
+    
+        $query = sprintf("SELECT p.*,r.name region_name FROM products p,region r WHERE p.region_id = r.id AND r.name='central' LIMIT 4");
+        $res = Mysqllib::mysql_get_data_from_query($conn, $query);
+        return $res;
+    }
+
+    public static function getProductNorthById($cateId)
+    {
+        // Connect db
+        $conn_resp = Database::connect_db();
+        if (!$conn_resp->status) {
+            return $conn_resp;
+        }
+        $conn = $conn_resp->message;
+    
+        $query = sprintf("SELECT p.*,r.name region_name FROM products p,region r WHERE p.region_id = r.id AND r.name='north' AND category_id = '%s'",$cateId);
+        $res = Mysqllib::mysql_get_data_from_query($conn, $query);
+        return $res;
+    }
+
+    public static function getProductSouthById($cateId)
+    {
+        // Connect db
+        $conn_resp = Database::connect_db();
+        if (!$conn_resp->status) {
+            return $conn_resp;
+        }
+        $conn = $conn_resp->message;
+    
+        $query = sprintf("SELECT p.*,r.name region_name FROM products p,region r WHERE p.region_id = r.id AND r.name='south' AND category_id = '%s'",$cateId);
+        $res = Mysqllib::mysql_get_data_from_query($conn, $query);
+        return $res;
+    }
+
+    public static function getProductCentralById($cateId)
+    {
+        // Connect db
+        $conn_resp = Database::connect_db();
+        if (!$conn_resp->status) {
+            return $conn_resp;
+        }
+        $conn = $conn_resp->message;
+    
+        $query = sprintf("SELECT p.*,r.name region_name FROM products p,region r WHERE p.region_id = r.id AND r.name='central' AND category_id = '%s'",$cateId);
+        $res = Mysqllib::mysql_get_data_from_query($conn, $query);
+        return $res;
+    }
 }
