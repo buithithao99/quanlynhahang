@@ -16,12 +16,12 @@ class ResetPasswordPage
             $mail->SMTPSecure = "STARTTLS";
             $mail->Port       = 587;
             $mail->Host       = "smtp.gmail.com";
-            $mail->Username   = "restaurantsystem99@gmail.com";
-            $mail->Password   = "Buithithao99";
+            $mail->Username   = "lannguyentdmu@gmail.com";
+            $mail->Password   = "Lan@12345";
             $mail ->CharSet = "UTF-8"; 
             $mail->isHTML(true);
             $mail->addAddress($_POST['email']);
-            $mail->setFrom("restaurantsystem99@gmail.com","Hệ thống quản lý nhà hàng");
+            $mail->setFrom("lannguyentdmu@gmail.comm","Hệ thống quản lý nhà hàng");
             $mail->Subject = "Reset password";
             $content = '<html>
                 <body>

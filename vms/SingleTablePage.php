@@ -36,7 +36,8 @@ class SingleTablePage {
                     <div class="product-item">
                         <div class="product-detail">
                             <img src="/assets/img/table/single.jpg" alt="bàn đơn" class="product-image" width="100%" height="70%"/>
-                            <div class="table-name" name="table-name">Bàn đơn</div>
+                            <div class="table-name">Bàn đơn</div>
+                            <div class="table-id">Số: <?= $row['id'] ?></div>
                         </div>
                     </div>
                     <?php if($_SESSION['type'] === 'customer'): ?>
