@@ -52,7 +52,7 @@ class PaymentPage
             $result = UserAPI::payment($param_value_array);
             if ($result->status && $stripeResponse['amount_refunded'] == 0 && empty($stripeResponse['failure_code']) && $stripeResponse['paid'] == 1 && $stripeResponse['captured'] == 1 && $stripeResponse['status'] == 'succeeded') {
                 $this->successMessage = "completed successfully";
-                UserAPI::checkout(unserialize($_POST['data']));
+                UserAPI::checkout(unserialize($_SESSION['dataCart']));
             }
         }
         $template->renderChild($this);
@@ -92,7 +92,7 @@ class PaymentPage
                 </div>
                 <div class="col-xs-6">
                     <select name="year" id="year" class="form-control">
-                        <?php for($i = 2021;$i<=2030;$i++): ?>
+                        <?php for($i = 2022;$i<=2030;$i++): ?>
                             <option value="<?= $i ?>">Năm <?= $i ?></option>
                         <?php endfor; ?>
                     </select>

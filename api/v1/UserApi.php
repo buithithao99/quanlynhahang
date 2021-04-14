@@ -767,7 +767,7 @@ class UserAPI
             Mysqllib::mysql_post_data_from_query($conn, $update_query);
         }
         unset($_SESSION["shopping_cart"]);
-        $_SESSION['checkout-success'] = "<div class='alert alert-success'>Thanh toán thành công  <span class='close'>&times;</span></div>";
+        $_SESSION['checkout-success'] = "<div class='alert alert-success'> Đã đặt hàng thành công  <span class='close'>&times;</span></div>";
         header("Location: /previousorder");
     }
 

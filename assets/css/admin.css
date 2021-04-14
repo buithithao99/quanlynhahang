@@ -32,6 +32,13 @@ body {
     border-color: #e7e7e7;
 }
 
+.container-fluid {
+    background-color: lavenderblush;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 15px;
+    font-weight: bold;
+}
+
 .navbar-top-links {
     margin-right: 0;
 }
@@ -500,6 +507,11 @@ ul.summary-list > li:last-child  {
     .navbar-top-links .dropdown-alerts {
         margin-left: auto;
     }
+}
+@media (min-width: 1200px){
+.col-lg-12 {
+    width: 100%;
+    background-color:khaki;
 }
 
 .btn-outline {
