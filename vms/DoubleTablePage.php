@@ -47,7 +47,7 @@ class DoubleTablePage {
                                         class="fas fa-shopping-cart"></i>Đặt bàn</button>
                             </div>
                         <?php else: ?>
-                            <div class="col text-center">Đã có khách hàng đặt trước, xin vui lòng quý khách quay lại sau.</div>
+                            <div class="col text-center">Đã có khách hàng đặt trước.</div>
                         <?php endif; ?>
                     <?php endif; ?>
                 </div>

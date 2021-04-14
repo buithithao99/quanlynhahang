@@ -727,7 +727,7 @@ class UserAPI
         }
         $conn = $conn_resp->message;
     
-        $query = sprintf("SELECT * FROM `tables` WHERE `type` = 'single' LIMIT 4");
+        $query = sprintf("SELECT * FROM `tables` WHERE `type` = 'single'");
         $res = Mysqllib::mysql_get_data_from_query($conn, $query);
         return $res;
     }
