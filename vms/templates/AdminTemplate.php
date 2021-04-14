@@ -53,7 +53,6 @@ class AdminTemplate {
         <link href="/assets/bower_components/datatables-responsive/css/dataTables.responsive.css" rel="stylesheet">
         
         <!-- Library -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     </head>
     <body>
@@ -68,7 +67,7 @@ class AdminTemplate {
     </body>
     <!-- jQuery -->
     <script src="/assets/bower_components/jquery/dist/jquery.min.js"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="/assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 

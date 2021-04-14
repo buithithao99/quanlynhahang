@@ -94,12 +94,12 @@ class UserAPI
                             $mail->SMTPSecure = "STARTTLS";
                             $mail->Port       = 587;
                             $mail->Host       = "smtp.gmail.com";
-                            $mail->Username   = "restaurantsystem99@gmail.com";
-                            $mail->Password   = "Buithithao99";
+                            $mail->Username   = "lannguyentdmu@gmail.com";
+                            $mail->Password   = "Lan@12345";
                             $mail ->CharSet = "UTF-8";
                             $mail->isHTML(true);
                             $mail->addAddress($email);
-                            $mail->setFrom("restaurantsystem99@gmail.com", "Hệ thống quản lý nhà hàng");
+                            $mail->setFrom("lannguyentdmu@gmail.com", "Hệ thống quản lý nhà hàng");
                             $mail->Subject = "Verify email";
                             $content = '<html>
                                 <body>
@@ -727,7 +727,7 @@ class UserAPI
         }
         $conn = $conn_resp->message;
     
-        $query = sprintf("SELECT * FROM `tables` WHERE `type` = 'single'");
+        $query = sprintf("SELECT * FROM `tables` WHERE `type` = 'single' LIMIT 4");
         $res = Mysqllib::mysql_get_data_from_query($conn, $query);
         return $res;
     }
@@ -1234,12 +1234,12 @@ class UserAPI
         $mail->SMTPSecure = "STARTTLS";
         $mail->Port       = 587;
         $mail->Host       = "smtp.gmail.com";
-        $mail->Username   = "restaurantsystem99@gmail.com";
-        $mail->Password   = "Buithithao99";
+        $mail->Username   = "lannguyentdmu@gmail.com";
+        $mail->Password   = "Lan@12345";
         $mail ->CharSet = "UTF-8";
         $mail->isHTML(true);
         $mail->addAddress($res->message[0]['email']);
-        $mail->setFrom("restaurantsystem99@gmail.com", "Hệ thống quản lý nhà hàng");
+        $mail->setFrom("lannguyentdmu@gmail.com", "Hệ thống quản lý nhà hàng");
         $mail->Subject = "Thư cảm ơn";
         $content = '<html>
             <body>

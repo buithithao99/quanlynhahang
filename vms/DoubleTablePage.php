@@ -37,6 +37,7 @@ class DoubleTablePage {
                         <div class="product-detail">
                             <img src="/assets/img/table/double.jpg" alt="bàn đôi" class="product-image" width="80%" height="70%"/>
                             <div class="table-name" name="table-name">Bàn đôi</div>
+                            <div class="table-id">Số: <?= $row['id'] ?></div>
                         </div>
                     </div>
                     <?php if($_SESSION['type'] === 'customer'): ?>

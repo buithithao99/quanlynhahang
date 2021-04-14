@@ -41,7 +41,7 @@ class HeaderComponent {
                     <?php endif; ?>
                     <i class="fa fa-caret-down"></i>
                 </a>
-                <ul class="dropdown-menu dropdown-user">
+                <ul class="dropdown-menu dropdown-cart">
                     <li><a href="/cart">Thanh toán tiền mặt</a>
                     </li>
                     <li class="divider"></li>
