@@ -53,16 +53,16 @@ class HomeTemplate {
                     <nav class="navbar navbar-inverse" style="margin-top:1rem;">
                         <div class="container-fluid">
                             <ul class="nav navbar-nav">
-                                <li><a href="/refernorth">Bắc</a></li>
-                                <li><a href="/refercentral">Trung</a></li>
-                                <li><a href="/refersouth">Nam</a></li>
+                                <li><a href="/refernorth">Món Miền Bắc</a></li>
+                                <li><a href="/refercentral">Món Miền Trung</a></li>
+                                <li><a href="/refersouth">Món Miền Nam</a></li>
                                 <li class="dropdown">
                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Đặt món
                                     <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
                                     <li><a href="/singletable">Đơn</a></li>
                                     <li><a href="/doubletable">Đôi</a></li>
-                                    <li><a href="/othertable">2 người trở lên</a></li>
+                                    <li><a href="/othertable">Bàn cho nhiều người</a></li>
                                     </ul>
                                 </li>
                             </ul>
