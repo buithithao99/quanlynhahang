@@ -8,7 +8,7 @@ class CartPage {
     public $qty;
     public function __construct($params = null) {
         session_start();
-        if($_SESSION["type"] !== "customer"){
+        if($_SESSION["type"] !== "customer" && $_SESSION["type"] !== "serve"){
             if($_SESSION["type"] === "admin"){
                 header("Location: /dashboard");
             }else{
@@ -78,7 +78,7 @@ class CartPage {
                             <td colspan="2" class="hidden-xs"></td> 
                             <td class="hidden-xs text-center"><strong>Tổng tiền <?= number_format( $this->total, 0, '', ',') ?></strong></td>
                             <?php if(!empty($_SESSION["shopping_cart"])): ?>
-                                <td><button type="submit" name="submit" class="btn btn-success btn-block">Xác nhận đơn hàng <i class="fa fa-angle-right"></i></button></td> 
+                                <td><button type="submit" name="submit" class="btn btn-success btn-block">Thanh toán <i class="fa fa-angle-right"></i></button></td> 
                             <?php endif; ?>
                         </tr>
                 </tbody> 

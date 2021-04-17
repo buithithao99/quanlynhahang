@@ -40,7 +40,7 @@ class OtherTablePage {
                             <div class="table-id">Số: <?= $row['id'] ?></div>
                         </div>
                     </div>
-                    <?php if($_SESSION['type'] === 'customer'): ?>
+                    <?php if($_SESSION['type'] === 'serve'): ?>
                         <?php if($res->message[0]['active'] === 'enabled'): ?>
                             <div class="col text-center">
                                 <button name="submit" type="submit" class="booking-button"><i

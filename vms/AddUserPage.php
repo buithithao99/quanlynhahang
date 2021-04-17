@@ -76,6 +76,7 @@ class AddUserPage {
                 <label>Chức vụ</label>
                 <select class="form-control" name="type" id="type" required>
                     <option value="cashier">Thu ngân</option>
+                    <option value="serve">Khách tại quầy</option>
                 </select>
             </div>
             <div class="form-group">
@@ -105,7 +106,7 @@ class AddUserPage {
             </div>
             <div class="form-group">
                 <label>Mật khẩu</label>
-                <input type="password" name="password" id="password" class="form-control" placeholder="Đặt mật khẩu" required>
+                <input type="password" name="password" id="pass_log_id" class="form-control" placeholder="Đặt mật khẩu" required>
             </div>
             <div class="form-group">
                 <label>Chọn hình ảnh</label>

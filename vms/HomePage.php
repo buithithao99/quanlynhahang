@@ -61,7 +61,7 @@ class HomePage {
             <span class="sr-only">Next</span>
         </a>
     </div>
-<div class="row">
+<div class="row" style="background-color:white;">
     <div class="col-lg-12">
         <h1 class="page-header">Ẩm thực
             <small>3 miền</small>

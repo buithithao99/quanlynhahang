@@ -34,7 +34,8 @@ class ResetPasswordMailPage {
                 <input type="hidden" value="<?= $row['id'] ?>" name="user_id" />
                 <div class="field input">
                     <label>Password</label>
-                    <input type="password" name="password" placeholder="Nhập mật khẩu mới" required>
+                    <input type="password" name="password" placeholder="Nhập mật khẩu mới" id="pass_log_id" required>
+                    <i class="fas fa-eye toggle-password" toggle="#password-field"></i>
                 </div>
                 <div class="field button">
                 <input type="submit" name="submit" value="Gửi">

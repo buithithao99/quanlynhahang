@@ -46,10 +46,8 @@ class Router {
         // Order
         $this->get('/order',"OrderListPage");
         $this->get('/deleteorder/{id}',"OrderDeletePage");
-        $this->get('/editorder/{id}',"OrderEditPage");
-        $this->post('/editorder',"OrderEditPage");
-        $this->get('/cancelorder/{id}',"OrderCancelPage");
-        $this->get('/paid/{id}',"OrderPaidPage");
+        $this->get('/seeorder/{id}',"OrderSeePage");
+        $this->post('/seeorder',"OrderSeePage");
         // Food
         $this->get('/northproduct',"NorthProductPage");
         $this->get('/centralproduct',"CentralProductPage");
@@ -85,6 +83,7 @@ class Router {
         $this->post('/showprice',"ShowPricePage");
         $this->post('/booking',"BookingPage");
         $this->get('/return/{id}',"ReturnPage");
+        $this->post('/customfilter',"CustomFilterPage");
         // Reserve
         $this->get('/singletable',"SingleTablePage");
         $this->get('/doubletable',"DoubleTablePage");
@@ -98,6 +97,9 @@ class Router {
         // Payment
         $this->get('/payment',"PaymentPage");
         $this->post('/payment',"PaymentPage");
+        // Contact
+        $this->get('/contact',"ContactPage");
+        $this->post('/contact',"ContactPage");
     }
     
     public function get(string $url, $action) {

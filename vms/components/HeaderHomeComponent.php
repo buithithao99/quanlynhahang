@@ -39,7 +39,7 @@ class HeaderHomeComponent {
     <div class="navbar-default sidebar" role="navigation" style="position:fixed;">
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">   
-                <?php if($_SESSION['type']==='customer' || $_SESSION['temporary_type']==='customer'): ?>
+                <?php if($_SESSION['type']==='customer' || $_SESSION['temporary_type']==='customer' || $_SESSION['type']==='serve' || $_SESSION['temporary_type']==='serve'): ?>
                 <li>
                     <a href="/homepage"><i class="fas fa-tachometer-alt"></i> Trang chủ</a>
                 </li>

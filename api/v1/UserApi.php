@@ -756,7 +756,7 @@ class UserAPI
         $conn = $conn_resp->message;
         $ran_id = rand(time(), 100000000);
         foreach($orders as $row){
-            $query = sprintf("INSERT INTO orders (`user_id`,`product_id`,`quantity`,`total`,`status`,`order_id`) VALUES ('%s','%s','%s','%s','%s','%s')",$row['user_id'],$row['item_id'],$row['item_qty'],$row['item_price']*$row['item_qty'],'complete',$ran_id);
+            $query = sprintf("INSERT INTO orders (`user_id`,`product_id`,`quantity`,`total`,`status`,`order_id`,`type`) VALUES ('%s','%s','%s','%s','%s','%s','%s')",$row['user_id'],$row['item_id'],$row['item_qty'],$row['item_price']*$row['item_qty'],'handle',$ran_id,0);
             Mysqllib::mysql_post_data_from_query($conn, $query);
             $select_query = sprintf("SELECT `quantity`-'%s' result FROM `products` WHERE `id`='%s'",$row['item_qty'],$row['item_id']);
             $res = Mysqllib::mysql_get_data_from_query($conn, $select_query);
@@ -771,6 +771,59 @@ class UserAPI
         header("Location: /previousorder");
     }
 
+    public static function checkoutOnline($orders,$data)
+    {
+        // Connect db
+        $conn_resp = Database::connect_db();
+        if (!$conn_resp->status) {
+            return $conn_resp;
+        }
+        $conn = $conn_resp->message;
+        $ran_id = rand(time(), 100000000);
+        foreach($orders as $row){
+            $query = sprintf("INSERT INTO orders (`user_id`,`product_id`,`quantity`,`total`,`status`,`order_id`,`recipient_name`,`address`,`phone`,`type`) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",$row['user_id'],$row['item_id'],$row['item_qty'],$row['item_price']*$row['item_qty'],'handle',$ran_id,$data['recipient'],$data['address'],$data['phone-recipient'],1);
+            Mysqllib::mysql_post_data_from_query($conn, $query);
+            $select_query = sprintf("SELECT `quantity`-'%s' result FROM `products` WHERE `id`='%s'",$row['item_qty'],$row['item_id']);
+            $res = Mysqllib::mysql_get_data_from_query($conn, $select_query);
+            $update_query = sprintf("UPDATE `products` SET `quantity`='%s' WHERE id='%s'",
+            $res->message[0]['result'],
+            $row['item_id']
+            );
+            Mysqllib::mysql_post_data_from_query($conn, $update_query);
+        }
+        unset($_SESSION["shopping_cart"]);
+        $select_query = sprintf("SELECT email FROM `users` WHERE `id`='%s'",$orders[0]["user_id"]);
+        $res = Mysqllib::mysql_get_data_from_query($conn, $select_query);
+        $mail = new \mail\PHPMailer();
+        $mail->isSMTP();
+        $mail->Mailer = "smtp";
+        // $mail->SMTPDebug  = 1;
+        $mail->SMTPAuth   = true;
+        $mail->SMTPSecure = "STARTTLS";
+        $mail->Port       = 587;
+        $mail->Host       = "smtp.gmail.com";
+        $mail->Username   = "lannguyentdmu@gmail.com";
+        $mail->Password   = "Lan@12345";
+        $mail ->CharSet = "UTF-8";
+        $mail->isHTML(true);
+        $mail->addAddress($res->message[0]['email']);
+        $mail->setFrom("lannguyentdmu@gmail.com", "Hệ thống quản lý nhà hàng");
+        $mail->Subject = "Thư cảm ơn";
+        $content = '<html>
+            <body>
+                <center>
+                    <p>
+                    Cảm ơn quý khách đã đặt hàng của chúng tôi. Hẹn gặp lại quý khách trong các lần mua hàng tiếp theo
+                    </p>
+                </center>
+            </body>
+        </html>';
+        $mail->MsgHTML($content);
+        $mail->send();
+        $_SESSION['checkout-success'] = "<div class='alert alert-success'> Đã đặt hàng thành công  <span class='close'>&times;</span></div>";
+        header("Location: /previousorder");
+    }
+
     public static function getAllOrderById($user_id)
     {
         // Connect db
@@ -779,8 +832,7 @@ class UserAPI
             return $conn_resp;
         }
         $conn = $conn_resp->message;
-        $query = sprintf("SELECT orders.*,DATE(orders.created_at) order_day,products.name product_name,products.price product_price 
-        FROM `orders`,`products` WHERE `user_id` = '%s' AND products.id = orders.product_id",$conn->real_escape_string($user_id));
+        $query = sprintf("SELECT SUM(o.total) total,DATE(o.created_at) order_day,o.order_id,o.status,o.type FROM orders o WHERE `user_id` = '%s' GROUP BY o.order_id",$conn->real_escape_string($user_id));
         $res = Mysqllib::mysql_get_data_from_query($conn, $query);
         return $res;
     }
@@ -999,7 +1051,7 @@ class UserAPI
         }
         $conn = $conn_resp->message;
 
-        $query = sprintf("SELECT sum(total),DATE(created_at) FROM `orders` GROUP BY DATE(created_at)");
+        $query = sprintf("SELECT sum(total),DATE(created_at) FROM `orders` WHERE status = 'complete' GROUP BY DATE(created_at)");
         $res = Mysqllib::mysql_get_data_from_query($conn, $query);
         return $res;
     }
@@ -1098,7 +1150,7 @@ class UserAPI
             return $conn_resp;
         }
         $conn = $conn_resp->message;
-        $query = sprintf("SELECT o.*,p.name product_name,u.firstname,u.lastname,u.email FROM orders o,products p,users u WHERE o.product_id = p.id AND o.user_id = u.id");
+        $query = sprintf("SELECT SUM(o.total) total,o.order_id,o.status,u.firstname,u.lastname,o.type FROM orders o,users u WHERE o.user_id = u.id GROUP BY order_id");
         $res = Mysqllib::mysql_get_data_from_query($conn, $query);
         return $res;
     }
@@ -1178,83 +1230,6 @@ class UserAPI
         return $res;
     }
 
-    public static function updateOrderById($order)
-    {
-        // Connect db
-        $conn_resp = Database::connect_db();
-        if (!$conn_resp->status) {
-            return $conn_resp;
-        }
-        $conn = $conn_resp->message;
-        $query = sprintf(
-            "UPDATE orders 
-            SET `product_id`='%s',`quantity`='%s',`total`='%s'
-            WHERE id='%s'",
-            $conn->real_escape_string($order->product_id),
-            $conn->real_escape_string($order->quantity),
-            $conn->real_escape_string($order->total),
-            $conn->real_escape_string($order->id)
-        );
-        Mysqllib::mysql_get_data_from_query($conn, $query);
-        header("Location: /order");
-    }
-
-    public static function cancelOrderById($id)
-    {
-        // Connect db
-        $conn_resp = Database::connect_db();
-        if (!$conn_resp->status) {
-            return $conn_resp;
-        }
-        $conn = $conn_resp->message;
-    
-        $query = sprintf("UPDATE orders SET status='%s' WHERE order_id='%s'", 'cancel', $id);
-        Mysqllib::mysql_post_data_from_query($conn, $query);
-        header("Location: /order");
-    }
-
-    public static function paidOrderById($id)
-    {
-        // Connect db
-        $conn_resp = Database::connect_db();
-        if (!$conn_resp->status) {
-            return $conn_resp;
-        }
-        $conn = $conn_resp->message;
-    
-        $query = sprintf("UPDATE orders SET status='%s' WHERE order_id='%s'", 'paid',$id);
-        Mysqllib::mysql_post_data_from_query($conn, $query);
-        $select_query = sprintf("SELECT u.email FROM orders o,users u WHERE o.user_id = u.id");
-        $res = Mysqllib::mysql_get_data_from_query($conn, $select_query);
-        $mail = new \mail\PHPMailer();
-        $mail->isSMTP();
-        $mail->Mailer = "smtp";
-        $mail->SMTPDebug  = 1;
-        $mail->SMTPAuth   = true;
-        $mail->SMTPSecure = "STARTTLS";
-        $mail->Port       = 587;
-        $mail->Host       = "smtp.gmail.com";
-        $mail->Username   = "lannguyentdmu@gmail.com";
-        $mail->Password   = "Lan@12345";
-        $mail ->CharSet = "UTF-8";
-        $mail->isHTML(true);
-        $mail->addAddress($res->message[0]['email']);
-        $mail->setFrom("lannguyentdmu@gmail.com", "Hệ thống quản lý nhà hàng");
-        $mail->Subject = "Thư cảm ơn";
-        $content = '<html>
-            <body>
-                <center>
-                    <p>
-                    Cảm ơn quý khách đã mua hàng của chúng tôi. Hẹn gặp lại quý khách trong các lần mua hàng tiếp theo
-                    </p>
-                </center>
-            </body>
-        </html>';
-        $mail->MsgHTML($content);
-        $mail->send();
-        header("Location: /order");
-    }
-
     public static function getTotalByMonth(){
         // Connect db
        $conn_resp = Database::connect_db();
@@ -1263,7 +1238,7 @@ class UserAPI
        }
        $conn = $conn_resp->message;
 
-       $query = sprintf("SELECT sum(total),MONTH(created_at) FROM `orders` GROUP BY MONTH(created_at)");
+       $query = sprintf("SELECT sum(total),MONTH(created_at) FROM `orders` WHERE status = 'complete' GROUP BY MONTH(created_at)");
        $res = Mysqllib::mysql_get_data_from_query($conn, $query);
        return $res;
    }
@@ -1276,7 +1251,7 @@ class UserAPI
         }
         $conn = $conn_resp->message;
 
-        $query = sprintf("SELECT sum(total),YEAR(created_at) FROM `orders` GROUP BY YEAR(created_at)");
+        $query = sprintf("SELECT sum(total),YEAR(created_at) FROM `orders` WHERE status = 'complete' GROUP BY YEAR(created_at)");
         $res = Mysqllib::mysql_get_data_from_query($conn, $query);
         return $res;
     }
@@ -1408,4 +1383,56 @@ class UserAPI
         $res = Mysqllib::mysql_get_data_from_query($conn, $query);
         return $res;
     }
+
+    public static function getProductByOrder($id){
+        // Connect db
+        $conn_resp = Database::connect_db();
+        if (!$conn_resp->status) {
+            return $conn_resp;
+        }
+        $conn = $conn_resp->message;
+    
+        $query = sprintf("SELECT p.*,o.quantity order_qty,o.status status,o.recipient_name,o.address,o.phone,o.type,o.order_id,u.firstname,u.lastname,u.email,u.phone phone_number FROM orders o,products p,users u WHERE order_id='%s' AND o.product_id = p.id AND u.id = o.user_id", $id);
+        $res = Mysqllib::mysql_get_data_from_query($conn, $query);
+        return $res;
+    }
+
+    public static function saveContact($contact){
+        // Connect db
+        $conn_resp = Database::connect_db();
+        if (!$conn_resp->status) {
+            return $conn_resp;
+        }
+        $conn = $conn_resp->message;
+    
+        $query = sprintf("INSERT INTO `contacts` (`name`, `address`, `email`, `phone`, `title`, `content`) values ('%s', '%s', '%s', '%s', '%s', '%s')",$conn->real_escape_string($contact->name),$conn->real_escape_string($contact->address),$conn->real_escape_string($contact->email),$conn->real_escape_string($contact->phone),$conn->real_escape_string($contact->title),$conn->real_escape_string($contact->content));
+        Mysqllib::mysql_post_data_from_query($conn, $query);
+        header("Location: /homepage");
+    }    
+
+    public static function updateStatus($data){
+        // Connect db
+        $conn_resp = Database::connect_db();
+        if (!$conn_resp->status) {
+            return $conn_resp;
+        }
+        $conn = $conn_resp->message;
+        $query = sprintf("UPDATE orders SET `status`='%s' WHERE `order_id`='%s'",$conn->real_escape_string($data['status']),$conn->real_escape_string($data['order_id'])
+        );
+        Mysqllib::mysql_get_data_from_query($conn, $query);
+        header("Location: /order");
+    }
+
+    public static function getTotal($start_date,$end_date){
+        // Connect db
+       $conn_resp = Database::connect_db();
+       if (!$conn_resp->status) {
+           return $conn_resp;
+       }
+       $conn = $conn_resp->message;
+
+       $query = sprintf("SELECT sum(total),DATE(created_at) FROM `orders` WHERE status = 'complete' AND DATE(created_at) BETWEEN '%s' AND '%s' GROUP BY DATE(created_at)",$start_date,$end_date);
+       $res = Mysqllib::mysql_get_data_from_query($conn, $query);
+       return $res;
+   }
 }

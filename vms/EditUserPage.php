@@ -70,6 +70,24 @@ class EditUserPage
                     </select>
                 </div>
                 <div class="form-group">
+                    <label>Chức vụ</label>
+                    <select class="form-control" name="type" id="type" required>
+                        <?php if($row['type'] === 'cashier'): ?>
+                            <option value="cashier" selected>Thu ngân</option>
+                            <option value="serve">Phục vụ</option>
+                            <option value="customer">Khách hàng</option>
+                        <?php elseif($row['type'] === 'serve'): ?>
+                            <option value="cashier">Thu ngân</option>
+                            <option value="serve" selected>Phục vụ</option>
+                            <option value="customer">Khách hàng</option>
+                        <?php else: ?>
+                            <option value="cashier">Thu ngân</option>
+                            <option value="serve">Phục vụ</option>
+                            <option value="customer" selected>Khách hàng</option>
+                        <?php endif; ?>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label>Số điện thoại</label>
                     <input type="tel" name="phone" class="form-control" placeholder="Nhập số điện thoại" value="<?= $row['phone'] ?>" required>
                 </div>

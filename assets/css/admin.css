@@ -33,7 +33,6 @@ body {
 }
 
 .container-fluid {
-    background-color: lavenderblush;
     font-family: 'Times New Roman', Times, serif;
     font-size: 15px;
     font-weight: bold;
@@ -494,6 +493,22 @@ ul.summary-list > li:last-child  {
 .activity-desk .album a:last-child{
     margin-right: 0px;
 }
+
+.footer{
+    background-color:black;
+    color:white;
+    padding-left:2rem;
+}
+
+.contact{
+    display:flex;
+}
+
+.facebook{
+    font-size: 4rem;
+    margin-right:2rem;
+}
+
 @media(min-width:768px) {
     .sidebar {
         z-index: 1;
@@ -509,11 +524,6 @@ ul.summary-list > li:last-child  {
     }
 }
 @media (min-width: 1200px){
-.col-lg-12 {
-    width: 100%;
-    background-color:khaki;
-}
-
 .btn-outline {
     color: inherit;
     background-color: transparent;

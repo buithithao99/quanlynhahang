@@ -37,7 +37,9 @@ class ProfilePage {
 
             <ul class="nav nav-pills nav-stacked menu-page">
                 <li><a href="/profile"> <i class="fa fa-user"></i> Thông tin cá nhân</a></li>
-                <li><a href="/previousorder"> <i class="fa fa-calendar"></i>Thông tin đơn hàng</a></li>
+                <?php if($row['type'] !== "admin"): ?>
+                    <li><a href="/previousorder"> <i class="fa fa-calendar"></i>Thông tin đơn hàng</a></li>
+                <?php endif; ?>
                 <li><a href="/editprofileform"> <i class="fa fa-edit"></i> Sửa thông tin cá nhân</a></li>
             </ul>
         </div>
@@ -47,11 +49,11 @@ class ProfilePage {
             <div class="panel-body bio-graph-info">
                 <h1>Vị trí: <?php
                     if($row['type'] === "customer"){
-                        echo "Khách hàng";
+                        echo "Khách hàng online";
                     }elseif($row['type'] === "cashier"){
                         echo "Thu ngân";
                     }elseif($row['type'] === "serve"){
-                        echo "Phục vụ";
+                        echo "Khách tại quầy";
                     }else{
                         echo "Admin";
                     }

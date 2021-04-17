@@ -2,6 +2,7 @@
 namespace vms\templates;
 
 use vms\components\HeaderHomeComponent;
+use vms\components\FooterHomeComponent;
 use api\v1\UserAPI;
 
 class HomeTemplate {
@@ -60,16 +61,24 @@ class HomeTemplate {
                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Đặt món
                                     <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                    <li><a href="/singletable">Đơn</a></li>
-                                    <li><a href="/doubletable">Đôi</a></li>
-                                    <li><a href="/othertable">Bàn cho nhiều người</a></li>
+                                        <?php if($_SESSION['type'] === 'serve'): ?>
+                                            <li><a href="/singletable">Đơn</a></li>
+                                            <li><a href="/doubletable">Đôi</a></li>
+                                            <li><a href="/othertable">Bàn cho nhiều người</a></li>
+                                        <?php elseif($_SESSION['type'] === 'customer'): ?>
+                                            <li><a href="/northproduct">Bắc</a></li>
+                                            <li><a href="/centralproduct">Trung</a></li>
+                                            <li><a href="/southproduct">Nam</a></li>
+                                        <?php endif; ?>
                                     </ul>
                                 </li>
+                                <li><a href="/contact">Liên hệ</a></li>
                             </ul>
                         </div>
                     </nav>
                     <?php $this->child->__render(); ?>
                 </div>
+                <?php (new FooterHomeComponent())->render(); ?>
             </div>
         </div>
     </body>

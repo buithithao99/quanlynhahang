@@ -18,7 +18,7 @@ class HeaderComponent {
         </button>
         <?php if($_SESSION['type']==='admin' || $_SESSION['temporary_type']==='admin' || $_SESSION['type']==='cashier' || $_SESSION['temporary_type']==='cashier'): ?>
             <a class="navbar-brand" href="/dashboard"><i class="fas fa-home"></i></a>
-        <?php elseif($_SESSION['type']==='customer' || $_SESSION['temporary_type']==='customer'): ?>
+        <?php elseif($_SESSION['type']==='customer' || $_SESSION['temporary_type']==='customer' || $_SESSION['type']==='serve' || $_SESSION['temporary_type']==='serve'): ?>
             <?php if(!empty($_SESSION['checkout-success'])): ?>
                 <a class="navbar-brand" href="/homepage"><i class="fas fa-home"></i></a>
             <?php else: ?>
@@ -32,7 +32,7 @@ class HeaderComponent {
 
     <ul class="nav navbar-top-links navbar-right">
         <!-- /.dropdown -->
-        <?php if($_SESSION["type"] === "customer" ||  $_SESSION['temporary_type']==='customer'): ?>
+        <?php if($_SESSION["type"] === "customer" ||  $_SESSION['temporary_type']==='customer' || $_SESSION["type"] === "serve" ||  $_SESSION['temporary_type']==='serve'): ?>
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <i class="fas fa-shopping-cart"></i>  
@@ -41,6 +41,7 @@ class HeaderComponent {
                     <?php endif; ?>
                     <i class="fa fa-caret-down"></i>
                 </a>
+                <?php if($_SESSION["type"] === "customer" ||  $_SESSION['temporary_type']==='customer'): ?>
                 <ul class="dropdown-menu dropdown-cart">
                     <li><a href="/cart">Thanh toán tiền mặt</a>
                     </li>
@@ -48,6 +49,12 @@ class HeaderComponent {
                     <li><a href="/cartonline">Thanh toán online</a>
                     </li>
                 </ul>
+                <?php elseif($_SESSION["type"] === "serve" ||  $_SESSION['temporary_type']==='serve'): ?>
+                    <ul class="dropdown-menu dropdown-cart">
+                    <li><a href="/cart">Thanh toán tiền mặt</a>
+                    </li>
+                </ul>
+                <?php endif; ?>
             </li>
         <?php endif; ?>
         <li class="dropdown">

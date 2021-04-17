@@ -111,6 +111,9 @@ class AdminTemplate {
 
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.PieChart(document.getElementById('chart_day'));
+            google.visualization.events.addListener(chart, 'ready', function () {
+                document.getElementById('chart_day').style.display = 'none';
+            });
             chart.draw(data, options);
         }
     </script>
@@ -144,6 +147,9 @@ class AdminTemplate {
 
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.PieChart(document.getElementById('chart_month'));
+            google.visualization.events.addListener(chart, 'ready', function () {
+                document.getElementById('chart_month').style.display = 'none';
+            });
             chart.draw(data, options);
         }
     </script>
@@ -177,6 +183,9 @@ class AdminTemplate {
 
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.PieChart(document.getElementById('chart_year'));
+            google.visualization.events.addListener(chart, 'ready', function () {
+                document.getElementById('chart_year').style.display = 'none';
+            });
             chart.draw(data, options);
         }
     </script>

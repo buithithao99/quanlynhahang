@@ -56,30 +56,54 @@ class PreviousOrderPage
                     }
                 ?>
                 <h1>Đơn hàng của bạn</h1>
+                <?php if(count($this->orders->message) > 0): ?>
                 <table class="table table-striped table-bordered table-hover" id="menu-table">
                     <thead>
                         <tr align="center">
                             <th>Mã hóa đơn</th>
-                            <th>Sản phẩm</th>
-                            <th>Giá tiền</th>
-                            <th>Số lượng</th>
                             <th>Tổng</th>
                             <th>Ngày thanh toán</th>
+                            <th>Trạng thái</th>
+                            <td>Chi tiết</td>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach($this->orders->message as $row): ?>
                             <tr class="even gradeC" align="center">
                                 <td><?= $row['order_id'] ?></td>
-                                <td><?= $row['product_name'] ?></td>
-                                <td><?= $row['product_price'] ?></td>
-                                <td><?= $row['quantity'] ?></td>
                                 <td><?= $row['total'] ?></td>
                                 <td><?= $row['order_day'] ?></td>
+                                <td>
+                                    <?php
+                                        if($row['type'] === "0"){
+                                            if($row['status'] === 'handle'){
+                                                echo "Chờ xác nhận";
+                                            }elseif($row['status'] === 'complete'){
+                                                echo "Đã thanh toán";
+                                            }elseif($row['status'] === 'cancle'){
+                                                echo "Đã hủy";
+                                            }
+                                        }else{
+                                            if($row['status'] === 'handle'){
+                                                echo "Đang nhận hàng";
+                                            }elseif($row['status'] === 'ship'){
+                                                echo "Đang giao hàng";
+                                            }elseif($row['status'] === 'complete'){
+                                                echo "Đã giao hàng";
+                                            }elseif($row['status'] === 'cancle'){
+                                                echo "Đã hủy";
+                                            }
+                                        }
+                                    ?>
+                                </td>
+                                <td class="center"><i class="fa fa-eye" aria-hidden="true"></i> <a href="/seeorder/<?= $row['order_id'] ?>">Xem</a></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+                <?php else: ?>
+                    <div>Hiện tại bạn chưa có đơn hàng nào cả.</div>
+                <?php endif; ?>
             </div>
         </div>
     </div>

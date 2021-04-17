@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.0.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 10, 2021 at 08:21 PM
--- Server version: 10.4.18-MariaDB
--- PHP Version: 8.0.3
+-- Generation Time: Apr 17, 2021 at 09:17 AM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.2.34
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -38,7 +38,12 @@ CREATE TABLE `booking` (
 
 INSERT INTO `booking` (`user_id`, `table_id`) VALUES
 (22, 3),
-(22, 4);
+(22, 4),
+(22, 6),
+(22, 10),
+(25, 3),
+(25, 6),
+(25, 9);
 
 -- --------------------------------------------------------
 
@@ -60,6 +65,29 @@ INSERT INTO `category` (`id`, `name`, `active`) VALUES
 (8, 'Thức ăn', 'enabled'),
 (9, 'Đồ uống', 'enabled'),
 (10, 'Đồ ăn vặt', 'enabled');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contacts`
+--
+
+CREATE TABLE `contacts` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `address` text NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `phone` varchar(10) NOT NULL,
+  `title` text NOT NULL,
+  `content` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `contacts`
+--
+
+INSERT INTO `contacts` (`id`, `name`, `address`, `email`, `phone`, `title`, `content`) VALUES
+(2, 'Nguyễn Hữu Luân', '740/5D Âu Cơ, P.14, Q.Tân Bình, TP.HCM', 'nguyenhuuluan17@gmail.com', '0898103236', 'Test', '123');
 
 -- --------------------------------------------------------
 
@@ -11447,20 +11475,21 @@ CREATE TABLE `orders` (
   `status` varchar(20) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `order_id` int(11) DEFAULT NULL
+  `order_id` int(11) DEFAULT NULL,
+  `recipient_name` varchar(50) NOT NULL,
+  `address` text NOT NULL,
+  `phone` varchar(10) NOT NULL,
+  `type` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `user_id`, `product_id`, `quantity`, `total`, `status`, `created_at`, `updated_at`, `order_id`) VALUES
-(1, 24, 5, 1, 30000, 'complete', '2021-04-02 17:32:35', '2021-04-03 00:32:35', 1496812076),
-(2, 24, 2, 1, 20000, 'complete', '2021-04-02 17:33:09', '2021-04-03 00:33:09', 1496812076),
-(3, 24, 5, 1, 30000, 'complete', '2021-04-03 00:47:13', '2021-04-03 07:47:13', 1084117656),
-(4, 24, 2, 2, 40000, 'complete', '2021-04-03 00:47:13', '2021-04-03 07:47:13', 1084117656),
-(5, 24, 5, 1, 30000, 'complete', '2021-04-03 05:31:50', '2021-04-03 12:31:50', 604475800),
-(6, 24, 5, 1, 30000, 'complete', '2021-04-03 05:38:20', '2021-04-03 12:38:20', 1606229405);
+INSERT INTO `orders` (`id`, `user_id`, `product_id`, `quantity`, `total`, `status`, `created_at`, `updated_at`, `order_id`, `recipient_name`, `address`, `phone`, `type`) VALUES
+(14, 22, 5, 3, 90000, 'complete', '2021-04-16 13:55:15', '2021-04-16 22:36:08', 235210360, '', '', '', 0),
+(18, 22, 5, 2, 60000, 'ship', '2021-04-16 15:54:05', '2021-04-16 23:53:58', 1457288960, 'Hữu Luân', 'TP.HCM', '0898103236', 1),
+(19, 25, 5, 2, 60000, 'complete', '2021-04-16 17:16:02', '2021-04-17 00:23:31', 1408076597, '', '', '', 0);
 
 -- --------------------------------------------------------
 
@@ -11484,13 +11513,11 @@ CREATE TABLE `payment` (
 --
 
 INSERT INTO `payment` (`id`, `email`, `amount`, `currency_code`, `txn_id`, `payment_status`, `payment_response`, `create_at`) VALUES
-(1, 'hyquynh123@gmail.com', 50000.00, 'vnd', 'txn_1IekssFDus4KXswd2xzTbYss', 'succeeded', '{\"id\":\"ch_1IekssFDus4KXswd23i5zkXq\",\"object\":\"charge\",\"amount\":50000,\"amount_captured\":50000,\"amount_refunded\":0,\"application\":null,\"application_fee\":null,\"application_fee_amount\":null,\"balance_transaction\":\"txn_1IekssFDus4KXswd2xzTbYss\",\"billing_details\":{\"address\":{\"city\":null,\"country\":null,\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":null,\"name\":null,\"phone\":null},\"calculated_statement_descriptor\":\"Stripe\",\"captured\":true,\"created\":1618076774,\"currency\":\"vnd\",\"customer\":\"cus_JHJVeiHqvTwT1V\",\"description\":null,\"destination\":null,\"dispute\":null,\"disputed\":false,\"failure_code\":null,\"failure_message\":null,\"fraud_details\":[],\"invoice\":null,\"livemode\":false,\"metadata\":[],\"on_behalf_of\":null,\"order\":null,\"outcome\":{\"network_status\":\"approved_by_network\",\"reason\":null,\"risk_level\":\"normal\",\"risk_score\":25,\"seller_message\":\"Payment complete.\",\"type\":\"authorized\"},\"paid\":true,\"payment_intent\":null,\"payment_method\":\"card_1IeksrFDus4KXswd1KxZtoXA\",\"payment_method_details\":{\"card\":{\"brand\":\"visa\",\"checks\":{\"address_line1_check\":null,\"address_postal_code_check\":null,\"cvc_check\":\"pass\"},\"country\":\"US\",\"exp_month\":8,\"exp_year\":2023,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"installments\":null,\"last4\":\"4242\",\"network\":\"visa\",\"three_d_secure\":null,\"wallet\":null},\"type\":\"card\"},\"receipt_email\":null,\"receipt_number\":null,\"receipt_url\":\"https://pay.stripe.com/receipts/acct_1Iejc8FDus4KXswd/ch_1IekssFDus4KXswd23i5zkXq/rcpt_JHJVbAHcgKoYIFcnFBnX4aMWD2OfpaX\",\"refunded\":false,\"refunds\":{\"object\":\"list\",\"data\":[],\"has_more\":false,\"total_count\":0,\"url\":\"/v1/charges/ch_1IekssFDus4KXswd23i5zkXq/refunds\"},\"review\":null,\"shipping\":null,\"source\":{\"id\":\"card_1IeksrFDus4KXswd1KxZtoXA\",\"object\":\"card\",\"address_city\":null,\"address_country\":null,\"address_line1\":null,\"address_line1_check\":null,\"address_line2\":null,\"address_state\":null,\"address_zip\":null,\"address_zip_check\":null,\"brand\":\"Visa\",\"country\":\"US\",\"customer\":\"cus_JHJVeiHqvTwT1V\",\"cvc_check\":\"pass\",\"dynamic_last4\":null,\"exp_month\":8,\"exp_year\":2023,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"last4\":\"4242\",\"metadata\":[],\"name\":null,\"tokenization_method\":null},\"source_transfer\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"succeeded\",\"transfer_data\":null,\"transfer_group\":null}', '2021-04-10 17:46:14'),
-(2, 'hyquynh123@gmail.com', 50000.00, 'vnd', 'txn_1Iel5sFDus4KXswduWhMyd2Y', 'succeeded', '{\"id\":\"ch_1Iel5rFDus4KXswdpxdEs2q9\",\"object\":\"charge\",\"amount\":50000,\"amount_captured\":50000,\"amount_refunded\":0,\"application\":null,\"application_fee\":null,\"application_fee_amount\":null,\"balance_transaction\":\"txn_1Iel5sFDus4KXswduWhMyd2Y\",\"billing_details\":{\"address\":{\"city\":null,\"country\":null,\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":null,\"name\":null,\"phone\":null},\"calculated_statement_descriptor\":\"Stripe\",\"captured\":true,\"created\":1618077579,\"currency\":\"vnd\",\"customer\":\"cus_JHJjrEZKgdXnLV\",\"description\":null,\"destination\":null,\"dispute\":null,\"disputed\":false,\"failure_code\":null,\"failure_message\":null,\"fraud_details\":[],\"invoice\":null,\"livemode\":false,\"metadata\":[],\"on_behalf_of\":null,\"order\":null,\"outcome\":{\"network_status\":\"approved_by_network\",\"reason\":null,\"risk_level\":\"normal\",\"risk_score\":36,\"seller_message\":\"Payment complete.\",\"type\":\"authorized\"},\"paid\":true,\"payment_intent\":null,\"payment_method\":\"card_1Iel5qFDus4KXswdFmzBWp1M\",\"payment_method_details\":{\"card\":{\"brand\":\"visa\",\"checks\":{\"address_line1_check\":null,\"address_postal_code_check\":null,\"cvc_check\":\"pass\"},\"country\":\"US\",\"exp_month\":8,\"exp_year\":2023,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"installments\":null,\"last4\":\"4242\",\"network\":\"visa\",\"three_d_secure\":null,\"wallet\":null},\"type\":\"card\"},\"receipt_email\":null,\"receipt_number\":null,\"receipt_url\":\"https://pay.stripe.com/receipts/acct_1Iejc8FDus4KXswd/ch_1Iel5rFDus4KXswdpxdEs2q9/rcpt_JHJj9SsJmcIHio0fi0mVUnYYOD6Rbd3\",\"refunded\":false,\"refunds\":{\"object\":\"list\",\"data\":[],\"has_more\":false,\"total_count\":0,\"url\":\"/v1/charges/ch_1Iel5rFDus4KXswdpxdEs2q9/refunds\"},\"review\":null,\"shipping\":null,\"source\":{\"id\":\"card_1Iel5qFDus4KXswdFmzBWp1M\",\"object\":\"card\",\"address_city\":null,\"address_country\":null,\"address_line1\":null,\"address_line1_check\":null,\"address_line2\":null,\"address_state\":null,\"address_zip\":null,\"address_zip_check\":null,\"brand\":\"Visa\",\"country\":\"US\",\"customer\":\"cus_JHJjrEZKgdXnLV\",\"cvc_check\":\"pass\",\"dynamic_last4\":null,\"exp_month\":8,\"exp_year\":2023,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"last4\":\"4242\",\"metadata\":[],\"name\":null,\"tokenization_method\":null},\"source_transfer\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"succeeded\",\"transfer_data\":null,\"transfer_group\":null}', '2021-04-10 17:59:39'),
-(3, 'hyquynh123@gmail.com', 50000.00, 'vnd', 'txn_1Iel8lFDus4KXswdbDBcKX7T', 'succeeded', '{\"id\":\"ch_1Iel8kFDus4KXswdISXJSYal\",\"object\":\"charge\",\"amount\":50000,\"amount_captured\":50000,\"amount_refunded\":0,\"application\":null,\"application_fee\":null,\"application_fee_amount\":null,\"balance_transaction\":\"txn_1Iel8lFDus4KXswdbDBcKX7T\",\"billing_details\":{\"address\":{\"city\":null,\"country\":null,\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":null,\"name\":null,\"phone\":null},\"calculated_statement_descriptor\":\"Stripe\",\"captured\":true,\"created\":1618077758,\"currency\":\"vnd\",\"customer\":\"cus_JHJmL5BpNtCwDN\",\"description\":null,\"destination\":null,\"dispute\":null,\"disputed\":false,\"failure_code\":null,\"failure_message\":null,\"fraud_details\":[],\"invoice\":null,\"livemode\":false,\"metadata\":[],\"on_behalf_of\":null,\"order\":null,\"outcome\":{\"network_status\":\"approved_by_network\",\"reason\":null,\"risk_level\":\"normal\",\"risk_score\":22,\"seller_message\":\"Payment complete.\",\"type\":\"authorized\"},\"paid\":true,\"payment_intent\":null,\"payment_method\":\"card_1Iel8jFDus4KXswd7fh6kPhB\",\"payment_method_details\":{\"card\":{\"brand\":\"visa\",\"checks\":{\"address_line1_check\":null,\"address_postal_code_check\":null,\"cvc_check\":\"pass\"},\"country\":\"US\",\"exp_month\":8,\"exp_year\":2023,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"installments\":null,\"last4\":\"4242\",\"network\":\"visa\",\"three_d_secure\":null,\"wallet\":null},\"type\":\"card\"},\"receipt_email\":null,\"receipt_number\":null,\"receipt_url\":\"https://pay.stripe.com/receipts/acct_1Iejc8FDus4KXswd/ch_1Iel8kFDus4KXswdISXJSYal/rcpt_JHJmr7fEfvPeUvNGKIsK4rm2vU2YmBj\",\"refunded\":false,\"refunds\":{\"object\":\"list\",\"data\":[],\"has_more\":false,\"total_count\":0,\"url\":\"/v1/charges/ch_1Iel8kFDus4KXswdISXJSYal/refunds\"},\"review\":null,\"shipping\":null,\"source\":{\"id\":\"card_1Iel8jFDus4KXswd7fh6kPhB\",\"object\":\"card\",\"address_city\":null,\"address_country\":null,\"address_line1\":null,\"address_line1_check\":null,\"address_line2\":null,\"address_state\":null,\"address_zip\":null,\"address_zip_check\":null,\"brand\":\"Visa\",\"country\":\"US\",\"customer\":\"cus_JHJmL5BpNtCwDN\",\"cvc_check\":\"pass\",\"dynamic_last4\":null,\"exp_month\":8,\"exp_year\":2023,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"last4\":\"4242\",\"metadata\":[],\"name\":null,\"tokenization_method\":null},\"source_transfer\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"succeeded\",\"transfer_data\":null,\"transfer_group\":null}', '2021-04-10 18:02:39'),
-(4, 'hyquynh123@gmail.com', 50000.00, 'vnd', 'txn_1IelBUFDus4KXswdh0s2Aw7D', 'succeeded', '{\"id\":\"ch_1IelBUFDus4KXswd9TKbX0k2\",\"object\":\"charge\",\"amount\":50000,\"amount_captured\":50000,\"amount_refunded\":0,\"application\":null,\"application_fee\":null,\"application_fee_amount\":null,\"balance_transaction\":\"txn_1IelBUFDus4KXswdh0s2Aw7D\",\"billing_details\":{\"address\":{\"city\":null,\"country\":null,\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":null,\"name\":null,\"phone\":null},\"calculated_statement_descriptor\":\"Stripe\",\"captured\":true,\"created\":1618077928,\"currency\":\"vnd\",\"customer\":\"cus_JHJpvLy57sB3Nr\",\"description\":null,\"destination\":null,\"dispute\":null,\"disputed\":false,\"failure_code\":null,\"failure_message\":null,\"fraud_details\":[],\"invoice\":null,\"livemode\":false,\"metadata\":[],\"on_behalf_of\":null,\"order\":null,\"outcome\":{\"network_status\":\"approved_by_network\",\"reason\":null,\"risk_level\":\"normal\",\"risk_score\":60,\"seller_message\":\"Payment complete.\",\"type\":\"authorized\"},\"paid\":true,\"payment_intent\":null,\"payment_method\":\"card_1IelBTFDus4KXswdCkaBnWbd\",\"payment_method_details\":{\"card\":{\"brand\":\"visa\",\"checks\":{\"address_line1_check\":null,\"address_postal_code_check\":null,\"cvc_check\":\"pass\"},\"country\":\"US\",\"exp_month\":8,\"exp_year\":2023,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"installments\":null,\"last4\":\"4242\",\"network\":\"visa\",\"three_d_secure\":null,\"wallet\":null},\"type\":\"card\"},\"receipt_email\":null,\"receipt_number\":null,\"receipt_url\":\"https://pay.stripe.com/receipts/acct_1Iejc8FDus4KXswd/ch_1IelBUFDus4KXswd9TKbX0k2/rcpt_JHJpUYxpsc1Kk37pg2ymUf8z5LxhAAi\",\"refunded\":false,\"refunds\":{\"object\":\"list\",\"data\":[],\"has_more\":false,\"total_count\":0,\"url\":\"/v1/charges/ch_1IelBUFDus4KXswd9TKbX0k2/refunds\"},\"review\":null,\"shipping\":null,\"source\":{\"id\":\"card_1IelBTFDus4KXswdCkaBnWbd\",\"object\":\"card\",\"address_city\":null,\"address_country\":null,\"address_line1\":null,\"address_line1_check\":null,\"address_line2\":null,\"address_state\":null,\"address_zip\":null,\"address_zip_check\":null,\"brand\":\"Visa\",\"country\":\"US\",\"customer\":\"cus_JHJpvLy57sB3Nr\",\"cvc_check\":\"pass\",\"dynamic_last4\":null,\"exp_month\":8,\"exp_year\":2023,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"last4\":\"4242\",\"metadata\":[],\"name\":null,\"tokenization_method\":null},\"source_transfer\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"succeeded\",\"transfer_data\":null,\"transfer_group\":null}', '2021-04-10 18:05:28'),
-(5, 'hyquynh123@gmail.com', 50000.00, 'vnd', 'txn_1IelJCFDus4KXswdU2QMbsk3', 'succeeded', '{\"id\":\"ch_1IelJCFDus4KXswd1qz0d4us\",\"object\":\"charge\",\"amount\":50000,\"amount_captured\":50000,\"amount_refunded\":0,\"application\":null,\"application_fee\":null,\"application_fee_amount\":null,\"balance_transaction\":\"txn_1IelJCFDus4KXswdU2QMbsk3\",\"billing_details\":{\"address\":{\"city\":null,\"country\":null,\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":null,\"name\":null,\"phone\":null},\"calculated_statement_descriptor\":\"Stripe\",\"captured\":true,\"created\":1618078406,\"currency\":\"vnd\",\"customer\":\"cus_JHJxjryjZv6wN0\",\"description\":null,\"destination\":null,\"dispute\":null,\"disputed\":false,\"failure_code\":null,\"failure_message\":null,\"fraud_details\":[],\"invoice\":null,\"livemode\":false,\"metadata\":[],\"on_behalf_of\":null,\"order\":null,\"outcome\":{\"network_status\":\"approved_by_network\",\"reason\":null,\"risk_level\":\"normal\",\"risk_score\":38,\"seller_message\":\"Payment complete.\",\"type\":\"authorized\"},\"paid\":true,\"payment_intent\":null,\"payment_method\":\"card_1IelJBFDus4KXswdEmLUHInI\",\"payment_method_details\":{\"card\":{\"brand\":\"visa\",\"checks\":{\"address_line1_check\":null,\"address_postal_code_check\":null,\"cvc_check\":\"pass\"},\"country\":\"US\",\"exp_month\":8,\"exp_year\":2023,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"installments\":null,\"last4\":\"4242\",\"network\":\"visa\",\"three_d_secure\":null,\"wallet\":null},\"type\":\"card\"},\"receipt_email\":null,\"receipt_number\":null,\"receipt_url\":\"https://pay.stripe.com/receipts/acct_1Iejc8FDus4KXswd/ch_1IelJCFDus4KXswd1qz0d4us/rcpt_JHJxXE8ReFDpMmDLkJUiv0DlPf7SVop\",\"refunded\":false,\"refunds\":{\"object\":\"list\",\"data\":[],\"has_more\":false,\"total_count\":0,\"url\":\"/v1/charges/ch_1IelJCFDus4KXswd1qz0d4us/refunds\"},\"review\":null,\"shipping\":null,\"source\":{\"id\":\"card_1IelJBFDus4KXswdEmLUHInI\",\"object\":\"card\",\"address_city\":null,\"address_country\":null,\"address_line1\":null,\"address_line1_check\":null,\"address_line2\":null,\"address_state\":null,\"address_zip\":null,\"address_zip_check\":null,\"brand\":\"Visa\",\"country\":\"US\",\"customer\":\"cus_JHJxjryjZv6wN0\",\"cvc_check\":\"pass\",\"dynamic_last4\":null,\"exp_month\":8,\"exp_year\":2023,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"last4\":\"4242\",\"metadata\":[],\"name\":null,\"tokenization_method\":null},\"source_transfer\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"succeeded\",\"transfer_data\":null,\"transfer_group\":null}', '2021-04-10 18:13:26'),
-(6, 'hyquynh123@gmail.com', 60000.00, 'vnd', 'txn_1IelLKFDus4KXswdUEazmV3A', 'succeeded', '{\"id\":\"ch_1IelLKFDus4KXswdEXWXbNgi\",\"object\":\"charge\",\"amount\":60000,\"amount_captured\":60000,\"amount_refunded\":0,\"application\":null,\"application_fee\":null,\"application_fee_amount\":null,\"balance_transaction\":\"txn_1IelLKFDus4KXswdUEazmV3A\",\"billing_details\":{\"address\":{\"city\":null,\"country\":null,\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":null,\"name\":null,\"phone\":null},\"calculated_statement_descriptor\":\"Stripe\",\"captured\":true,\"created\":1618078538,\"currency\":\"vnd\",\"customer\":\"cus_JHJzTCxDyRfq82\",\"description\":null,\"destination\":null,\"dispute\":null,\"disputed\":false,\"failure_code\":null,\"failure_message\":null,\"fraud_details\":[],\"invoice\":null,\"livemode\":false,\"metadata\":[],\"on_behalf_of\":null,\"order\":null,\"outcome\":{\"network_status\":\"approved_by_network\",\"reason\":null,\"risk_level\":\"normal\",\"risk_score\":51,\"seller_message\":\"Payment complete.\",\"type\":\"authorized\"},\"paid\":true,\"payment_intent\":null,\"payment_method\":\"card_1IelLJFDus4KXswdXU4B30l4\",\"payment_method_details\":{\"card\":{\"brand\":\"visa\",\"checks\":{\"address_line1_check\":null,\"address_postal_code_check\":null,\"cvc_check\":\"pass\"},\"country\":\"US\",\"exp_month\":8,\"exp_year\":2023,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"installments\":null,\"last4\":\"4242\",\"network\":\"visa\",\"three_d_secure\":null,\"wallet\":null},\"type\":\"card\"},\"receipt_email\":null,\"receipt_number\":null,\"receipt_url\":\"https://pay.stripe.com/receipts/acct_1Iejc8FDus4KXswd/ch_1IelLKFDus4KXswdEXWXbNgi/rcpt_JHJzAlQeNFLC38U4xf16q3zAXenkmzd\",\"refunded\":false,\"refunds\":{\"object\":\"list\",\"data\":[],\"has_more\":false,\"total_count\":0,\"url\":\"/v1/charges/ch_1IelLKFDus4KXswdEXWXbNgi/refunds\"},\"review\":null,\"shipping\":null,\"source\":{\"id\":\"card_1IelLJFDus4KXswdXU4B30l4\",\"object\":\"card\",\"address_city\":null,\"address_country\":null,\"address_line1\":null,\"address_line1_check\":null,\"address_line2\":null,\"address_state\":null,\"address_zip\":null,\"address_zip_check\":null,\"brand\":\"Visa\",\"country\":\"US\",\"customer\":\"cus_JHJzTCxDyRfq82\",\"cvc_check\":\"pass\",\"dynamic_last4\":null,\"exp_month\":8,\"exp_year\":2023,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"last4\":\"4242\",\"metadata\":[],\"name\":null,\"tokenization_method\":null},\"source_transfer\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"succeeded\",\"transfer_data\":null,\"transfer_group\":null}', '2021-04-10 18:15:38'),
-(7, 'hyquynh123@gmail.com', 20000.00, 'vnd', 'txn_1IelMPFDus4KXswdUZKlCv3V', 'succeeded', '{\"id\":\"ch_1IelMPFDus4KXswdB7idiNDs\",\"object\":\"charge\",\"amount\":20000,\"amount_captured\":20000,\"amount_refunded\":0,\"application\":null,\"application_fee\":null,\"application_fee_amount\":null,\"balance_transaction\":\"txn_1IelMPFDus4KXswdUZKlCv3V\",\"billing_details\":{\"address\":{\"city\":null,\"country\":null,\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":null,\"name\":null,\"phone\":null},\"calculated_statement_descriptor\":\"Stripe\",\"captured\":true,\"created\":1618078605,\"currency\":\"vnd\",\"customer\":\"cus_JHK02ZqdBmxnwF\",\"description\":null,\"destination\":null,\"dispute\":null,\"disputed\":false,\"failure_code\":null,\"failure_message\":null,\"fraud_details\":[],\"invoice\":null,\"livemode\":false,\"metadata\":[],\"on_behalf_of\":null,\"order\":null,\"outcome\":{\"network_status\":\"approved_by_network\",\"reason\":null,\"risk_level\":\"normal\",\"risk_score\":49,\"seller_message\":\"Payment complete.\",\"type\":\"authorized\"},\"paid\":true,\"payment_intent\":null,\"payment_method\":\"card_1IelMNFDus4KXswdIfZUcyOK\",\"payment_method_details\":{\"card\":{\"brand\":\"visa\",\"checks\":{\"address_line1_check\":null,\"address_postal_code_check\":null,\"cvc_check\":\"pass\"},\"country\":\"US\",\"exp_month\":8,\"exp_year\":2023,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"installments\":null,\"last4\":\"4242\",\"network\":\"visa\",\"three_d_secure\":null,\"wallet\":null},\"type\":\"card\"},\"receipt_email\":null,\"receipt_number\":null,\"receipt_url\":\"https://pay.stripe.com/receipts/acct_1Iejc8FDus4KXswd/ch_1IelMPFDus4KXswdB7idiNDs/rcpt_JHK0phppmFahOQWve10RwYAfNnR6xO4\",\"refunded\":false,\"refunds\":{\"object\":\"list\",\"data\":[],\"has_more\":false,\"total_count\":0,\"url\":\"/v1/charges/ch_1IelMPFDus4KXswdB7idiNDs/refunds\"},\"review\":null,\"shipping\":null,\"source\":{\"id\":\"card_1IelMNFDus4KXswdIfZUcyOK\",\"object\":\"card\",\"address_city\":null,\"address_country\":null,\"address_line1\":null,\"address_line1_check\":null,\"address_line2\":null,\"address_state\":null,\"address_zip\":null,\"address_zip_check\":null,\"brand\":\"Visa\",\"country\":\"US\",\"customer\":\"cus_JHK02ZqdBmxnwF\",\"cvc_check\":\"pass\",\"dynamic_last4\":null,\"exp_month\":8,\"exp_year\":2023,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"last4\":\"4242\",\"metadata\":[],\"name\":null,\"tokenization_method\":null},\"source_transfer\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"succeeded\",\"transfer_data\":null,\"transfer_group\":null}', '2021-04-10 18:16:45');
+(8, '', 90000.00, 'vnd', 'txn_1Iet39FDus4KXswd7dS947OS', 'succeeded', '{\"id\":\"ch_1Iet39FDus4KXswd5VuUSFTl\",\"object\":\"charge\",\"amount\":90000,\"amount_captured\":90000,\"amount_refunded\":0,\"application\":null,\"application_fee\":null,\"application_fee_amount\":null,\"balance_transaction\":\"txn_1Iet39FDus4KXswd7dS947OS\",\"billing_details\":{\"address\":{\"city\":null,\"country\":null,\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":null,\"name\":null,\"phone\":null},\"calculated_statement_descriptor\":\"Stripe\",\"captured\":true,\"created\":1618108163,\"currency\":\"vnd\",\"customer\":\"cus_JHRwy3oHhDJ0XB\",\"description\":null,\"destination\":null,\"dispute\":null,\"disputed\":false,\"failure_code\":null,\"failure_message\":null,\"fraud_details\":[],\"invoice\":null,\"livemode\":false,\"metadata\":[],\"on_behalf_of\":null,\"order\":null,\"outcome\":{\"network_status\":\"approved_by_network\",\"reason\":null,\"risk_level\":\"normal\",\"risk_score\":45,\"seller_message\":\"Payment complete.\",\"type\":\"authorized\"},\"paid\":true,\"payment_intent\":null,\"payment_method\":\"card_1Iet0yFDus4KXswd0jg7LGFi\",\"payment_method_details\":{\"card\":{\"brand\":\"visa\",\"checks\":{\"address_line1_check\":null,\"address_postal_code_check\":null,\"cvc_check\":\"pass\"},\"country\":\"US\",\"exp_month\":3,\"exp_year\":2024,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"installments\":null,\"last4\":\"4242\",\"network\":\"visa\",\"three_d_secure\":null,\"wallet\":null},\"type\":\"card\"},\"receipt_email\":null,\"receipt_number\":null,\"receipt_url\":\"https://pay.stripe.com/receipts/acct_1Iejc8FDus4KXswd/ch_1Iet39FDus4KXswd5VuUSFTl/rcpt_JHRx9Rz6gngQ7t8DQNOn1X9qXGGHiOQ\",\"refunded\":false,\"refunds\":{\"object\":\"list\",\"data\":[],\"has_more\":false,\"total_count\":0,\"url\":\"/v1/charges/ch_1Iet39FDus4KXswd5VuUSFTl/refunds\"},\"review\":null,\"shipping\":null,\"source\":{\"id\":\"card_1Iet0yFDus4KXswd0jg7LGFi\",\"object\":\"card\",\"address_city\":null,\"address_country\":null,\"address_line1\":null,\"address_line1_check\":null,\"address_line2\":null,\"address_state\":null,\"address_zip\":null,\"address_zip_check\":null,\"brand\":\"Visa\",\"country\":\"US\",\"customer\":\"cus_JHRwy3oHhDJ0XB\",\"cvc_check\":\"pass\",\"dynamic_last4\":null,\"exp_month\":3,\"exp_year\":2024,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"last4\":\"4242\",\"metadata\":[],\"name\":null,\"tokenization_method\":null},\"source_transfer\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"succeeded\",\"transfer_data\":null,\"transfer_group\":null}', '2021-04-11 02:29:34'),
+(9, '', 60000.00, 'vnd', 'txn_1IgD68FDus4KXswdDmqJhrTF', 'succeeded', '{\"id\":\"ch_1IgD67FDus4KXswd30C8N6gD\",\"object\":\"charge\",\"amount\":60000,\"amount_captured\":60000,\"amount_refunded\":0,\"application\":null,\"application_fee\":null,\"application_fee_amount\":null,\"balance_transaction\":\"txn_1IgD68FDus4KXswdDmqJhrTF\",\"billing_details\":{\"address\":{\"city\":null,\"country\":null,\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":null,\"name\":null,\"phone\":null},\"calculated_statement_descriptor\":\"Stripe\",\"captured\":true,\"created\":1618423555,\"currency\":\"vnd\",\"customer\":\"cus_JIojOhKcFMibaL\",\"description\":null,\"destination\":null,\"dispute\":null,\"disputed\":false,\"failure_code\":null,\"failure_message\":null,\"fraud_details\":[],\"invoice\":null,\"livemode\":false,\"metadata\":[],\"on_behalf_of\":null,\"order\":null,\"outcome\":{\"network_status\":\"approved_by_network\",\"reason\":null,\"risk_level\":\"normal\",\"risk_score\":32,\"seller_message\":\"Payment complete.\",\"type\":\"authorized\"},\"paid\":true,\"payment_intent\":null,\"payment_method\":\"card_1IgD65FDus4KXswdBnsl4XQr\",\"payment_method_details\":{\"card\":{\"brand\":\"visa\",\"checks\":{\"address_line1_check\":null,\"address_postal_code_check\":null,\"cvc_check\":\"pass\"},\"country\":\"US\",\"exp_month\":1,\"exp_year\":2022,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"installments\":null,\"last4\":\"4242\",\"network\":\"visa\",\"three_d_secure\":null,\"wallet\":null},\"type\":\"card\"},\"receipt_email\":null,\"receipt_number\":null,\"receipt_url\":\"https://pay.stripe.com/receipts/acct_1Iejc8FDus4KXswd/ch_1IgD67FDus4KXswd30C8N6gD/rcpt_JIojxrAbKn2Cw7hlkwDeNq7SFVKpJ59\",\"refunded\":false,\"refunds\":{\"object\":\"list\",\"data\":[],\"has_more\":false,\"total_count\":0,\"url\":\"/v1/charges/ch_1IgD67FDus4KXswd30C8N6gD/refunds\"},\"review\":null,\"shipping\":null,\"source\":{\"id\":\"card_1IgD65FDus4KXswdBnsl4XQr\",\"object\":\"card\",\"address_city\":null,\"address_country\":null,\"address_line1\":null,\"address_line1_check\":null,\"address_line2\":null,\"address_state\":null,\"address_zip\":null,\"address_zip_check\":null,\"brand\":\"Visa\",\"country\":\"US\",\"customer\":\"cus_JIojOhKcFMibaL\",\"cvc_check\":\"pass\",\"dynamic_last4\":null,\"exp_month\":1,\"exp_year\":2022,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"last4\":\"4242\",\"metadata\":[],\"name\":null,\"tokenization_method\":null},\"source_transfer\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"succeeded\",\"transfer_data\":null,\"transfer_group\":null}', '2021-04-14 18:05:56'),
+(10, '', 60000.00, 'vnd', 'txn_1IgtoWFDus4KXswdlLTHClLw', 'succeeded', '{\"id\":\"ch_1IgtoWFDus4KXswdvBRQ7gg6\",\"object\":\"charge\",\"amount\":60000,\"amount_captured\":60000,\"amount_refunded\":0,\"application\":null,\"application_fee\":null,\"application_fee_amount\":null,\"balance_transaction\":\"txn_1IgtoWFDus4KXswdlLTHClLw\",\"billing_details\":{\"address\":{\"city\":null,\"country\":null,\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":null,\"name\":null,\"phone\":null},\"calculated_statement_descriptor\":\"Stripe\",\"captured\":true,\"created\":1618587756,\"currency\":\"vnd\",\"customer\":\"cus_JJWscvsmfR6wah\",\"description\":null,\"destination\":null,\"dispute\":null,\"disputed\":false,\"failure_code\":null,\"failure_message\":null,\"fraud_details\":[],\"invoice\":null,\"livemode\":false,\"metadata\":[],\"on_behalf_of\":null,\"order\":null,\"outcome\":{\"network_status\":\"approved_by_network\",\"reason\":null,\"risk_level\":\"normal\",\"risk_score\":29,\"seller_message\":\"Payment complete.\",\"type\":\"authorized\"},\"paid\":true,\"payment_intent\":null,\"payment_method\":\"card_1IgtoLFDus4KXswd1xvAjRo5\",\"payment_method_details\":{\"card\":{\"brand\":\"visa\",\"checks\":{\"address_line1_check\":null,\"address_postal_code_check\":null,\"cvc_check\":\"pass\"},\"country\":\"US\",\"exp_month\":8,\"exp_year\":2029,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"installments\":null,\"last4\":\"4242\",\"network\":\"visa\",\"three_d_secure\":null,\"wallet\":null},\"type\":\"card\"},\"receipt_email\":null,\"receipt_number\":null,\"receipt_url\":\"https://pay.stripe.com/receipts/acct_1Iejc8FDus4KXswd/ch_1IgtoWFDus4KXswdvBRQ7gg6/rcpt_JJWsS9XmtIuNAk3FCFRmT7bEYHTHc9N\",\"refunded\":false,\"refunds\":{\"object\":\"list\",\"data\":[],\"has_more\":false,\"total_count\":0,\"url\":\"/v1/charges/ch_1IgtoWFDus4KXswdvBRQ7gg6/refunds\"},\"review\":null,\"shipping\":null,\"source\":{\"id\":\"card_1IgtoLFDus4KXswd1xvAjRo5\",\"object\":\"card\",\"address_city\":null,\"address_country\":null,\"address_line1\":null,\"address_line1_check\":null,\"address_line2\":null,\"address_state\":null,\"address_zip\":null,\"address_zip_check\":null,\"brand\":\"Visa\",\"country\":\"US\",\"customer\":\"cus_JJWscvsmfR6wah\",\"cvc_check\":\"pass\",\"dynamic_last4\":null,\"exp_month\":8,\"exp_year\":2029,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"last4\":\"4242\",\"metadata\":[],\"name\":null,\"tokenization_method\":null},\"source_transfer\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"succeeded\",\"transfer_data\":null,\"transfer_group\":null}', '2021-04-16 15:42:39'),
+(11, '', 210000.00, 'vnd', 'txn_1IgtumFDus4KXswdshqjrRbW', 'succeeded', '{\"id\":\"ch_1IgtumFDus4KXswdiYZh4GoM\",\"object\":\"charge\",\"amount\":210000,\"amount_captured\":210000,\"amount_refunded\":0,\"application\":null,\"application_fee\":null,\"application_fee_amount\":null,\"balance_transaction\":\"txn_1IgtumFDus4KXswdshqjrRbW\",\"billing_details\":{\"address\":{\"city\":null,\"country\":null,\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":null,\"name\":null,\"phone\":null},\"calculated_statement_descriptor\":\"Stripe\",\"captured\":true,\"created\":1618588144,\"currency\":\"vnd\",\"customer\":\"cus_JJWyrJAsL2PzaO\",\"description\":null,\"destination\":null,\"dispute\":null,\"disputed\":false,\"failure_code\":null,\"failure_message\":null,\"fraud_details\":[],\"invoice\":null,\"livemode\":false,\"metadata\":[],\"on_behalf_of\":null,\"order\":null,\"outcome\":{\"network_status\":\"approved_by_network\",\"reason\":null,\"risk_level\":\"normal\",\"risk_score\":48,\"seller_message\":\"Payment complete.\",\"type\":\"authorized\"},\"paid\":true,\"payment_intent\":null,\"payment_method\":\"card_1IgtukFDus4KXswdUDpjuH3N\",\"payment_method_details\":{\"card\":{\"brand\":\"visa\",\"checks\":{\"address_line1_check\":null,\"address_postal_code_check\":null,\"cvc_check\":\"pass\"},\"country\":\"US\",\"exp_month\":1,\"exp_year\":2024,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"installments\":null,\"last4\":\"4242\",\"network\":\"visa\",\"three_d_secure\":null,\"wallet\":null},\"type\":\"card\"},\"receipt_email\":null,\"receipt_number\":null,\"receipt_url\":\"https://pay.stripe.com/receipts/acct_1Iejc8FDus4KXswd/ch_1IgtumFDus4KXswdiYZh4GoM/rcpt_JJWyQZjFDn0ge9t9ffu4UcDzr6QLQwb\",\"refunded\":false,\"refunds\":{\"object\":\"list\",\"data\":[],\"has_more\":false,\"total_count\":0,\"url\":\"/v1/charges/ch_1IgtumFDus4KXswdiYZh4GoM/refunds\"},\"review\":null,\"shipping\":null,\"source\":{\"id\":\"card_1IgtukFDus4KXswdUDpjuH3N\",\"object\":\"card\",\"address_city\":null,\"address_country\":null,\"address_line1\":null,\"address_line1_check\":null,\"address_line2\":null,\"address_state\":null,\"address_zip\":null,\"address_zip_check\":null,\"brand\":\"Visa\",\"country\":\"US\",\"customer\":\"cus_JJWyrJAsL2PzaO\",\"cvc_check\":\"pass\",\"dynamic_last4\":null,\"exp_month\":1,\"exp_year\":2024,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"last4\":\"4242\",\"metadata\":[],\"name\":null,\"tokenization_method\":null},\"source_transfer\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"succeeded\",\"transfer_data\":null,\"transfer_group\":null}', '2021-04-16 15:49:04'),
+(12, '', 60000.00, 'vnd', 'txn_1IgtzdFDus4KXswd2yZHKB5B', 'succeeded', '{\"id\":\"ch_1IgtzdFDus4KXswd1V5Sw4yj\",\"object\":\"charge\",\"amount\":60000,\"amount_captured\":60000,\"amount_refunded\":0,\"application\":null,\"application_fee\":null,\"application_fee_amount\":null,\"balance_transaction\":\"txn_1IgtzdFDus4KXswd2yZHKB5B\",\"billing_details\":{\"address\":{\"city\":null,\"country\":null,\"line1\":null,\"line2\":null,\"postal_code\":null,\"state\":null},\"email\":null,\"name\":null,\"phone\":null},\"calculated_statement_descriptor\":\"Stripe\",\"captured\":true,\"created\":1618588445,\"currency\":\"vnd\",\"customer\":\"cus_JJX3cs0pJtS4SR\",\"description\":null,\"destination\":null,\"dispute\":null,\"disputed\":false,\"failure_code\":null,\"failure_message\":null,\"fraud_details\":[],\"invoice\":null,\"livemode\":false,\"metadata\":[],\"on_behalf_of\":null,\"order\":null,\"outcome\":{\"network_status\":\"approved_by_network\",\"reason\":null,\"risk_level\":\"normal\",\"risk_score\":0,\"seller_message\":\"Payment complete.\",\"type\":\"authorized\"},\"paid\":true,\"payment_intent\":null,\"payment_method\":\"card_1IgtzbFDus4KXswdlqW8lPZZ\",\"payment_method_details\":{\"card\":{\"brand\":\"visa\",\"checks\":{\"address_line1_check\":null,\"address_postal_code_check\":null,\"cvc_check\":\"pass\"},\"country\":\"US\",\"exp_month\":2,\"exp_year\":2024,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"installments\":null,\"last4\":\"4242\",\"network\":\"visa\",\"three_d_secure\":null,\"wallet\":null},\"type\":\"card\"},\"receipt_email\":null,\"receipt_number\":null,\"receipt_url\":\"https://pay.stripe.com/receipts/acct_1Iejc8FDus4KXswd/ch_1IgtzdFDus4KXswd1V5Sw4yj/rcpt_JJX37wemsYD0RSb9pF9wtmHfAJRcgHi\",\"refunded\":false,\"refunds\":{\"object\":\"list\",\"data\":[],\"has_more\":false,\"total_count\":0,\"url\":\"/v1/charges/ch_1IgtzdFDus4KXswd1V5Sw4yj/refunds\"},\"review\":null,\"shipping\":null,\"source\":{\"id\":\"card_1IgtzbFDus4KXswdlqW8lPZZ\",\"object\":\"card\",\"address_city\":null,\"address_country\":null,\"address_line1\":null,\"address_line1_check\":null,\"address_line2\":null,\"address_state\":null,\"address_zip\":null,\"address_zip_check\":null,\"brand\":\"Visa\",\"country\":\"US\",\"customer\":\"cus_JJX3cs0pJtS4SR\",\"cvc_check\":\"pass\",\"dynamic_last4\":null,\"exp_month\":2,\"exp_year\":2024,\"fingerprint\":\"KlMjGjsJyf347PtU\",\"funding\":\"credit\",\"last4\":\"4242\",\"metadata\":[],\"name\":null,\"tokenization_method\":null},\"source_transfer\":null,\"statement_descriptor\":null,\"statement_descriptor_suffix\":null,\"status\":\"succeeded\",\"transfer_data\":null,\"transfer_group\":null}', '2021-04-16 15:54:05');
 
 -- --------------------------------------------------------
 
@@ -11515,11 +11542,11 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `category_id`, `name`, `price`, `description`, `image`, `active`, `quantity`, `region_id`) VALUES
-(1, 8, 'Bánh cuốn', '20000', '', '16173595503.jpg', 'enabled', 99, 3),
-(2, 8, 'Thịt nướng', '20000', '', '16173595181.jpg', 'enabled', 100, 4),
+(1, 8, 'Bánh cuốn', '20000', '', '16173595503.jpg', 'enabled', 96, 3),
+(2, 8, 'Thịt nướng', '20000', '', '16173595181.jpg', 'enabled', 94, 4),
 (3, 9, 'Bánh canh', '10000', '', '16173484603.jpg', 'enabled', 100, 3),
-(4, 8, 'Bún đậu', '20000', '', '16173806016.jpg', 'enabled', 100, 3),
-(5, 8, 'Thịt heo', '30000', '', '161738065912.jpg', 'enabled', 100, 2);
+(4, 8, 'Bún đậu', '20000', '', '16173806016.jpg', 'enabled', 70, 3),
+(5, 8, 'Thịt heo', '30000', '', '161738065912.jpg', 'enabled', 80, 2);
 
 -- --------------------------------------------------------
 
@@ -11559,11 +11586,29 @@ CREATE TABLE `tables` (
 
 INSERT INTO `tables` (`id`, `type`, `active`) VALUES
 (2, 'other', 'enabled'),
-(3, 'single', 'disabled'),
-(4, 'single', 'disabled'),
+(3, 'single', 'enabled'),
+(4, 'single', 'enabled'),
 (5, 'single', 'enabled'),
-(6, 'double', 'enabled'),
-(7, 'other', 'enabled');
+(6, 'double', 'disabled'),
+(7, 'other', 'enabled'),
+(8, 'single', 'enabled'),
+(9, 'single', 'enabled'),
+(10, 'double', 'enabled'),
+(11, 'double', 'enabled'),
+(12, 'double', 'enabled'),
+(13, 'double', 'enabled'),
+(14, 'other', 'enabled'),
+(15, 'other', 'enabled'),
+(16, 'other', 'enabled'),
+(17, 'single', 'enabled'),
+(18, 'single', 'enabled'),
+(19, 'single', 'enabled'),
+(20, 'single', 'enabled'),
+(21, 'single', 'enabled'),
+(22, 'single', 'enabled'),
+(23, 'single', 'enabled'),
+(24, 'double', 'enabled'),
+(25, 'other', 'enabled');
 
 -- --------------------------------------------------------
 
@@ -11595,7 +11640,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `password`, `email`, `firstname`, `lastname`, `phone`, `gender`, `type`, `city`, `district`, `commune`, `status`, `active`, `img`) VALUES
 (21, '$2y$10$l06cNufFLnb2AYKDkfhPIO1X/lTuEw0kOzQ6hS8IaPy7DpdBt0r1y', 'nguyenhuuluan17@gmail.com', 'Luân', 'Nguyễn', '0898103236', 'male', 'admin', '26', '247', '08875', 'verify', 'enabled', '1617345477luan.jpg'),
 (22, '$2y$10$GyHyQg9ZV97Xmb4.sGTGaOjSGrGv/V1wGdI7ZzyM147mjhn3D/a2q', 'hyquynh123@gmail.com', 'Quỳnh', 'Liêu', '0123513131', 'male', 'customer', '20', '182', '06166', 'verify', 'enabled', '1617351068quynh.jpg'),
-(24, '$2y$10$I9mSJ1kKH4fMETHyW0MS9uaKVOlS7LNQD5iytDM.bc80xiIAAo716', 'luannh@magenest.com', 'Hưng', 'Nguyễn', '0898103236', 'male', 'customer', '24', '221', '07738', 'verify', 'enabled', '1617380792hang.jpg');
+(24, '$2y$10$I9mSJ1kKH4fMETHyW0MS9uaKVOlS7LNQD5iytDM.bc80xiIAAo716', 'luannh@magenest.com', 'Hưng', 'Nguyễn', '0898103236', 'male', 'customer', '24', '221', '07738', 'verify', 'enabled', '1617380792hang.jpg'),
+(25, '$2y$10$OLIEXnx4Lk3jOm/3VEQRoekKz4JTt5J9PMRCQiOfZXsWQZg6v4Vy6', 'hung123@gmail.com', 'Hưng', 'Nguyễn', '0123456789', 'male', 'serve', '01', '269', '09601', 'verify', 'enabled', '1618579352luan.jpg');
 
 --
 -- Indexes for dumped tables
@@ -11612,6 +11658,12 @@ ALTER TABLE `booking`
 -- Indexes for table `category`
 --
 ALTER TABLE `category`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `contacts`
+--
+ALTER TABLE `contacts`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -11686,16 +11738,22 @@ ALTER TABLE `category`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
+-- AUTO_INCREMENT for table `contacts`
+--
+ALTER TABLE `contacts`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `payment`
 --
 ALTER TABLE `payment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `region`
@@ -11707,13 +11765,13 @@ ALTER TABLE `region`
 -- AUTO_INCREMENT for table `tables`
 --
 ALTER TABLE `tables`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- Constraints for dumped tables

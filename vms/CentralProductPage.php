@@ -98,12 +98,12 @@ class CentralProductPage {
                                         <img src="/images/product/<?= $row['image'] ?>" alt="<?= $row['name'] ?>" class="product-image" width="100%" height="70%"/>
                                         <div class="product-name" name="product-name"><?= $row['name'] ?></div>
                                         <div class="price-new" name="price-new"><?= number_format($row['price'], 0, '', ',') ?>₫</div>
-                                        <?php if($_SESSION['type'] === 'customer'): ?>
+                                        <?php if($_SESSION['type'] === 'customer' || $_SESSION['type'] === 'serve'): ?>
                                             <input type="number" name="qty" min=1 class="qty" class="qty" required/>
                                         <?php endif; ?>
                                     </div>
                                 </div>
-                                <?php if($_SESSION['type'] === 'customer'): ?>
+                                <?php if($_SESSION['type'] === 'customer' || $_SESSION['type'] === 'serve'): ?>
                                     <div class="col text-center">
                                         <button name="submit" type="submit"><i
                                                 class="fas fa-shopping-cart mr-2"></i>Mua</button>
@@ -133,12 +133,12 @@ class CentralProductPage {
                                         <img src="/images/product/<?= $row['image'] ?>" alt="<?= $row['name'] ?>" class="product-image" width="100%" height="70%"/>
                                         <div class="product-name" name="product-name"><?= $row['name'] ?></div>
                                         <div class="price-new" name="price-new"><?= number_format($row['price'], 0, '', ',') ?>₫</div>
-                                        <?php if($_SESSION['type'] === 'customer'): ?>
+                                        <?php if($_SESSION['type'] === 'customer' || $_SESSION['type'] === 'serve'): ?>
                                             <input type="number" name="qty" min=1 class="qty" class="qty" required/>
                                         <?php endif; ?>
                                     </div>
                                 </div>
-                                <?php if($_SESSION['type'] === 'customer'): ?>
+                                <?php if($_SESSION['type'] === 'customer' || $_SESSION['type'] === 'serve'): ?>
                                     <div class="col text-center">
                                         <button name="submit" type="submit"><i
                                                 class="fas fa-shopping-cart mr-2"></i>Mua</button>

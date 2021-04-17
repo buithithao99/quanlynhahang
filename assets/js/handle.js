@@ -91,6 +91,71 @@ $(document).ready(function(){
         var price = $("#price").val();
         document.getElementById("total").setAttribute("value", qty*price);
     });
+    $("#form-filter").hide();
+    $('#revenue').change(function(e){
+        var option = $(this).val();
+        if(option === 'day'){
+            $("#form-filter").hide();
+            $("#chart_month").hide();
+            $("#chart_year").hide();
+            $("#chart_day").show();
+        }else if(option === 'month'){
+            $("#form-filter").hide();
+            $("#chart_day").hide();
+            $("#chart_year").hide();
+            $("#chart_month").show();
+        }else if(option === 'year'){
+            $("#form-filter").hide();
+            $("#chart_month").hide();
+            $("#chart_day").hide();
+            $("#chart_year").show();
+        }else{
+            $("#form-filter").show();
+            $("#chart_month").hide();
+            $("#chart_day").hide();
+            $("#chart_year").hide();
+        }
+    });
+    $(document).on('click', '#filter', function() { 
+        var from_date = $("#from_date").val();
+        var to_date = $("#to_date").val();
+        if(from_date != '' && to_date != ''){
+            $.ajax({
+                url: "/customfilter",
+                type: 'POST',
+                data: {
+                    from_date:from_date,
+                    to_date:to_date
+                }
+            }).done(function(res){
+                var arr = [];
+                 // Load the Visualization API and the corechart package.
+                google.charts.load('current', {'packages':['corechart']});
+
+                // Set a callback to run when the Google Visualization API is loaded.
+                google.charts.setOnLoadCallback(drawChartCustom);
+                function drawChartCustom() {
+
+                    // Create the data table.
+                    var data = new google.visualization.DataTable();
+                    for(let x of JSON.parse(res)){
+                        arr.push([x["DATE(created_at)"],parseInt(x["sum(total)"])]);
+                    }
+                    data.addColumn('string', 'Time');
+                    data.addColumn('number', 'Total');
+                    data.addRows(arr);
+                    // Set chart options
+                    var options = {'title':'Doanh thu từ '+from_date+" đến "+to_date,
+                                    'width':600,
+                                    'height':600};
+        
+                    // Instantiate and draw our chart, passing in some options.
+                    var chart = new google.visualization.PieChart(document.getElementById('chart_custom'));
+                    chart.draw(data, options);
+                }
+            });
+        }
+    });
 });
 
 var closebtns = document.getElementsByClassName("close");

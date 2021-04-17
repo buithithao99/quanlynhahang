@@ -52,7 +52,7 @@ class PaymentPage
             $result = UserAPI::payment($param_value_array);
             if ($result->status && $stripeResponse['amount_refunded'] == 0 && empty($stripeResponse['failure_code']) && $stripeResponse['paid'] == 1 && $stripeResponse['captured'] == 1 && $stripeResponse['status'] == 'succeeded') {
                 $this->successMessage = "completed successfully";
-                UserAPI::checkout(unserialize($_SESSION['dataCart']));
+                UserAPI::checkoutOnline(unserialize($_SESSION['dataCart']),$_POST);
             }
         }
         $template->renderChild($this);
@@ -68,13 +68,18 @@ class PaymentPage
 <div id="error-message"></div>
 <?php foreach($this->rows->message as $row): ?>
     <form id="frmStripePayment" action="/payment" method="post">
+        <h4 align="center">Bên thanh toán</h4>
         <div class="form-group">
-            <label for="name">Tên sở hữu</label> <span id="card-holder-name-info" class="info"></span>
+            <label for="name">Tên</label> <span id="card-holder-name-info" class="info"></span>
             <input type="text" id="name" name="name" class="form-control" value="<?= $row['firstname'].' '.$row['lastname'] ?>" disabled>
         </div>
         <div class="form-group">
             <label for="email">Email</label> <span id="email-info" class="info"></span>
             <input type="email" id="email" name="email" class="form-control" value="<?= $row['email'] ?>" disabled>
+        </div>
+        <div class="form-group">
+            <label for="phone">Số điện thoại</label> <span id="email-info" class="info"></span>
+            <input type="tel" id="phone" name="phone" class="form-control" value="<?= $row['phone'] ?>" disabled>
         </div>
         <div class="form-group">
             <label for="card-number">Số tài khoản</label> <span id="card-number-info" class="info"></span>
@@ -102,6 +107,19 @@ class PaymentPage
         <div class="form-group">
             <label for="cvc">CVC</label> <span id="cvv-info" class="info"></span>
             <input type="text" name="cvc" id="cvc" class="form-control">
+        </div>
+        <h4 align="center">Bên người nhận</h4>
+        <div class="form-group">
+            <label for="recipient">Tên</label>
+            <input type="text" id="recipient" name="recipient" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="address">Địa chỉ</label>
+            <input type="text" id="address" name="address" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="phone-recipient">Số điện thoại</label>
+            <input type="tel" id="phone-recipient" name="phone-recipient" class="form-control" required>
         </div>
         <div>
             <input type="submit" name="pay_now" value="Thanh toán" id="submit-btn" class="btn btn-primary" onClick="stripePay(event);">
