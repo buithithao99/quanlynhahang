@@ -52,7 +52,7 @@ class HomeTemplate {
             <div id="page-wrapper">
                 <div class="container-fluid">
                     <nav class="navbar navbar-inverse" style="margin-top:1rem;">
-                        <div class="container-fluid">
+                        <div class="container-fluid bg-primary">
                             <ul class="nav navbar-nav">
                                 <li><a href="/refernorth">Món Miền Bắc</a></li>
                                 <li><a href="/refercentral">Món Miền Trung</a></li>
