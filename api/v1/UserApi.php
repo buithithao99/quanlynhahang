@@ -1420,6 +1420,16 @@ class UserAPI
         $query = sprintf("UPDATE orders SET `status`='%s' WHERE `order_id`='%s'",$conn->real_escape_string($data['status']),$conn->real_escape_string($data['order_id'])
         );
         Mysqllib::mysql_get_data_from_query($conn, $query);
+        if($data['status'] === 'complete'){
+            $query1 = sprintf("SELECT o.user_id u_id FROM orders o WHERE o.order_id = '%s'",$conn->real_escape_string($data['order_id']));
+            $res = Mysqllib::mysql_get_data_from_query($conn, $query1);
+            $query2 = sprintf("SELECT b.table_id tb_id FROM booking b WHERE b.user_id = '%s'",$res->message[0]['u_id']);
+            $res2 = Mysqllib::mysql_get_data_from_query($conn, $query2);
+            foreach($res2->message as $row){
+                $query = sprintf("UPDATE tables SET `active`='enabled' WHERE `id`='%s'",$row['tb_id']);
+                Mysqllib::mysql_get_data_from_query($conn, $query);
+            }
+        }
         header("Location: /order");
     }
 

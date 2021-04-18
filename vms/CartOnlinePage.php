@@ -8,7 +8,7 @@ class CartOnlinePage {
     public $qty;
     public function __construct($params = null) {
         session_start();
-        if($_SESSION["type"] !== "customer"){
+        if($_SESSION["type"] !== "customer" ){
             if($_SESSION["type"] === "admin"){
                 header("Location: /dashboard");
             }else{
