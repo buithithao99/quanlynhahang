@@ -1038,7 +1038,7 @@ class UserAPI
         }
         $conn = $conn_resp->message;
     
-        $query = sprintf("DELETE FROM orders WHERE `id` = '%s'", $conn->real_escape_string($id));
+        $query = sprintf("DELETE FROM orders WHERE `order_id` = '%s'", $conn->real_escape_string($id));
         Mysqllib::mysql_post_data_from_query($conn, $query);
         header("Location: /order");
     }

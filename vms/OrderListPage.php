@@ -73,7 +73,7 @@ class OrderListPage {
                                 ?>
                             </td>
                             <td><?= $row['type'] === "0" ? "Thanh toán trực tiếp":"Thanh toán online" ?></td>
-                            <td class="center"><i class="fas fa-trash"></i> <a data-href="/deleteorder/<?= $row['id'] ?>" data-target="#confirm-delete" data-toggle="modal"> Delete</a></td>
+                            <td class="center"><i class="fas fa-trash"></i> <a data-href="/deleteorder/<?= $row['order_id'] ?>" data-target="#confirm-delete" data-toggle="modal"> Delete</a></td>
                             <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
