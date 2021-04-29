@@ -38,6 +38,10 @@ class UserAPI
         if (!$uppercase || !$lowercase || !$number || strlen($user->password) < 8) {
             return "Invalid password";
         }
+        $query = sprintf(
+            "SELECT * FROM users"
+        );
+        $res = Mysqllib::mysql_get_data_from_query($conn, $query);
         $password_hash = password_hash($user->password, PASSWORD_DEFAULT);
         $firstname = $conn->real_escape_string($user->firstname);
         $lastname = $conn->real_escape_string($user->lastname);
@@ -51,6 +55,11 @@ class UserAPI
         $active = "enabled";
         $status = "unverify";
         $baseUrl = substr(dirname(__FILE__), 0, strpos(dirname(__FILE__), 'api'));
+        foreach($res->message as $row){
+            if($row['phone'] == $phone){
+                return "Same phone";
+            }
+        }
         if (isset($user->image)) {
             $fileImg = $user->image;
             $img_name = $fileImg['name'];
@@ -832,7 +841,7 @@ class UserAPI
             return $conn_resp;
         }
         $conn = $conn_resp->message;
-        $query = sprintf("SELECT SUM(o.total) total,DATE(o.created_at) order_day,o.order_id,o.status,o.type FROM orders o WHERE `user_id` = '%s' GROUP BY o.order_id",$conn->real_escape_string($user_id));
+        $query = sprintf("SELECT SUM(o.total) total,DATE(o.created_at) order_day,o.order_id,o.status,o.type FROM orders o WHERE `user_id` = '%s' GROUP BY o.order_id ORDER BY order_day DESC",$conn->real_escape_string($user_id));
         $res = Mysqllib::mysql_get_data_from_query($conn, $query);
         return $res;
     }
@@ -1108,6 +1117,8 @@ class UserAPI
             $conn->real_escape_string($booking->table_id)
         );
          Mysqllib::mysql_post_data_from_query($conn, $update_query);
+         session_start();
+         $_SESSION['table_id'] = $booking->table_id;
          header("Location: /northproduct");
     }
 
@@ -1150,7 +1161,7 @@ class UserAPI
             return $conn_resp;
         }
         $conn = $conn_resp->message;
-        $query = sprintf("SELECT SUM(o.total) total,o.order_id,o.status,u.firstname,u.lastname,o.type FROM orders o,users u WHERE o.user_id = u.id GROUP BY order_id");
+        $query = sprintf("SELECT SUM(o.total) total,o.order_id,o.status,u.firstname,u.lastname,o.type,MAX(o.created_at) last_rendered FROM orders o,users u WHERE o.user_id = u.id GROUP BY order_id  ORDER BY last_rendered DESC");
         $res = Mysqllib::mysql_get_data_from_query($conn, $query);
         return $res;
     }

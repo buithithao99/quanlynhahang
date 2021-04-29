@@ -53,7 +53,7 @@ class ProfilePage {
                     }elseif($row['type'] === "cashier"){
                         echo "Thu ngân";
                     }elseif($row['type'] === "serve"){
-                        echo "Khách tại quầy";
+                        echo "Phục vụ";
                     }else{
                         echo "Admin";
                     }

@@ -28,6 +28,8 @@ class RegisterPage
                 $res = UserAPI::save($user);
                 if($res === "Invalid password"){
                   $_SESSION['error'] = "<div class='error-text'>Password must have uppercase letter, lower letter and number. <span class='close'>&times;</span></div>";
+                }elseif($res === "Same phone"){
+                  $_SESSION['error'] = "<div class='error-text'>Phone number is already register. <span class='close'>&times;</span></div>";
                 }
             }else{
                 $_SESSION['error'] = "<div class='error-text'>$email - This email already exist! <span class='close'>&times;</span></div>";
@@ -73,7 +75,7 @@ class RegisterPage
             </div>
             <div class="field input">
               <label>Số điện thoại</label>
-              <input type="tel" name="phone" placeholder="Nhập số điện thoại" required>
+              <input type="tel" name="phone" placeholder="Nhập số điện thoại"  pattern="[0-9]{10}" required>
             </div>
             <div class="field">
               <label>Tỉnh/thành phố</label>

@@ -41,6 +41,7 @@ class CartPage {
                 <thead> 
                     <tr> 
                         <th style="width:40%">Tên sản phẩm</th> 
+                        <th>Bàn</th>
                         <th style="width:10%">Giá</th> 
                         <th style="width:8%">Số lượng</th> 
                         <th style="width:22%" class="text-center">Thành tiền</th> 
@@ -60,7 +61,8 @@ class CartPage {
                                             <p><?= $values['item_description'] ?></p> 
                                         </div> 
                                     </div> 
-                                </td> 
+                                </td>
+                                <td data-th="Table"><?= $_SESSION['table_id'] ?></td>
                                 <td data-th="Price"><?= number_format($values['item_price'], 0, '', ',') ?>₫</td> 
                                 <td data-th="Quantity"><input class="form-control text-center" value="<?= $values['item_qty'] ?>" type="number" disabled></td> 
                                 <td data-th="Subtotal" class="text-center"><?= number_format($values['item_qty'] * $values['item_price'], 0, '', ',') ?>₫</td> 

@@ -61,8 +61,8 @@ class PreviousOrderPage
                     <thead>
                         <tr align="center">
                             <th>Mã hóa đơn</th>
-                            <th>Tổng</th>
                             <th>Ngày thanh toán</th>
+                            <th>Tổng tiền</th>
                             <th>Trạng thái</th>
                             <td>Chi tiết</td>
                         </tr>
@@ -71,8 +71,8 @@ class PreviousOrderPage
                         <?php foreach($this->orders->message as $row): ?>
                             <tr class="even gradeC" align="center">
                                 <td><?= $row['order_id'] ?></td>
-                                <td><?= $row['total'] ?></td>
                                 <td><?= $row['order_day'] ?></td>
+                                <td><?= $row['total'] ?></td>
                                 <td>
                                     <?php
                                         if($row['type'] === "0"){

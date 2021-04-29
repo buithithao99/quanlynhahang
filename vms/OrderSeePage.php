@@ -43,37 +43,26 @@ class OrderSeePage {
                     <?php if($row['type'] === "0"): ?>
                         <?php if($row['status'] === 'handle'): ?>
                             <option value="handle" selected>Chờ xác nhận</option>
-                            <option value="complete">Xác nhận thanh toán</option>
+                            <option value="complete">Đã thanh toán</option>
                             <option value="cancle">Hủy đơn hàng</option>
-                        <?php elseif($row['status'] === 'handle'): ?>
-                            <option value="handle">Chờ xác nhận</option>
-                            <option value="complete" selected>Xác nhận thanh toán</option>
-                            <option value="cancle">Hủy đơn hàng</option>
+                        <?php elseif($row['status'] === 'complete'): ?>
+                            <option value="complete" selected>Đã thanh toán</option>
                         <?php else: ?>
-                            <option value="handle">Chờ xác nhận</option>
-                            <option value="complete">Xác nhận thanh toán</option>
                             <option value="cancle" selected>Hủy đơn hàng</option>
                         <?php endif; ?>
                     <?php else: ?>
                         <?php if($row['status'] === 'handle'): ?>
-                            <option value="handle" selected>Đang nhận hàng</option>
-                            <option value="ship">Đang giao hàng</option>
-                            <option value="complete">Đã giao hàng</option>
+                            <option value="handle" selected>Chờ xác nhận</option>
+                            <option value="ship">Xác nhận</option>
+                            <option value="complete">Hoàn thành</option>
                             <option value="cancle">Hủy đơn hàng</option>
                         <?php elseif($row['status'] === 'ship'): ?>
-                            <option value="handle">Đang nhận hàng</option>
-                            <option value="ship" selected>Đang giao hàng</option>
-                            <option value="complete">Đã giao hàng</option>
-                            <option value="cancle">Hủy đơn hàng</option>
+                            <option value="handle">Chờ xác nhận</option>
+                            <option value="ship" selected>Xác nhận</option>
+                            <option value="complete">Hoàn thành</option>
                         <?php elseif($row['status'] === 'complete'): ?>
-                            <option value="handle">Đang nhận hàng</option>
-                            <option value="ship">Đang giao hàng</option>
-                            <option value="complete" selected>Đã giao hàng</option>
-                            <option value="cancle">Hủy đơn hàng</option>
+                            <option value="complete" selected>Hoàn thành</option>
                         <?php else: ?>
-                            <option value="handle">Đang nhận hàng</option>
-                            <option value="ship">Đang giao hàng</option>
-                            <option value="complete">Đã giao hàng</option>
                             <option value="cancle" selected>Hủy đơn hàng</option>
                         <?php endif; ?>
                     <?php endif; ?>

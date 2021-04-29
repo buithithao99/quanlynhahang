@@ -25,7 +25,6 @@ class UserModel {
         $this->city = $user['city'];
         $this->district = $user['district'];
         $this->commune = $user['commune'];
-        $this->type = $user['type'];
         $this->image = $file['image'];
         if(isset($user['id'])){
             $this->id = $user['id'];
