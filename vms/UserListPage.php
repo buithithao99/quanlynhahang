@@ -54,7 +54,7 @@ class UserListPage {
                     <td><?= $row['id'] ?></td>
                     <td><?= $row['email'] ?></td>
                     <td><?= $row['phone'] ?></td>
-                    <td><?= $row['type'] === 'customer'? "Khách hàng online":"Khách tại quầy" ?></td>
+                    <td><?= $row['type'] === 'customer'? "Khách hàng online":"Phục vụ" ?></td>
                     <td><?= $row['name_city'] ?></td>
                     <td><?= $row['name_district'] ?></td>
                     <td><?= $row['name_commune'] ?></td>

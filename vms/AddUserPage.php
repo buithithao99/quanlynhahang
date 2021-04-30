@@ -76,12 +76,12 @@ class AddUserPage {
                 <label>Chức vụ</label>
                 <select class="form-control" name="type" id="type" required>
                     <option value="cashier">Thu ngân</option>
-                    <option value="serve">Khách tại quầy</option>
+                    <option value="serve">Phục vụ</option>
                 </select>
             </div>
             <div class="form-group">
                 <label>Số điện thoại</label>
-                <input type="tel" name="phone" class="form-control" placeholder="Nhập số điện thoại"    required>
+                <input type="tel" name="phone" class="form-control" placeholder="Nhập số điện thoại" pattern="[0-9]{10}"   required>
             </div>
             <div class="form-group">
                 <label>Tỉnh/thành phố</label>
