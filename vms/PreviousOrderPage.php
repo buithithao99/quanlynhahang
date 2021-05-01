@@ -85,11 +85,11 @@ class PreviousOrderPage
                                             }
                                         }else{
                                             if($row['status'] === 'handle'){
-                                                echo "Đang nhận hàng";
+                                                echo "Chờ xác nhận";
                                             }elseif($row['status'] === 'ship'){
-                                                echo "Đang giao hàng";
+                                                echo "Xác nhận";
                                             }elseif($row['status'] === 'complete'){
-                                                echo "Đã giao hàng";
+                                                echo "Hoàn thành";
                                             }elseif($row['status'] === 'cancle'){
                                                 echo "Đã hủy";
                                             }

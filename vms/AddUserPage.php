@@ -107,6 +107,7 @@ class AddUserPage {
             <div class="form-group">
                 <label>Mật khẩu</label>
                 <input type="password" name="password" id="pass_log_id" class="form-control" placeholder="Đặt mật khẩu" required>
+                <i class="fas fa-eye toggle-password" toggle="#password-field"></i>
             </div>
             <div class="form-group">
                 <label>Chọn hình ảnh</label>
