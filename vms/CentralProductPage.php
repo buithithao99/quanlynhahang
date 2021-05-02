@@ -82,6 +82,7 @@ class CentralProductPage {
         <?php if($firstCate->message[0]['id'] === $category['id']): ?> 
             <div id="<?= $category['id'] ?>" class="tab-pane fade in active">
                 <?php  foreach($rows->message as $row): ?>
+                    <?php UserAPI::checkQuantity($row['id']); ?>
                     <div class="col-lg-3">
                         <form action="/addtocart" method="POST">
                         <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>" />

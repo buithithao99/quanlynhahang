@@ -765,19 +765,27 @@ class UserAPI
         $conn = $conn_resp->message;
         $ran_id = rand(time(), 100000000);
         foreach($orders as $row){
-            $query = sprintf("INSERT INTO orders (`user_id`,`product_id`,`quantity`,`total`,`status`,`order_id`,`type`) VALUES ('%s','%s','%s','%s','%s','%s','%s')",$row['user_id'],$row['item_id'],$row['item_qty'],$row['item_price']*$row['item_qty'],'handle',$ran_id,0);
-            Mysqllib::mysql_post_data_from_query($conn, $query);
-            $select_query = sprintf("SELECT `quantity`-'%s' result FROM `products` WHERE `id`='%s'",$row['item_qty'],$row['item_id']);
-            $res = Mysqllib::mysql_get_data_from_query($conn, $select_query);
-            $update_query = sprintf("UPDATE `products` SET `quantity`='%s' WHERE id='%s'",
-            $res->message[0]['result'],
-            $row['item_id']
-            );
-            Mysqllib::mysql_post_data_from_query($conn, $update_query);
+            $select_query_1 = sprintf("SELECT `quantity` qty FROM `products` WHERE `id`='%s'",$row['item_id']);
+            $res1 = Mysqllib::mysql_get_data_from_query($conn, $select_query_1);
+            if($res1->message[0]['qty'] > 0){
+                $select_query_2 = sprintf("SELECT `quantity`-'%s' result FROM `products` WHERE `id`='%s'",$row['item_qty'],$row['item_id']);
+                $res2 = Mysqllib::mysql_get_data_from_query($conn, $select_query_2);
+                if($res2->message[0]['result'] < 0){
+                    continue;
+                }else{
+                    $query = sprintf("INSERT INTO orders (`user_id`,`product_id`,`quantity`,`total`,`status`,`order_id`,`type`) VALUES ('%s','%s','%s','%s','%s','%s','%s')",$row['user_id'],$row['item_id'],$row['item_qty'],$row['item_price']*$row['item_qty'],'handle',$ran_id,0);
+                    Mysqllib::mysql_post_data_from_query($conn, $query);
+                    $update_query = sprintf("UPDATE `products` SET `quantity`='%s' WHERE id='%s'",
+                    $res2->message[0]['result'],
+                    $row['item_id']
+                    );
+                    Mysqllib::mysql_post_data_from_query($conn, $update_query);
+                    unset($_SESSION["shopping_cart"]);
+                    $_SESSION['checkout-success'] = "<div class='alert alert-success'> Đã đặt hàng thành công  <span class='close'>&times;</span></div>";
+                    header("Location: /previousorder");
+                }
+            }
         }
-        unset($_SESSION["shopping_cart"]);
-        $_SESSION['checkout-success'] = "<div class='alert alert-success'> Đã đặt hàng thành công  <span class='close'>&times;</span></div>";
-        header("Location: /previousorder");
     }
 
     public static function checkoutOnline($orders,$data)
@@ -1119,6 +1127,7 @@ class UserAPI
          Mysqllib::mysql_post_data_from_query($conn, $update_query);
          session_start();
          $_SESSION['table_id'] = $booking->table_id;
+         $_SESSION['table_type'] = $booking->type;
          header("Location: /northproduct");
     }
 
@@ -1349,7 +1358,7 @@ class UserAPI
         }
         $conn = $conn_resp->message;
     
-        $query = sprintf("SELECT p.*,r.name region_name FROM products p,region r WHERE p.region_id = r.id AND r.name='north' AND category_id = '%s'",$cateId);
+        $query = sprintf("SELECT p.*,r.name region_name FROM products p,region r WHERE p.region_id = r.id AND r.name='north' AND p.active = 'enabled' AND category_id = '%s'",$cateId);
         $res = Mysqllib::mysql_get_data_from_query($conn, $query);
         return $res;
     }
@@ -1363,7 +1372,7 @@ class UserAPI
         }
         $conn = $conn_resp->message;
     
-        $query = sprintf("SELECT p.*,r.name region_name FROM products p,region r WHERE p.region_id = r.id AND r.name='south' AND category_id = '%s'",$cateId);
+        $query = sprintf("SELECT p.*,r.name region_name FROM products p,region r WHERE p.region_id = r.id AND r.name='south' AND p.active = 'enabled' AND category_id = '%s'",$cateId);
         $res = Mysqllib::mysql_get_data_from_query($conn, $query);
         return $res;
     }
@@ -1377,7 +1386,7 @@ class UserAPI
         }
         $conn = $conn_resp->message;
     
-        $query = sprintf("SELECT p.*,r.name region_name FROM products p,region r WHERE p.region_id = r.id AND r.name='central' AND category_id = '%s'",$cateId);
+        $query = sprintf("SELECT p.*,r.name region_name FROM products p,region r WHERE p.region_id = r.id AND r.name='central' AND p.active = 'enabled' AND category_id = '%s'",$cateId);
         $res = Mysqllib::mysql_get_data_from_query($conn, $query);
         return $res;
     }
@@ -1455,5 +1464,24 @@ class UserAPI
        $query = sprintf("SELECT sum(total),DATE(created_at) FROM `orders` WHERE status = 'complete' AND DATE(created_at) BETWEEN '%s' AND '%s' GROUP BY DATE(created_at)",$start_date,$end_date);
        $res = Mysqllib::mysql_get_data_from_query($conn, $query);
        return $res;
+   }
+
+   public static function checkQuantity($id)
+   {
+        // Connect db
+        $conn_resp = Database::connect_db();
+        if (!$conn_resp->status) {
+            return $conn_resp;
+        }
+        $conn = $conn_resp->message;
+        
+        $select = sprintf("SELECT `quantity` qty FROM `products` WHERE `id`='%s'",$id);
+        $res1 = Mysqllib::mysql_get_data_from_query($conn, $select);
+        if($res1->message[0]['qty'] <= 0){
+            $update = sprintf("UPDATE `products` SET `active`='disabled' WHERE id='%s'",
+            $id
+            );
+            Mysqllib::mysql_post_data_from_query($conn, $update);
+        }
    }
 }
