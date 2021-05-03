@@ -92,6 +92,8 @@ class SouthProductPage {
                         <input type="hidden" name="region_id" value="<?= $row['region_id'] ?>" />
                         <input type="hidden" name="region_name" value="<?= $row['region_name'] ?>" />
                         <input type="hidden" name="description" value="<?= $row['description'] ?>" />
+                        <input type="hidden" name="table_id" value="<?= $_SESSION['table_id'] ?>" />
+                        <input type="hidden" name="table_type" value="<?= $_SESSION['table_type'] ?>" />
                             <div class="product-item-box">
                                 <div class="product-item">
                                     <div class="product-detail">

@@ -773,7 +773,7 @@ class UserAPI
                 if($res2->message[0]['result'] < 0){
                     continue;
                 }else{
-                    $query = sprintf("INSERT INTO orders (`user_id`,`product_id`,`quantity`,`total`,`status`,`order_id`,`type`) VALUES ('%s','%s','%s','%s','%s','%s','%s')",$row['user_id'],$row['item_id'],$row['item_qty'],$row['item_price']*$row['item_qty'],'handle',$ran_id,0);
+                    $query = sprintf("INSERT INTO orders (`user_id`,`product_id`,`quantity`,`total`,`status`,`order_id`,`type`,`table_id`,`table_type`) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s')",$row['user_id'],$row['item_id'],$row['item_qty'],$row['item_price']*$row['item_qty'],'handle',$ran_id,0,$row['table_id'],$row['table_type']);
                     Mysqllib::mysql_post_data_from_query($conn, $query);
                     $update_query = sprintf("UPDATE `products` SET `quantity`='%s' WHERE id='%s'",
                     $res2->message[0]['result'],
@@ -849,7 +849,7 @@ class UserAPI
             return $conn_resp;
         }
         $conn = $conn_resp->message;
-        $query = sprintf("SELECT SUM(o.total) total,DATE(o.created_at) order_day,o.order_id,o.status,o.type FROM orders o WHERE `user_id` = '%s' GROUP BY o.order_id ORDER BY order_day DESC",$conn->real_escape_string($user_id));
+        $query = sprintf("SELECT SUM(o.total) total,DATE(o.created_at) order_day,o.order_id,o.status,o.type,o.table_id,o.table_type FROM orders o WHERE `user_id` = '%s' GROUP BY o.order_id ORDER BY order_day DESC",$conn->real_escape_string($user_id));
         $res = Mysqllib::mysql_get_data_from_query($conn, $query);
         return $res;
     }

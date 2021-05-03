@@ -81,6 +81,7 @@ class NorthProductPage {
         <?php if($firstCate->message[0]['id'] === $category['id']): ?> 
             <div id="<?= $category['id'] ?>" class="tab-pane fade in active">
                 <?php  foreach($rows->message as $row): ?>
+                    <?php UserAPI::checkQuantity($row['id']); ?>
                     <div class="col-lg-3">
                         <form action="/addtocart" method="POST">
                         <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>" />
@@ -91,6 +92,8 @@ class NorthProductPage {
                         <input type="hidden" name="region_id" value="<?= $row['region_id'] ?>" />
                         <input type="hidden" name="region_name" value="<?= $row['region_name'] ?>" />
                         <input type="hidden" name="description" value="<?= $row['description'] ?>" />
+                        <input type="hidden" name="table_id" value="<?= $_SESSION['table_id'] ?>" />
+                        <input type="hidden" name="table_type" value="<?= $_SESSION['table_type'] ?>" />
                             <div class="product-item-box">
                                 <div class="product-item">
                                     <div class="product-detail">
