@@ -26,7 +26,10 @@ class LoginPage {
                   header("Location: /homepage");
               }
           }else{
-              header("Location: /");
+            echo "<script>
+                 alert('Email/Password không đúng hoặc tài khoản chưa xác thực');
+                 window.location.href='/';
+            </script>";
           }
       }
     }
