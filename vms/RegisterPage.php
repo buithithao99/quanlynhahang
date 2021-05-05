@@ -27,7 +27,7 @@ class RegisterPage
                 $user = new UserModel($_POST,$_FILES);
                 $res = UserAPI::save($user);
                 if($res === "Invalid password"){
-                  $_SESSION['error'] = "<div class='error-text'>Password must have uppercase letter, lower letter and number. <span class='close'>&times;</span></div>";
+                  $_SESSION['error'] = "<div class='error-text'>Password must have 8 characters, uppercase, lowercase letters and numbers. <span class='close'>&times;</span></div>";
                 }elseif($res === "Same phone"){
                   $_SESSION['error'] = "<div class='error-text'>Phone number is already register. <span class='close'>&times;</span></div>";
                 }
