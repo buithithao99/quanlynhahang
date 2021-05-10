@@ -28,7 +28,8 @@ class SingleTablePage {
         <?php $res = UserAPI::getStatusFromTable($row['id']); ?>
         <div class="col-lg-3">
             <form action="/booking" method="POST">
-                <input type="hidden" name="table_id" value="<?= $id ?>" />
+                 <input type="hidden" name="tem_id" value="<?= $id ?>" />
+                <input type="hidden" name="table_id" value="<?= $row['id'] ?>" />
                 <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>" />
                 <input type="hidden" name="type" value="Đơn" />
                 <div class="table-item-box">
@@ -47,7 +48,7 @@ class SingleTablePage {
                                         class="fas fa-shopping-cart"></i>Đặt bàn</button>
                             </div>
                         <?php else: ?>
-                            <div class="col text-center">Đã có khách hàng đặt trước.</div>
+                            <div class="col text-center">Đã đặt trước.</div>
                         <?php endif; ?>
                     <?php endif; ?>
                 </div>

@@ -272,5 +272,5 @@ class AdminTemplate {
             }
         }
     </script>
-    </html>
+    </html> 
 <?php }}

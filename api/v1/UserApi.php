@@ -1126,7 +1126,7 @@ class UserAPI
         );
          Mysqllib::mysql_post_data_from_query($conn, $update_query);
          session_start();
-         $_SESSION['table_id'] = $booking->table_id;
+         $_SESSION['table_id'] = $booking->tem_id;
          $_SESSION['table_type'] = $booking->type;
          header("Location: /northproduct");
     }

@@ -60,8 +60,10 @@ class PreviousOrderPage
                 <table class="table table-striped table-bordered table-hover" id="menu-table">
                     <thead>
                         <tr align="center">
+                        <?php if($_SESSION['type'] === 'serve'): ?>
                             <th>Bàn</th>
                             <th>Loại bàn</th>
+                            <?php endif; ?>
                             <th>Mã hóa đơn</th>
                             <th>Ngày thanh toán</th>
                             <th>Tổng tiền</th>
@@ -72,8 +74,10 @@ class PreviousOrderPage
                     <tbody>
                         <?php foreach($this->orders->message as $row): ?>
                             <tr class="even gradeC" align="center">
-                                <td><?= !is_null($row['table_id'])?"Số ".$row['table_id']:"không có" ?></td>
-                                <td><?= !is_null($row['table_type'])?$row['table_type']:"không có" ?></td>
+                                <?php if($_SESSION['type'] === 'serve'): ?>
+                                    <td><?= !is_null($row['table_id'])?"Số ".$row['table_id']:"không có" ?></td>
+                                    <td><?= !is_null($row['table_type'])?$row['table_type']:"không có" ?></td>
+                                <?php endif; ?>
                                 <td><?= $row['order_id'] ?></td>
                                 <td><?= $row['order_day'] ?></td>
                                 <td><?= $row['total'] ?></td>
